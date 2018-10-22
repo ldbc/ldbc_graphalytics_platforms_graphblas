@@ -1,80 +1,60 @@
-//
-// Created by lehel on 10/15/18.
-//
+/*
+ * Bellman-Ford algorithm linear algebraic implementation based on the "Graph Algorithms in the
+ * Language of Linear Algebra" book. The input graph must not contain any negative-weight cycle.
+ */
+
+// macro used by OK(...) to free workspace if an error occurs
+#define FREE_ALL            \
+    GrB_free (&A);          \
+    GrB_free(&dist);        \
+    GrB_free(&desc);
 
 #include "demos.h"
 #include "printer.h"
-#include <math.h>
-#include <stdio.h>
-
-double log2(double n) {
-    return log(n)/log(2);
-}
+#include "matrix_reader.h"
 
 int main (int argc, char **argv) {
 
-    GrB_Index n = 11;
+
+    GrB_init(GrB_NONBLOCKING);
+
+    GrB_Index n = 4;
+    GrB_Index s = 0;
+    GrB_Vector dist = NULL;
     GrB_Matrix A = NULL;
-    GrB_Vector v = NULL;
+    GrB_Descriptor desc = NULL;
 
-    GrB_Index* X = NULL;
-    GrB_Index* Y = NULL;
-    int* values = NULL;
+    char* path = "/home/lehel/Downloads/SuiteSparse/GraphBLAS/Demo/Matrix/sssp_small";
 
-    //X = malloc(n * sizeof (GrB_Index));
-    //Y = malloc(n * sizeof (GrB_Index));
-    X = malloc(n * sizeof(GrB_Index));
-    Y = malloc(n * sizeof(GrB_Index));
-    values = malloc(n * sizeof(int));
+    read_Matrix_FP64(&A, path, 256, n, n);
 
-    FILE *myFile;
-    myFile = fopen("/home/lehel/Downloads/SuiteSparse/GraphBLAS/Demo/Matrix/sssp", "r");
-
-    unsigned int line = 0;
-
-    uint32_t index1;
-    uint32_t index2;
-    int value;
-
-    printf("start:\n");
-    while(scanf("%u %u %d", &index1, &index2, &value) != EOF) {
-        printf("line: %d\n", line);
-        X[line] = index1;
-        Y[line] = index2;
-        values[line] = value;
-        line = line + 1;
-    }
-    printf("end:\n");
-
-    for (int i = 0; i < line; i++) {
-        printf("%u %u %d\n", (uint32_t) X[i], (uint32_t) Y[i], values[i]);
+    // We know that that a vertex distance from itself is zero. These initial
+    // values must be stored in the adjacency matrix.
+    for (unsigned int i = 0; i < n; i++) {
+        GrB_Matrix_setElement(A, 0.0, i, i);
     }
 
-    GrB_Matrix_new(&A, GrB_INT32, 9, 9);
-    unsigned int tuples = line + 1;
+    // Initialize the distance vector as double and set the s-th element to zero.
+    // We use MIN_PLUS semiring, so the identity values are +infinity
+    OK(GrB_Vector_new(&dist, GrB_FP64, n));
+    OK(GrB_Vector_setElement(dist, 0, s));
 
+    // Set descriptor to clear output first.
+    OK(GrB_Descriptor_new(&desc));
+    OK(GrB_Descriptor_set(desc, GrB_OUTP, GrB_REPLACE));
 
-    GrB_Matrix_build(A, X, Y, values, 11, GrB_FIRST_INT32);
+    for (unsigned int i = 1; i < n; i++) {
+        // dist = dist min.+ A
+        OK(GrB_vxm(dist, NULL, NULL, GxB_MIN_PLUS_FP64, dist, A, desc));
+    }
 
-    int a;
-    GrB_Matrix_extractElement(&a, A, 8, 7);
+    // Print the result.
+    printDoubleVector(dist);
 
-    printf("---- a --- : %d\n", a);
+    // Free variables.
+    GrB_free(&dist);
+    GrB_free(&A);
+    GrB_free(&desc);
 
-    printf("1\n");
-    printMatrix(A);
-    printf("2\n");
-
-
-    // Read A froms stdin as bool.
-    //read_matrix(&A, stdin, false, false, false, false, true);
-    /*GrB_Matrix_nrows(&n, A);
-
-    unsigned int element;
-    GrB_Matrix_extractElement(&element, A, 5, 7);
-    printf("element: %u \n", element);
-
-
-    printMatrix(A);*/
-
+    GrB_finalize();
 }

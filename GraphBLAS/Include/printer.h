@@ -6,7 +6,9 @@
 #define GRAPHBLAS_PRINTER_H
 #include "GraphBLAS.h"
 
-void printVector(GrB_Vector vec);
-void printMatrix(GrB_Matrix M);
+void printIntVector(GrB_Vector vec);
+void printIntMatrix(GrB_Matrix M);
+void printDoubleVector(GrB_Vector vec);
+void printDoubleMatrix(GrB_Matrix M);
 
 #endif //GRAPHBLAS_PRINTER_H
