@@ -2,6 +2,10 @@
 // GraphBLAS/Demo/bfs5m.c: breadth first search (mxv and assign/reduce)
 //------------------------------------------------------------------------------
 
+// macro used by OK(...) to free workspace if an error occurs
+#define FREE_ALL            \
+    GrB_free (&A);          \
+    GrB_free(&v);
 
 #include "demos.h"
 #include "bfs_source.h"
@@ -16,15 +20,15 @@ int main (int argc, char **argv) {
 
     // Read matrix and get size.
     read_matrix(&A, stdin, false, false, false, false, true);
-    GrB_Matrix_nrows(&n, A);
+    OK(GrB_Matrix_nrows(&n, A));
 
-    printMatrix(A);
+    printIntMatrix(A);
 
     // Call BFS with A and startVertex.
     bfs(&v, A, startVertex, false, 0);
 
     // Print the result.
-    printVector(v);
+    printIntVector(v);
 
     // Free GrB objects.
     GrB_free(&A);
