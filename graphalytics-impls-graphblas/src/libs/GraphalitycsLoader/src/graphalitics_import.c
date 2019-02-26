@@ -45,7 +45,7 @@ GraphalyticsMatrix LoadUnweightedMatrix(const char *path, unsigned long tuple_co
         sscanf(line_buffer, "%lu %n", &source_index, &read_chars);
 
         // Check if index is the highest index so far
-        matrix_size = GetMaximum(matrix_size, source_index);
+        matrix_size = GetMaximum(matrix_size, source_index+1);
 
         // Set the line pointer to the first target vertex (second column in file)
         line = line_buffer + read_chars;
@@ -58,11 +58,11 @@ GraphalyticsMatrix LoadUnweightedMatrix(const char *path, unsigned long tuple_co
             //printf("%lu -> %lu\n", source_index, target_index);
 
             // Check if index is the highest index so far
-            matrix_size = GetMaximum(matrix_size, target_index);
+            matrix_size = GetMaximum(matrix_size, target_index+1);
 
             // Fill out a line of tuples
-            row_indices[tuple_index] = (source_index-1); // Indices in Graphalytics are 1-based
-            column_indices[tuple_index] = (target_index-1); // Indices in Graphalytics are 1-based
+            row_indices[tuple_index] = (source_index); // Indices in Graphalytics are 1-based
+            column_indices[tuple_index] = (target_index); // Indices in Graphalytics are 1-based
             values[tuple_index] = 1.0; // Simple directed graphs have uniform weight
             // Advance result array index
             tuple_index++;

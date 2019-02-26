@@ -5,18 +5,13 @@
 // Controls if debug information should be printed
 //#define VERBOSE
 // Controls if the results should be displayed
-#define PRINT_RESULT
+//#define PRINT_RESULT
 
 // macro used by OK(...) to free workspace if an error occurs
 #define FREE_ALL \
     GrB_free(&A); \
-    GrB_free(&v); \
-    GrB_free(&v_in_neighbors); \
-    GrB_free(&v_out_neighbors); \
-    GrB_free(&v_neighbors); \
-    GrB_free(&n_neighbors); \
-    GrB_free(&n_masked_neighbors); \
-    GrB_free(&result);
+    GrB_free(&A2); \
+    GrB_free(&A3); \
 
 #include <GraphBLAS.h>
 #include "utils.h"
@@ -102,106 +97,37 @@ int main (int argc, char **argv) {
     }
 
     GrB_init(GrB_NONBLOCKING);
+
     // Variable required by the OK macro
     unsigned int info;
 
+    // The source adjacency matrix
     GrB_Matrix A;
-    // Indicator vector to select a vertex
-    GrB_Vector v = NULL;
-    // Vector containing the out edges from v
-    GrB_Vector v_out_neighbors = NULL;
-    // Vector containing the in edges from v
-    GrB_Vector v_in_neighbors = NULL;
-    // Vector containing the in+out edges
-    GrB_Vector v_neighbors = NULL;
-
-    // Vector containing the neighbours of N(v) vertices
-    GrB_Vector n_neighbors = NULL;
-    // Vector containing the neighbours of N(v) vertices
-    // but only those which are in N(v)
-    GrB_Vector n_masked_neighbors = NULL;
-
-    // The result vector
-    GrB_Vector result = NULL;
-
-    // The dimensions of the matrix
+    GrB_Matrix A2;
+    GrB_Matrix A3;
+    // The size of Adj
     unsigned long n;
-    // Contains |N(v)|
-    unsigned long neighbor_count;
-    // Contains the edges between N(v)
-    unsigned long edge_count;
 
     // Load the matrix from file
     const char *graph_path = argv[1];
     size_t tuple_count = strtoul(argv[2], NULL, 10);
+    printf("Loading...\n");
     OK(FillMatrixFromFile(graph_path, tuple_count, &A));
+    printf("Loaded\n");
 
     // Get the number of vertices, or size of the adjacency matrix.
     OK(GrB_Matrix_nrows(&n, A));
+    OK(GrB_Matrix_new(&A2, GrB_FP64, n, n));
+    OK(GrB_Matrix_new(&A3, GrB_FP64, n, n));
 
-    // Initialize the vectors.
-    OK(GrB_Vector_new(&v, GrB_UINT64, n));
+    printf("A2=A*A\n");
+    OK(GrB_mxm(A2, NULL, NULL, GxB_PLUS_TIMES_FP64, A, A, NULL));
+    printf("A3=A2*A\n");
+    //OK(GrB_mxm(A3, NULL, NULL, GxB_PLUS_TIMES_FP64, A2, A, NULL));
 
-    OK(GrB_Vector_new(&v_in_neighbors, GrB_UINT64, n));
-    OK(GrB_Vector_new(&v_out_neighbors, GrB_UINT64, n));
-    OK(GrB_Vector_new(&v_neighbors, GrB_UINT64, n));
-    OK(GrB_Vector_new(&n_neighbors, GrB_UINT64, n));
-    OK(GrB_Vector_new(&n_masked_neighbors, GrB_UINT64, n));
-
-    OK(GrB_Vector_new(&result, GrB_FP64, n));
-
-    // Iterate through all vertices.
-    for (unsigned long i = 0; i < n; i++) {
-        printf("Vertex %d\n", i);
-        /*
-         * Calculate the neighbors of v
-         */
-        // Set the selector value in v
-        OK(GrB_Vector_setElement(v, 1, i));
-        // Do a (v*A) to find N_out(v) aka. the outbound edges
-        OK(GrB_vxm(v_out_neighbors, NULL, NULL, GxB_LOR_LAND_BOOL, v, A, NULL));
-        // Do a (A*v^t) to find N_in(v) aka. the inbound edges
-        // TODO: look up if there is any bottleneck multiplying from the right side
-        OK(GrB_mxv(v_in_neighbors, NULL, NULL, GxB_LOR_LAND_BOOL, A, v, NULL));
-        // Reset the indicator value
-        OK(GrB_Vector_setElement(v, 0, i));
-        OK(GrB_eWiseAdd(v_neighbors, NULL, NULL, GxB_LOR_BOOL_MONOID, v_out_neighbors, v_in_neighbors, NULL))
-        OK(GrB_Vector_reduce_UINT64(&neighbor_count, NULL, GxB_PLUS_UINT64_MONOID, v_neighbors, NULL))
-
-        /*
-         * Calculate the neighbours of N(v)
-         */
-        OK(GrB_vxm(n_neighbors, NULL, NULL, GxB_PLUS_TIMES_UINT64, v_neighbors, A, NULL))
-        OK(GrB_eWiseMult(n_masked_neighbors, NULL, NULL, GxB_PLUS_TIMES_UINT64, v_neighbors, n_neighbors, NULL))
-
-        /*
-         * Calculate the neighbours of N(v)
-         */
-        OK(GrB_Vector_reduce_UINT64(&edge_count, NULL, GxB_PLUS_INT64_MONOID, n_masked_neighbors, NULL))
-
-#ifdef VERBOSE
-        WriteOutDebugMatrix("A", A);
-        WriteOutDebugVector("v_out_neighbors", v_out_neighbors);
-        WriteOutDebugVector("v_in_neighbors", v_in_neighbors);
-        WriteOutDebugVector("v_neighbors", v_neighbors);
-        WriteOutDebugVector("n_neighbors", n_neighbors);
-        WriteOutDebugVector("n_masked_neighbors", n_masked_neighbors);
-        printf("\n");
-#endif
-
-        // Count lcc for the current vertex, then save it into the result vector.
-        double lcc;
-        if ((int) neighbor_count <= 1) {
-            lcc = 0.0;
-        } else {
-            lcc = (double) edge_count / (neighbor_count * (neighbor_count - 1));
-        }
-
-        GrB_Vector_setElement(result, lcc, i);
-    }
 
 #ifdef PRINT_RESULT
-    WriteOutResult(result);
+    WriteOutDebugMatrix("A3", A3);
 #endif
 
     // Free other GraphBLAS objects.
