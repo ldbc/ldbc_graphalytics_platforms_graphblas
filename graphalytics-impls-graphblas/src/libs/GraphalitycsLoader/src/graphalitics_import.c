@@ -79,7 +79,6 @@ GraphalyticsMatrix LoadUnweightedMatrix(const char *path, unsigned long tuple_co
     };
 
     fclose(file);
-
     return matrix;
 }
 

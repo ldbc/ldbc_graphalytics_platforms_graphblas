@@ -9,7 +9,7 @@ GrB_Info FillMatrixFromFile(const char *path, size_t tuple_count, GrB_Matrix *ma
     GraphalyticsMatrix loaded = LoadUnweightedMatrix(path, tuple_count);
 
     GrB_Info info;
-    info = GrB_Matrix_new(matrix, GrB_FP64, loaded.size, loaded.size);
+    info = GrB_Matrix_new(matrix, GrB_INT32, loaded.size, loaded.size);
     if (info != GrB_SUCCESS) {
         return info;
     }
@@ -19,7 +19,7 @@ GrB_Info FillMatrixFromFile(const char *path, size_t tuple_count, GrB_Matrix *ma
             loaded.columnIndices,
             loaded.values,
             loaded.tuple_count,
-            GrB_FIRST_FP64);
+            GrB_FIRST_INT32);
     if (info != GrB_SUCCESS) {
         return info;
     }

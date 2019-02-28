@@ -35,7 +35,7 @@ int main (int argc, char **argv) {
     const char *graph_path = argv[1];
     size_t tuple_count = strtoul(argv[2], NULL, 10);
 
-//    GrB_Matrix A = FillMatrixFromFile(graph_path, tuple_count);
+    GrB_Matrix A = FillMatrixFromFile(graph_path, tuple_count);
     GrB_Vector v = NULL;
     GrB_Index n;
     GrB_Index startVertex = 0;
