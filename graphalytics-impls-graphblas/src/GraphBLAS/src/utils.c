@@ -6,7 +6,7 @@
 GrB_Info FillMatrixFromFile(const char *path, size_t tuple_count, GrB_Matrix *matrix) {
     printf("%s\n", path);
 
-    GraphalyticsMatrix loaded = LoadUnweightedMatrix(path, tuple_count);
+    GraphalyticsMatrix loaded = LoadWeightedMatrix(path, tuple_count);
 
     GrB_Info info;
     info = GrB_Matrix_new(matrix, GrB_INT32, loaded.size, loaded.size);

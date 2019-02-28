@@ -30,4 +30,4 @@ GraphalyticsMatrix LoadUnweightedMatrix(const char *path, size_t tuple_count);
  * @param path the file containing the structure
  * @return a LoadedMatrix instance containing the loaded file
  */
-//GraphalyticsMatrix LoadWeightedMatrix(const char *path);
+GraphalyticsMatrix LoadWeightedMatrix(const char *path, size_t tuple_count);
