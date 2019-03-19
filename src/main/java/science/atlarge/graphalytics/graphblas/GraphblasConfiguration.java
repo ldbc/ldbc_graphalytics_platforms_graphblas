@@ -41,7 +41,6 @@ public final class GraphblasConfiguration {
 	private String unloaderPath;
 	private String executablePath;
 	private String terminatorPath;
-	private String homePath;
 	private int numMachines = 1;
 	private int numThreads = 1;
 
@@ -87,20 +86,6 @@ public final class GraphblasConfiguration {
 
 	public void setTerminatorPath(String terminatorPath) {
 		this.terminatorPath = terminatorPath;
-	}
-
-	/**
-	 * @return the home directory
-	 */
-	public String getHomePath() {
-		return homePath;
-	}
-
-	/**
-	 * @param homePath the home directory
-	 */
-	public void setHomePath(String homePath) {
-		this.homePath = homePath;
 	}
 
 	/**
@@ -155,12 +140,6 @@ public final class GraphblasConfiguration {
 
 		String terminatorPath = Paths.get("./bin/sh/terminate-job.sh").toString();
 		platformConfig.setTerminatorPath(terminatorPath);
-
-
-		String homePath = configuration.getString(HOME_PATH_KEY, null);
-		if (homePath != null) {
-			platformConfig.setHomePath(homePath);
-		}
 
 		Integer numMachines = configuration.getInteger(NUM_MACHINES_KEY, null);
 		if (numMachines != null) {
