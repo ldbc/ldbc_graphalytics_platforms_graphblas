@@ -92,12 +92,11 @@ public abstract class GraphblasJob {
 		// List of platform parameters.
 		int numMachines = platformConfig.getNumMachines();
 		int numThreads = platformConfig.getNumThreads();
-		String homeDir = platformConfig.getHomePath();
 
 		appendBenchmarkParameters(jobId, logDir);
 		appendAlgorithmParameters();
 		appendDatasetParameters(inputPath, outputPath);
-		appendPlatformConfigurations(homeDir, numMachines, numThreads);
+		appendPlatformConfigurations(numMachines, numThreads);
 
 		String commandString = StringUtils.toString(commandLine.toStrings(), " ");
 		LOG.info(String.format("Execute benchmark job with command-line: [%s]", commandString));
@@ -139,12 +138,7 @@ public abstract class GraphblasJob {
 	/**
 	 * Appends the platform-specific parameters for the executable to a CommandLine object.
 	 */
-	private void appendPlatformConfigurations(String homeDir, int numMachines, int numThreads) {
-
-		if(homeDir != null && !homeDir.trim().isEmpty()) {
-			commandLine.addArgument("--home-dir");
-			commandLine.addArgument(homeDir);
-		}
+	private void appendPlatformConfigurations(int numMachines, int numThreads) {
 
 		commandLine.addArgument("--num-machines");
 		commandLine.addArgument(String.valueOf(numMachines));

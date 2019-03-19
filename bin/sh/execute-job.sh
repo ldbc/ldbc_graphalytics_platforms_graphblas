@@ -59,10 +59,6 @@ while [[ $# -gt 1 ]] # Parse two arguments: [--key value] or [-k value]
       OUTPUT_PATH="$value"
       shift;;
 
-    --home-dir)
-      HOME_DIR="$value"
-      shift;;
-
     --num-machines)
       NUM_MACHINES="$value"
       shift;;
