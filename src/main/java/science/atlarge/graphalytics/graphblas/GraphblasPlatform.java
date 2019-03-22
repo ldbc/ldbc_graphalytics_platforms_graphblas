@@ -22,21 +22,12 @@ import science.atlarge.graphalytics.domain.benchmark.BenchmarkRun;
 import science.atlarge.graphalytics.domain.graph.FormattedGraph;
 import science.atlarge.graphalytics.domain.graph.Graph;
 import science.atlarge.graphalytics.domain.graph.LoadedGraph;
-import science.atlarge.graphalytics.execution.Platform;
-import science.atlarge.graphalytics.execution.PlatformExecutionException;
-import science.atlarge.graphalytics.execution.RunSpecification;
-import science.atlarge.graphalytics.execution.BenchmarkRunner;
-import science.atlarge.graphalytics.execution.BenchmarkRunSetup;
-import science.atlarge.graphalytics.execution.RuntimeSetup;
-import science.atlarge.graphalytics.report.result.BenchmarkMetrics;
-import science.atlarge.graphalytics.graphblas.algorithms.bfs.BreadthFirstSearchJob;
-import science.atlarge.graphalytics.graphblas.algorithms.cdlp.CommunityDetectionLPJob;
+import science.atlarge.graphalytics.execution.*;
 import science.atlarge.graphalytics.graphblas.algorithms.lcc.LocalClusteringCoefficientJob;
-import science.atlarge.graphalytics.graphblas.algorithms.pr.PageRankJob;
-import science.atlarge.graphalytics.graphblas.algorithms.sssp.SingleSourceShortestPathsJob;
-import science.atlarge.graphalytics.graphblas.algorithms.wcc.WeaklyConnectedComponentsJob;
-import java.nio.file.Paths;
+import science.atlarge.graphalytics.report.result.BenchmarkMetrics;
+
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * GraphBLAS platform driver for the Graphalytics benchmark.

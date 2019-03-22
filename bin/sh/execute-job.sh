@@ -71,8 +71,8 @@ while [[ $# -gt 1 ]] # Parse two arguments: [--key value] or [-k value]
       DIRECTED="$value"
       shift;;
 
-    --num-edges)
-      NUM_EDGES="$value"
+    --num-vertices)
+      NUM_VERTICES="$value"
       shift;;
 
     *)
@@ -117,7 +117,7 @@ case $ALGORITHM in
      lcc)
        COMMAND="$rootdir/bin/exe/$ALGORITHM --jobid $JOB_ID \
          --dataset $INPUT_PATH --output $OUTPUT_PATH \
-         --directed $DIRECTED --num-edges $NUM_EDGES \
+         --directed $DIRECTED --num-vertices $NUM_VERTICES \
          --log-path $LOG_PATH"
        ;;
 #

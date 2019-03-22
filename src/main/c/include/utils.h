@@ -1,13 +1,15 @@
 #pragma once
 
-#include "GraphBLAS.h"
+extern "C" {
+#include <GraphBLAS.h>
+}
 
 /*
  * ARGUMENT PARSING FUNCTIONS
  */
 typedef struct {
     bool directed;
-    unsigned long numEdges;
+    unsigned long numVertices;
     char* inputDir;
     char* outputFile;
 } BenchmarkParameters;

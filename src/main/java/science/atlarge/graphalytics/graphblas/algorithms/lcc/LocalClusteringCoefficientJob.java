@@ -49,8 +49,8 @@ public final class LocalClusteringCoefficientJob extends GraphblasJob {
 		commandLine.addArgument("--directed");
 		commandLine.addArgument(Boolean.toString(benchmarkGraph.isDirected()));
 
-		commandLine.addArgument("--num-edges");
-		commandLine.addArgument(Long.toString(benchmarkGraph.getNumberOfEdges()));
+		commandLine.addArgument("--num-vertices");
+		commandLine.addArgument(Long.toString(benchmarkGraph.getNumberOfVertices()));
 
 	}
 }

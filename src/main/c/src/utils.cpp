@@ -1,4 +1,5 @@
-#include "GraphBLAS.h"
+#include <string>
+
 #include "utils.h"
 
 // Controls if debug information should be printed
@@ -8,22 +9,18 @@
  * ARGUMENT PARSING FUNCTIONS
  */
 
-BenchmarkParameters ParseCommandLineParameters(int argc, char** argv) {
+BenchmarkParameters ParseCommandLineParameters(int argc, char **argv) {
     BenchmarkParameters benchmarkParameters;
 
-    for(int i = 0; i < argc; i++) {
-        char* key = argv[i];
-        char* value = argv[i+1];
+    for (int i = 0; i < argc; i++) {
+        char *key = argv[i];
+        char *value = argv[i + 1];
 
         if (strcmp(key, "--directed") == 0) {
-            if (strcmp(value, "true") == 0) {
-                benchmarkParameters.directed = true;
-            } else {
-                benchmarkParameters.directed = false;
-            }
+            benchmarkParameters.directed = (strcmp(value, "true") == 0);
         }
-        if (strcmp(key, "--num-edges") == 0) {
-            benchmarkParameters.numEdges = strtoul(value, NULL, 10);
+        if (strcmp(key, "--num-vertices") == 0) {
+            benchmarkParameters.numVertices = strtoul(value, nullptr, 10);
         }
         if (strcmp(key, "--dataset") == 0) {
             benchmarkParameters.inputDir = value;
@@ -41,15 +38,15 @@ BenchmarkParameters ParseCommandLineParameters(int argc, char** argv) {
  */
 
 void WriteOutDebugMatrix(const char *title, GrB_Matrix result) {
-#ifdef VERBOSE
     printf("%s:\n", title);
+#ifdef VERBOSE
     GrB_Index size;
     GrB_Matrix_nrows(&size, result);
     unsigned int element;
 
     for (unsigned int i = 0; i < size; i++) {
         for (unsigned int j = 0; j < size; j++) {
-            GrB_Info info = GrB_Matrix_extractElement(&element, result, i, j);
+            GrB_Info info = GrB_Matrix_extractElement_UINT32(&element, result, i, j);
 
             if (info == GrB_SUCCESS) {
                 printf("%u ", element);
@@ -69,14 +66,14 @@ void WriteOutDebugMatrix(const char *title, GrB_Matrix result) {
 }
 
 void WriteOutDebugVector(const char *title, GrB_Vector result) {
-#ifdef VERBOSE
     printf("%s:\n", title);
+#ifdef VERBOSE
     GrB_Index size;
     GrB_Vector_size(&size, result);
     double element;
 
     for (unsigned int i = 0; i < size; i++) {
-        GrB_Info info = GrB_Vector_extractElement(&element, result, i);
+        GrB_Info info = GrB_Vector_extractElement_FP64(&element, result, i);
 
         if (info == GrB_SUCCESS) {
             printf("%lf ", element);

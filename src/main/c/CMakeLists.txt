@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.13)
-project(GraphBLAS C)
+project(GraphBLAS)
 
 set(CMAKE_C_STANDARD 11)
 
 link_directories(/usr/local/lib64)
 
 set(SOURCES
-        src/utils.c
-        src/graphio.c)
+        src/utils.cpp
+        src/graphio.cpp)
 
-add_executable(lcc src/algoritms/lcc.c ${SOURCES})
+add_executable(lcc src/algoritms/lcc.cpp ${SOURCES})
 target_include_directories(lcc PRIVATE include)
 target_link_libraries(lcc graphblas)
