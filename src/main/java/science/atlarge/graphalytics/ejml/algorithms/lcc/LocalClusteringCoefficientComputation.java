@@ -28,7 +28,7 @@ import science.atlarge.graphalytics.ejml.EjmlGraph;
 @SuppressWarnings("Duplicates")
 public class LocalClusteringCoefficientComputation {
 
-	private static void printMatrix(String name, DMatrixSparseCSC matrix) {
+	public static void printMatrix(String name, DMatrixSparseCSC matrix) {
 		int n = matrix.getNumCols();
 
 		System.out.println(name);
@@ -61,7 +61,7 @@ public class LocalClusteringCoefficientComputation {
 	 * Executes the directed local clustering coefficient algorithm
 	 * by setting the LCC property on all nodes.
 	 */
-	public static void runUndirected(EjmlGraph graph) {
+	public static void runDirected(EjmlGraph graph) {
 		final int n = graph.getN();
 		final DMatrixSparseCSC A = graph.getA();
 		final DMatrixD1 metric = graph.getMetric();
@@ -136,8 +136,7 @@ public class LocalClusteringCoefficientComputation {
 	 * Executes the undirected local clustering coefficient algorithm
 	 * by setting the LCC property on all nodes.
 	 */
-	public static void runDirected(EjmlGraph graph) {
-		// diag^-1(A*A*A)
+	public static void runUndirected(EjmlGraph graph) {
 		final int n = graph.getN();
 		final DMatrixSparseCSC A = graph.getA();
 		final DMatrixD1 metric = graph.getMetric();

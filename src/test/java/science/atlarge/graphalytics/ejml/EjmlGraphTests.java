@@ -15,16 +15,25 @@ public class EjmlGraphTests {
     @Test
     public void testMappingWithUndirected() throws IOException {
         System.out.println("Loading");
-        EjmlGraph graph = EjmlGraph.loadGraph("./intermediate/graph500-22/edge.csv", false);
+        EjmlGraph graph = EjmlGraph.loadGraph("./intermediate/example-undirected/edge.csv", false);
         System.out.println("Computing");
         LocalClusteringCoefficientComputation.runUndirected(graph);
-        //graph.getMetric().print();
+
+        BiMap<Long, Integer> mapping = graph.getMapping();
+        DMatrixD1 metric = graph.getMetric();
+
+        for (long vertexId : mapping.keySet()) {
+            int targetVertexId = mapping.get(vertexId);
+            double lccValue = metric.get(targetVertexId);
+            System.out.println(String.format("%d -> %e", vertexId, lccValue));
+        }
     }
 
-    @Ignore
     @Test
     public void testMappingWithDirected() throws IOException {
-        EjmlGraph graph = EjmlGraph.loadGraph("./intermediate/graph500-22/edge.csv", true);
+        System.out.println("Loading");
+        EjmlGraph graph = EjmlGraph.loadGraph("./intermediate/example-directed/edge.csv", true);
+        System.out.println("Computing");
         LocalClusteringCoefficientComputation.runDirected(graph);
 
         BiMap<Long, Integer> mapping = graph.getMapping();
@@ -33,7 +42,7 @@ public class EjmlGraphTests {
         for (long vertexId : mapping.keySet()) {
             int targetVertexId = mapping.get(vertexId);
             double lccValue = metric.get(targetVertexId);
-            System.out.println(String.format("%d -> %f", vertexId, lccValue));
+            System.out.println(String.format("%d -> %e", vertexId, lccValue));
         }
     }
 
