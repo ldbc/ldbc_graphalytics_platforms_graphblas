@@ -22,10 +22,10 @@ import org.ejml.data.DMatrixRMaj;
 import org.ejml.data.DMatrixSparseCSC;
 import org.ejml.data.DMatrixSparseTriplet;
 import org.ejml.ops.ConvertDMatrixStruct;
+import science.atlarge.graphalytics.validation.GraphStructure;
+import science.atlarge.graphalytics.validation.io.GraphParser;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -71,52 +71,76 @@ public class EjmlGraph {
 
 
     public static EjmlGraph loadGraph(String edgeListFile, boolean directed) throws IOException {
-        final List<GraphEdge> graph = new ArrayList<>();
+        final GraphStructure graphStructure = GraphParser.parseGraphStructureFromVertexBasedDataset(
+                new FileInputStream(edgeListFile),
+                directed
+        );
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(edgeListFile))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] components = line.trim().split(" ");
-                long sourceId = Long.parseLong(components[0]);
-                long targetId = Long.parseLong(components[1]);
-                graph.add(new GraphEdge(sourceId, targetId));
-                if (!directed) {
-                    graph.add(new GraphEdge(targetId, sourceId));
-                }
+        final int n = graphStructure.getVertices().size();
+        DMatrixSparseTriplet triplets = new DMatrixSparseTriplet(n, n, n);
+        BiMap<Long, Integer> mapping = HashBiMap.create(n);
+
+        int i = 0;
+        for (long vertexId : graphStructure.getVertices()) {
+            mapping.put(vertexId, i);
+            i++;
+        }
+
+        for (long vertexId : graphStructure.getVertices()) {
+            for (long neighbourId : graphStructure.getEdgesForVertex(vertexId)) {
+                triplets.addItem(mapping.get(vertexId), mapping.get(neighbourId), 1.0);
             }
         }
 
-        final BiMap<Long, Integer> mapping = HashBiMap.create();
-        final AtomicInteger mappingId = new AtomicInteger(-1);
-
-        for (GraphEdge edge : graph) {
-            mapping.computeIfAbsent(edge.sourceId, (v) -> mappingId.incrementAndGet());
-            mapping.computeIfAbsent(edge.targetId, (v) -> mappingId.incrementAndGet());
-        }
-//        System.out.println("mapping = " + mapping);
-
-        final DMatrixSparseTriplet triplets = new DMatrixSparseTriplet(
-                mapping.size(),
-                mapping.size(),
-                graph.size()
-        );
-
-        for (GraphEdge edge : graph) {
-//            System.out.println(
-//                    String.format(
-//                            "%d -> %d | %d -> %d",
-//                            edge.sourceId, edge.targetId,
-//                            mapping.get(edge.sourceId), mapping.get(edge.targetId)
-//                    )
-//            );
-            triplets.addItem(
-                    mapping.get(edge.sourceId),
-                    mapping.get(edge.targetId),
-                    1.0
-            );
-        }
-
         DMatrixSparseCSC A = ConvertDMatrixStruct.convert(triplets, (DMatrixSparseCSC) null);
+
         return new EjmlGraph(A, mapping);
+
+//        final List<GraphEdge> graph = new ArrayList<>();
+//
+//        try (BufferedReader reader = new BufferedReader(new FileReader(edgeListFile))) {
+//            for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+//                String[] components = line.trim().split(" ");
+//                long sourceId = Long.parseLong(components[0]);
+//                long targetId = Long.parseLong(components[1]);
+//                graph.add(new GraphEdge(sourceId, targetId));
+//                if (!directed) {
+//                    graph.add(new GraphEdge(targetId, sourceId));
+//                }
+//            }
+//        }
+//
+//        final BiMap<Long, Integer> mapping = HashBiMap.create();
+//        final AtomicInteger mappingId = new AtomicInteger(-1);
+//
+//        for (GraphEdge edge : graph) {
+//            mapping.computeIfAbsent(edge.sourceId, (v) -> mappingId.incrementAndGet());
+//            mapping.computeIfAbsent(edge.targetId, (v) -> mappingId.incrementAndGet());
+//        }
+////        System.out.println("mapping = " + mapping);
+//
+//        final DMatrixSparseTriplet triplets = new DMatrixSparseTriplet(
+//                mapping.size(),
+//                mapping.size(),
+//                graph.size()
+//        );
+//
+//        for (GraphEdge edge : graph) {
+////            System.out.println(
+////                    String.format(
+////                            "%d -> %d | %d -> %d",
+////                            edge.sourceId, edge.targetId,
+////                            mapping.get(edge.sourceId), mapping.get(edge.targetId)
+////                    )
+////            );
+//            triplets.addItem(
+//                    mapping.get(edge.sourceId),
+//                    mapping.get(edge.targetId),
+//                    1.0
+//            );
+//        }
+//
+//        DMatrixSparseCSC A = ConvertDMatrixStruct.convert(triplets, (DMatrixSparseCSC) null);
+//        return new EjmlGraph(A, mapping);
     }
 }

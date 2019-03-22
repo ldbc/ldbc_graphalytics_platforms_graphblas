@@ -15,16 +15,11 @@
  */
 package science.atlarge.graphalytics.ejml.algorithms.lcc;
 
-import com.google.common.collect.BiMap;
 import org.ejml.data.DMatrixD1;
 import org.ejml.data.DMatrixRMaj;
 import org.ejml.data.DMatrixSparseCSC;
 import org.ejml.sparse.csc.CommonOps_DSCC;
 import science.atlarge.graphalytics.ejml.EjmlGraph;
-
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 
 /**
  * Implementation of the local clustering coefficient algorithm with EJML.
@@ -66,7 +61,7 @@ public class LocalClusteringCoefficientComputation {
 	 * Executes the directed local clustering coefficient algorithm
 	 * by setting the LCC property on all nodes.
 	 */
-	public static void runDirected(EjmlGraph graph) {
+	public static void runUndirected(EjmlGraph graph) {
 		final int n = graph.getN();
 		final DMatrixSparseCSC A = graph.getA();
 		final DMatrixD1 metric = graph.getMetric();
@@ -77,9 +72,12 @@ public class LocalClusteringCoefficientComputation {
 		 * Create undirected neighbour matrix
 		 */
 		final DMatrixSparseCSC At = new DMatrixSparseCSC(n, n);
+		System.out.println("At = T(A)");
 		CommonOps_DSCC.transpose(A, At, null);
 
+		System.out.println("C = A + At");
 		CommonOps_DSCC.add(1.0, A, 1.0, At, C, null, null);
+		System.out.println("C = norm(C)");
 		normalizeMatrix(C);
 
 		/*
@@ -88,10 +86,12 @@ public class LocalClusteringCoefficientComputation {
 
 		// Row sum of A
 		DMatrixRMaj Cr = new DMatrixRMaj(n);
+		System.out.println("Cr = rowsum(C)");
 		CommonOps_DSCC.sumRows(C, Cr);
 
 		// Create vector W for containing number of wedges per vertex
 		DMatrixRMaj W = new DMatrixRMaj(n, 1);
+		System.out.println("W combination");
 		for (int i = 0; i < n; i++) {
 			double val = Cr.get(i);
 			W.set(i, val * (val - 1));
@@ -103,20 +103,24 @@ public class LocalClusteringCoefficientComputation {
 
 		// A^2 matrix
 		DMatrixSparseCSC CA = new DMatrixSparseCSC(n, n);
+		System.out.println("CA = C * A");
 		CommonOps_DSCC.mult(C, A, CA);
 
-		// ~A^3 matrix with element-wise multiplication between CA*A
+		// CAC matrix with element-wise multiplication between CA*A
 		DMatrixSparseCSC CAC = new DMatrixSparseCSC(n, n);
-		// A3 = CA (*) A
+		// CAC = CA (*) A
+		System.out.println("CAC = CA * C");
 		CommonOps_DSCC.elementMult(CA, C, CAC, null, null);
 
 		// Determine triangles by A3 row sum
 		DMatrixRMaj Tr = new DMatrixRMaj(n, 1);
+		System.out.println("Tr = rowsum(CAC)");
 		CommonOps_DSCC.sumRows(CAC, Tr);
 
 		/*
 		 * Calculate LCC
 		 */
+		System.out.println("LCC = lcc(W, Tr)");
 		for (int i = 0; i < n; i++) {
 			double wedges = W.get(i);
 			double triangles = Tr.get(i);
@@ -132,7 +136,7 @@ public class LocalClusteringCoefficientComputation {
 	 * Executes the undirected local clustering coefficient algorithm
 	 * by setting the LCC property on all nodes.
 	 */
-	public static void runUndirected(EjmlGraph graph) {
+	public static void runDirected(EjmlGraph graph) {
 		// diag^-1(A*A*A)
 		final int n = graph.getN();
 		final DMatrixSparseCSC A = graph.getA();
