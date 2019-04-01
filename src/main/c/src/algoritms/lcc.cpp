@@ -39,9 +39,9 @@ void lcc_dir(BenchmarkParameters benchmarkParameters) {
     printf("Processing starts at: %lu\n", time(nullptr));
 
     /*
-     * Create unidirected C matrix
+     * Create unidirected C matrix, by A (+) At
+     * over a boolean binary operator
      */
-
     GrB_Matrix At;
     OK(GrB_Matrix_new(&At, GrB_FP64, n, n));
     OK(GrB_transpose(At, nullptr, nullptr, A, nullptr));

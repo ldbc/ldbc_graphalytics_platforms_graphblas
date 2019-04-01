@@ -30,17 +30,29 @@ void WriteOutResult(BenchmarkParameters parameters, IndexMap mapping, GrB_Vector
     }
 }
 
+GrB_Index InsertIntoReindexMap(IndexMap &mapping, GrB_Index index, GrB_Index &mappingIndex) {
+    // Try to insert the index with the remapped index if (mappingIndex + 1)
+    // If the value exists, this won't overwrite the value.
+    auto mappedIndexEmplacing = mapping.emplace(index, mappingIndex + 1);
+    // If value was inserted, mappedIndexEmplacing.second will be true
+    // so it will increase the mappingIndex by one.
+    mappingIndex += mappedIndexEmplacing.second;
+
+    // Return the remapped index
+    return mappedIndexEmplacing.first->second;
+}
+
 /*
  * Matrix loader function
  */
 IndexMap ReadMatrix(BenchmarkParameters parameters, GrB_Matrix& A) {
     // Element index map
     IndexMap mapping;
-    long mappingIndex = -1;
+    GrB_Index mappingIndex = -1;
 
     std::string filePath{parameters.inputDir};
     // TODO: Replace this with edge.csv
-    filePath += "/edge.csv";
+    //filePath += "/edge.csv";
 
     std::ifstream file{filePath};
     if (!file.is_open()) {
@@ -57,13 +69,15 @@ IndexMap ReadMatrix(BenchmarkParameters parameters, GrB_Matrix& A) {
         file >> rowIndex;
         file >> columnIndex;
 
-        auto mappedRowIndexEmplacing = mapping.emplace(rowIndex, mappingIndex + 1);
-        GrB_Index mappedRowIndex = mappedRowIndexEmplacing.first->second;
-        mappingIndex += mappedRowIndexEmplacing.second;
+        /*
+         * Remap the indexes
+         * std::map.emplace will return a tuple upon insert
+         * - the first value will be a pointer to the map pair
+         * - the second value will be a boolean marking if an update was made
+         */
 
-        auto mappedColumnIndexEmplacing = mapping.emplace(columnIndex, mappingIndex + 1);
-        GrB_Index mappedColumnIndex = mappedColumnIndexEmplacing.first->second;
-        mappingIndex += mappedColumnIndexEmplacing.second;
+        GrB_Index mappedRowIndex = InsertIntoReindexMap(mapping, rowIndex, mappingIndex);
+        GrB_Index mappedColumnIndex = InsertIntoReindexMap(mapping, columnIndex, mappingIndex);
 
         OK(GrB_Matrix_setElement_FP64(A, 1.0, mappedRowIndex, mappedColumnIndex));
         if (!parameters.directed) {

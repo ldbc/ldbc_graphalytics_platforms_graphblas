@@ -3,7 +3,7 @@
 #include "utils.h"
 
 // Controls if debug information should be printed
-#define VERBOSE
+//#define VERBOSE
 
 /*
  * ARGUMENT PARSING FUNCTIONS
@@ -25,7 +25,10 @@ BenchmarkParameters ParseCommandLineParameters(int argc, char **argv) {
         if (strcmp(key, "--dataset") == 0) {
             benchmarkParameters.inputDir = value;
         }
-        if (strcmp(key, "--output") == 0) {
+        if (strcmp(key, "--input-path") == 0) {
+            benchmarkParameters.inputDir = value;
+        }
+        if (strcmp(key, "--output-path") == 0) {
             benchmarkParameters.outputFile = value;
         }
     }
