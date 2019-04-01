@@ -6,6 +6,16 @@
 //#define VERBOSE
 
 /*
+ *
+ */
+time_t GetCurrentMilliseconds() {
+    using namespace std::chrono;
+    return duration_cast<milliseconds>(
+            system_clock::now().time_since_epoch()
+    ).count();
+}
+
+/*
  * ARGUMENT PARSING FUNCTIONS
  */
 
@@ -25,10 +35,7 @@ BenchmarkParameters ParseCommandLineParameters(int argc, char **argv) {
         if (strcmp(key, "--dataset") == 0) {
             benchmarkParameters.inputDir = value;
         }
-        if (strcmp(key, "--input-path") == 0) {
-            benchmarkParameters.inputDir = value;
-        }
-        if (strcmp(key, "--output-path") == 0) {
+        if (strcmp(key, "--output") == 0) {
             benchmarkParameters.outputFile = value;
         }
     }

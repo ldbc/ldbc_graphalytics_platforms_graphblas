@@ -1,5 +1,7 @@
 #pragma once
 
+#include <chrono>
+
 extern "C" {
 #include <GraphBLAS.h>
 }
@@ -15,6 +17,8 @@ typedef struct {
 } BenchmarkParameters;
 
 BenchmarkParameters ParseCommandLineParameters(int argc, char** argv);
+
+time_t GetCurrentMilliseconds();
 
 /*
  * DEBUG FUNCTIONS

@@ -12,7 +12,11 @@ extern "C" {
 #include "utils.h"
 #include "graphio.h"
 
-// Z = f(x)
+// Z = f(x) * f(x) - 1
+// This operator calculates the comb(d(v), 2) value.
+//
+// Note: the 2 division can be skipped, because it
+// will be the final division in the LCC calculation
 void calculateCombinations(void *z, const void *x) {
     double xd = *(double *) x;
     auto *zd = (double *) z;
@@ -66,11 +70,11 @@ void lcc_dir(BenchmarkParameters benchmarkParameters) {
      */
 
     // Create an unary operator for calculating combinations
-
     GrB_UnaryOp combinationOp;
     GrB_UnaryOp_new(&combinationOp, &calculateCombinations, GrB_FP64, GrB_FP64);
 
     // Create vector W for containing number of wedges per vertex
+    // Wedges per vertex is calculated by (d(v) * (d(v) - 1)
     GrB_Vector W;
     OK(GrB_Vector_new(&W, GrB_FP64, n))
     OK(GrB_Vector_apply(W, nullptr, nullptr, combinationOp, Cr, nullptr))
@@ -149,7 +153,7 @@ void lcc_undir(BenchmarkParameters benchmarkParameters) {
     OK(GrB_Matrix_nrows(&n, A));
     WriteOutDebugMatrix("A", A);
 
-    printf("Processing starts at: %lu\n", time(nullptr));
+    std::cout << "Processing starts at: " << GetCurrentMilliseconds() << std::endl;
 
     /*
      * Calculate A derivatives
@@ -210,7 +214,7 @@ void lcc_undir(BenchmarkParameters benchmarkParameters) {
     OK(GrB_eWiseMult_Vector_Monoid(LCC, nullptr, nullptr, lccDivMonoid, Tr, W, nullptr))
     WriteOutDebugVector("LCC", LCC);
 
-    printf("Processing ends at: %lu\n", time(nullptr));
+    std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
 
     WriteOutResult(benchmarkParameters, mapping, LCC);
 
@@ -238,5 +242,4 @@ int main(int argc, char** argv) {
     } else {
         lcc_undir(benchmarkParameters);
     }
-
 }

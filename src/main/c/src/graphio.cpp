@@ -25,8 +25,8 @@ void WriteOutResult(BenchmarkParameters parameters, IndexMap mapping, GrB_Vector
         value = 0.0;
         GrB_Vector_extractElement_FP64(&value, result, matrixIndex);
 
-        file << originalIndex << " " << value << std::endl;
-        std::cout << originalIndex << " " << value << std::endl;
+        file << originalIndex << " " << std::scientific << value << std::endl;
+        //std::cout << originalIndex << " " << std::scientific << value << std::endl;
     }
 }
 
@@ -52,7 +52,7 @@ IndexMap ReadMatrix(BenchmarkParameters parameters, GrB_Matrix& A) {
 
     std::string filePath{parameters.inputDir};
     // TODO: Replace this with edge.csv
-    //filePath += "/edge.csv";
+    filePath += "/edge.csv";
 
     std::ifstream file{filePath};
     if (!file.is_open()) {
