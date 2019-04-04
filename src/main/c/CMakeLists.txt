@@ -9,6 +9,8 @@ set(SOURCES
         src/utils.cpp
         src/graphio.cpp)
 
+include_directories(include)
+link_libraries(graphblas)
+
 add_executable(lcc src/algoritms/lcc.cpp ${SOURCES})
-target_include_directories(lcc PRIVATE include)
-target_link_libraries(lcc graphblas)
+add_executable(bfs src/algoritms/bfs.cpp ${SOURCES})

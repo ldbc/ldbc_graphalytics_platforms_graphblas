@@ -16,6 +16,7 @@
 package science.atlarge.graphalytics.graphblas;
 
 import science.atlarge.graphalytics.domain.benchmark.BenchmarkRun;
+import science.atlarge.graphalytics.domain.graph.Graph;
 import science.atlarge.graphalytics.execution.RunSpecification;
 import science.atlarge.graphalytics.execution.BenchmarkRunSetup;
 import org.apache.commons.exec.util.StringUtils;
@@ -46,6 +47,9 @@ public abstract class GraphblasJob {
 	private final String inputPath;
 	private final String outputPath;
 
+	protected final RunSpecification runSpecification;
+	protected final Graph benchmarkGraph;
+
 	protected final GraphblasConfiguration platformConfig;
 
 	/**
@@ -56,7 +60,7 @@ public abstract class GraphblasJob {
 	 * @param outputPath the file path of the output graph dataset.
 	 */
 	public GraphblasJob(RunSpecification runSpecification, GraphblasConfiguration platformConfig,
-						String inputPath, String outputPath) {
+						String inputPath, String outputPath, Graph benchmarkGraph) {
 
 		BenchmarkRun benchmarkRun = runSpecification.getBenchmarkRun();
 		BenchmarkRunSetup benchmarkRunSetup = runSpecification.getBenchmarkRunSetup();
@@ -68,6 +72,8 @@ public abstract class GraphblasJob {
 		this.outputPath = outputPath;
 
 		this.platformConfig = platformConfig;
+		this.runSpecification = runSpecification;
+		this.benchmarkGraph = benchmarkGraph;
 	}
 
 
@@ -118,6 +124,12 @@ public abstract class GraphblasJob {
 
 		commandLine.addArgument("--log-path");
 		commandLine.addArgument(logPath);
+
+		commandLine.addArgument("--directed");
+		commandLine.addArgument(Boolean.toString(benchmarkGraph.isDirected()));
+
+		commandLine.addArgument("--num-vertices");
+		commandLine.addArgument(Long.toString(benchmarkGraph.getNumberOfVertices()));
 
 	}
 

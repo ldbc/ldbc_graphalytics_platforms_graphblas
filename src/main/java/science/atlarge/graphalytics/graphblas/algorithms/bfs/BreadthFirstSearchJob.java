@@ -15,6 +15,7 @@
  */
 package science.atlarge.graphalytics.graphblas.algorithms.bfs;
 
+import science.atlarge.graphalytics.domain.algorithms.BreadthFirstSearchParameters;
 import science.atlarge.graphalytics.domain.graph.Graph;
 import science.atlarge.graphalytics.execution.RunSpecification;
 import science.atlarge.graphalytics.graphblas.GraphblasConfiguration;
@@ -28,8 +29,6 @@ import science.atlarge.graphalytics.graphblas.GraphblasJob;
  */
 public final class BreadthFirstSearchJob extends GraphblasJob {
 
-	private final Graph benchmarkGraph;
-
 	/**
 	 * Creates a new ConnectedComponentsJob object with all mandatory parameters specified.
 	 *  @param platformConfig the platform configuration.
@@ -37,21 +36,19 @@ public final class BreadthFirstSearchJob extends GraphblasJob {
 	 */
 	public BreadthFirstSearchJob(RunSpecification runSpecification, GraphblasConfiguration platformConfig,
                                  String inputPath, String outputPath, Graph benchmarkGraph) {
-		super(runSpecification, platformConfig, inputPath, outputPath);
-		this.benchmarkGraph = benchmarkGraph;
+		super(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
 	}
 
 	@Override
 	protected void appendAlgorithmParameters() {
 
 		commandLine.addArgument("--algorithm");
-		commandLine.addArgument("lcc");
+		commandLine.addArgument("bfs");
 
-		commandLine.addArgument("--directed");
-		commandLine.addArgument(Boolean.toString(benchmarkGraph.isDirected()));
-
-		commandLine.addArgument("--num-vertices");
-		commandLine.addArgument(Long.toString(benchmarkGraph.getNumberOfVertices()));
+		BreadthFirstSearchParameters params =
+				(BreadthFirstSearchParameters) runSpecification.getBenchmarkRun().getAlgorithmParameters();
+		commandLine.addArgument("--source-vertex");
+		commandLine.addArgument(Long.toString(params.getSourceVertex()));
 
 	}
 }

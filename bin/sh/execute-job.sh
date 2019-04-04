@@ -85,15 +85,15 @@ done
 
 # TODO Reconstruct executable commandline instructions (platform-specific).
 case $ALGORITHM in
-#
-#     bfs)
-#       COMMAND="$rootdir/bin/exe/$ALGORITHM --jobid $JOB_ID \
-#         --root $SOURCE_VERTEX \
-#         --dataset $INPUT_PATH --output $OUTPUT_PATH \
-#         --threadnum $NUM_THREADS"
-#
-#       ;;
-#
+
+     bfs)
+       COMMAND="$rootdir/bin/exe/$ALGORITHM --jobid $JOB_ID \
+         --dataset $INPUT_PATH --output $OUTPUT_PATH \
+         --directed $DIRECTED --num-vertices $NUM_VERTICES \
+         --source-vertex $SOURCE_VERTEX \
+         --log-path $LOG_PATH"
+       ;;
+
 #     wcc)
 #       COMMAND="$rootdir/bin/exe/$ALGORITHM --jobid $JOB_ID \
 #         --dataset $INPUT_PATH --output $OUTPUT_PATH \
@@ -113,7 +113,7 @@ case $ALGORITHM in
 #         --dataset $INPUT_PATH --output $OUTPUT_PATH \
 #         --threadnum $NUM_THREADS"
 #       ;;
-#
+
      lcc)
        COMMAND="$rootdir/bin/exe/$ALGORITHM --jobid $JOB_ID \
          --dataset $INPUT_PATH --output $OUTPUT_PATH \

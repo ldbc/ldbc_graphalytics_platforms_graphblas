@@ -2,16 +2,13 @@
 
 #include "utils.h"
 
-// Controls if debug information should be printed
-//#define VERBOSE
-
 /*
  *
  */
 time_t GetCurrentMilliseconds() {
     using namespace std::chrono;
     return duration_cast<milliseconds>(
-            system_clock::now().time_since_epoch()
+        system_clock::now().time_since_epoch()
     ).count();
 }
 
@@ -26,6 +23,9 @@ BenchmarkParameters ParseCommandLineParameters(int argc, char **argv) {
         char *key = argv[i];
         char *value = argv[i + 1];
 
+        if (strcmp(key, "--source-vertex") == 0) {
+            benchmarkParameters.sourceVertex = strtoul(value, nullptr, 10);
+        }
         if (strcmp(key, "--directed") == 0) {
             benchmarkParameters.directed = (strcmp(value, "true") == 0);
         }

@@ -23,6 +23,7 @@ import science.atlarge.graphalytics.domain.graph.FormattedGraph;
 import science.atlarge.graphalytics.domain.graph.Graph;
 import science.atlarge.graphalytics.domain.graph.LoadedGraph;
 import science.atlarge.graphalytics.execution.*;
+import science.atlarge.graphalytics.graphblas.algorithms.bfs.BreadthFirstSearchJob;
 import science.atlarge.graphalytics.graphblas.algorithms.lcc.LocalClusteringCoefficientJob;
 import science.atlarge.graphalytics.report.result.BenchmarkMetrics;
 
@@ -40,10 +41,6 @@ public class GraphblasPlatform implements Platform {
 
 	public static final String PLATFORM_NAME = "graphblas";
 	public GraphblasLoader loader;
-
-	public GraphblasPlatform() {
-
-	}
 
 	@Override
 	public void verifySetup() throws Exception {
@@ -114,6 +111,9 @@ public class GraphblasPlatform implements Platform {
 		switch (algorithm) {
 			case LCC:
 				job = new LocalClusteringCoefficientJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
+				break;
+			case BFS:
+				job = new BreadthFirstSearchJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
 				break;
 			default:
 				throw new PlatformExecutionException("Failed to load algorithm implementation.");
