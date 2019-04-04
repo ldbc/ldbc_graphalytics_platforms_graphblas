@@ -4,32 +4,6 @@
 
 #include "graphio.h"
 
-/*
- * Result serializer function
- */
-void WriteOutResult(BenchmarkParameters parameters, IndexMap mapping, GrB_Vector result) {
-    GrB_Info info;
-    GrB_Index n;
-
-    std::ofstream file{parameters.outputFile};
-    if (!file.is_open()) {
-        std::cerr << "File" << parameters.outputFile << "does not exists" << std::endl;
-        exit(-1);
-    }
-
-    double value;
-    for (auto mappedIndex : mapping) {
-        GrB_Index originalIndex = mappedIndex.first;
-        GrB_Index matrixIndex = mappedIndex.second;
-
-        value = 0.0;
-        GrB_Vector_extractElement_FP64(&value, result, matrixIndex);
-
-        file << originalIndex << " " << std::scientific << value << std::endl;
-        //std::cout << originalIndex << " " << std::scientific << value << std::endl;
-    }
-}
-
 GrB_Index InsertIntoReindexMap(IndexMap &mapping, GrB_Index index, GrB_Index &mappingIndex) {
     // Try to insert the index with the remapped index if (mappingIndex + 1)
     // If the value exists, this won't overwrite the value.
@@ -45,7 +19,7 @@ GrB_Index InsertIntoReindexMap(IndexMap &mapping, GrB_Index index, GrB_Index &ma
 /*
  * Matrix loader function
  */
-IndexMap ReadMatrix(BenchmarkParameters parameters, GrB_Matrix& A) {
+IndexMap ReadMatrix(BenchmarkParameters parameters, GrB_Matrix &A) {
     // Element index map
     IndexMap mapping;
     GrB_Index mappingIndex = -1;
@@ -56,7 +30,7 @@ IndexMap ReadMatrix(BenchmarkParameters parameters, GrB_Matrix& A) {
 
     std::ifstream file{filePath};
     if (!file.is_open()) {
-        std::cerr << "File" << filePath << "does not exists" << std::endl;
+        std::cerr << "File" << filePath << " does not exists" << std::endl;
         exit(-1);
     }
 
@@ -79,9 +53,13 @@ IndexMap ReadMatrix(BenchmarkParameters parameters, GrB_Matrix& A) {
         GrB_Index mappedRowIndex = InsertIntoReindexMap(mapping, rowIndex, mappingIndex);
         GrB_Index mappedColumnIndex = InsertIntoReindexMap(mapping, columnIndex, mappingIndex);
 
-        OK(GrB_Matrix_setElement_FP64(A, 1.0, mappedRowIndex, mappedColumnIndex));
+        if(mapping.size() % 10000 == 0) {
+            std::cout << "Processing mapping - " << mapping.size() << std::endl;
+        }
+
+        OK(GrB_Matrix_setElement_FP64(A, 1.0, mappedRowIndex, mappedColumnIndex))
         if (!parameters.directed) {
-            OK(GrB_Matrix_setElement_FP64(A, 1.0, mappedColumnIndex, mappedRowIndex));
+            OK(GrB_Matrix_setElement_FP64(A, 1.0, mappedColumnIndex, mappedRowIndex))
         }
     }
 

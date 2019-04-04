@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package science.atlarge.graphalytics.graphblas.algorithms.lcc;
+import science.atlarge.graphalytics.domain.algorithms.Algorithm;
+import science.atlarge.graphalytics.domain.algorithms.BreadthFirstSearchParameters;
 import science.atlarge.graphalytics.domain.graph.Graph;
 import science.atlarge.graphalytics.execution.RunSpecification;
 import science.atlarge.graphalytics.graphblas.GraphblasJob;
@@ -27,17 +29,14 @@ import science.atlarge.graphalytics.graphblas.GraphblasConfiguration;
  */
 public final class LocalClusteringCoefficientJob extends GraphblasJob {
 
-	private final Graph benchmarkGraph;
-
 	/**
 	 * Creates a new ConnectedComponentsJob object with all mandatory parameters specified.
 	 *  @param platformConfig the platform configuration.
 	 * @param inputPath the path to the input graph.
 	 */
 	public LocalClusteringCoefficientJob(RunSpecification runSpecification, GraphblasConfiguration platformConfig,
-										 String inputPath, String outputPath,  Graph benchmarkGraph) {
-		super(runSpecification, platformConfig, inputPath, outputPath);
-		this.benchmarkGraph = benchmarkGraph;
+										 String inputPath, String outputPath, Graph benchmarkGraph) {
+		super(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
 	}
 
 	@Override
@@ -45,12 +44,6 @@ public final class LocalClusteringCoefficientJob extends GraphblasJob {
 
 		commandLine.addArgument("--algorithm");
 		commandLine.addArgument("lcc");
-
-		commandLine.addArgument("--directed");
-		commandLine.addArgument(Boolean.toString(benchmarkGraph.isDirected()));
-
-		commandLine.addArgument("--num-vertices");
-		commandLine.addArgument(Long.toString(benchmarkGraph.getNumberOfVertices()));
 
 	}
 }

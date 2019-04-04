@@ -10,10 +10,11 @@ extern "C" {
  * ARGUMENT PARSING FUNCTIONS
  */
 typedef struct {
-    bool directed;
-    unsigned long numVertices;
-    char* inputDir;
-    char* outputFile;
+    bool directed = false;
+    unsigned long sourceVertex = 0;
+    unsigned long numVertices = 0;
+    char* inputDir = nullptr;
+    char* outputFile = nullptr;
 } BenchmarkParameters;
 
 BenchmarkParameters ParseCommandLineParameters(int argc, char** argv);
