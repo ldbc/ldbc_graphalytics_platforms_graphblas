@@ -12,5 +12,5 @@ set(SOURCES
 include_directories(include)
 link_libraries(graphblas)
 
-add_executable(lcc src/algoritms/lcc.cpp ${SOURCES})
-add_executable(bfs src/algoritms/bfs.cpp ${SOURCES})
+add_executable(lcc src/algorithms/lcc.cpp ${SOURCES})
+add_executable(bfs src/algorithms/bfs.cpp ${SOURCES})
