@@ -139,6 +139,7 @@ public class LocalClusteringCoefficientComputation {
 	public static void runUndirected(EjmlGraph graph) {
 		final int n = graph.getN();
 		final DMatrixSparseCSC A = graph.getA();
+		final DMatrixD1 triangles = new DMatrixRMaj(n, 1);
 		final DMatrixD1 metric = graph.getMetric();
 
 		/*
@@ -150,16 +151,17 @@ public class LocalClusteringCoefficientComputation {
 		CommonOps_DSCC.sumRows(A, Ar);
 
 		// Create vector W for containing number of wedges per vertex
-		DMatrixRMaj W = new DMatrixRMaj(n, 1);
+		DMatrixRMaj wedges = new DMatrixRMaj(n, 1);
 		for (int i = 0; i < n; i++) {
 			double val = Ar.get(i);
-			W.set(i, val * (val - 1));
+			wedges.set(i, val * (val - 1));
 		}
 
 		/*
 		 * Calculate triangles
 		 */
 
+		/*
 		// A^2 matrix
 		DMatrixSparseCSC A2 = new DMatrixSparseCSC(n, n);
 		CommonOps_DSCC.mult(A, A, A2);
@@ -172,17 +174,48 @@ public class LocalClusteringCoefficientComputation {
 		// Determine triangles by A2A row sum
 		DMatrixRMaj Tr = new DMatrixRMaj(n, 1);
 		CommonOps_DSCC.sumRows(A2A, Tr);
+		*/
+
+		// mimic masked matrix multiplication
+		final DMatrixSparseCSC At = new DMatrixSparseCSC(n, n);
+		CommonOps_DSCC.transpose(A, At, null);
+
+		for (int col = 0; col < A.numCols; col++) {
+			int idx0 = A.col_idx[col];
+			int idx1 = A.col_idx[col+1];
+
+			DMatrixSparseCSC colVector = CommonOps_DSCC.extractColumn(A, col, null);
+
+			int nodeTriangles = 0;
+			for (int i = idx0; i < idx1; i++) {
+				int row = A.nz_rows[i];
+
+				// extract the row as a column from the transposed matrix
+				DMatrixSparseCSC rowVector = new DMatrixSparseCSC(n, 1);
+				DMatrixSparseCSC rowVectorT = new DMatrixSparseCSC(n, 1);
+				CommonOps_DSCC.extractColumn(At, row, rowVectorT);
+				CommonOps_DSCC.transpose(rowVectorT, rowVector, null);
+
+				// A[row, :] * A[:, col]
+				DMatrixSparseCSC rc = new DMatrixSparseCSC(1, 1);
+				CommonOps_DSCC.mult(rowVector, colVector, rc);
+
+				nodeTriangles += rc.get(0,0);
+			}
+
+			triangles.set(col, nodeTriangles);
+		}
 
 		/*
 		 * Calculate LCC
 		 */
 		for (int i = 0; i < n; i++) {
-			double wedges = W.get(i);
-			double triangles = Tr.get(i);
-			if (wedges == 0.0) {
+			double nodeWedges = wedges.get(i);
+			double nodeTriangles = triangles.get(i);
+			if (nodeWedges == 0.0) {
 				metric.set(i, 0.0);
 			} else {
-				metric.set(i, triangles / wedges);
+				metric.set(i, nodeTriangles / nodeWedges);
 			}
 		}
 	}
