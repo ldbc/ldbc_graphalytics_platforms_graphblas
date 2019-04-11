@@ -69,7 +69,7 @@ void Lcc(BenchmarkParameters benchmarkParameters) {
     OK(GrB_Matrix_nrows(&n, A));
     WriteOutDebugMatrix("A", A);
 
-    printf("Processing starts at: %lu\n", time(nullptr));
+    printf("Processing starts at: %lu\n", GetCurrentMilliseconds());
 
     /*
      * Create unidirected C matrix, by A (+) At
@@ -143,7 +143,7 @@ void Lcc(BenchmarkParameters benchmarkParameters) {
     OK(GrB_eWiseMult_Vector_Monoid(LCC, nullptr, nullptr, lccDivMonoid, Tr, W, nullptr))
     WriteOutDebugVector("LCC", LCC);
 
-    printf("Processing ends at: %lu\n", time(nullptr));
+    printf("Processing ends at: %lu\n", GetCurrentMilliseconds());
 
     WriteOutLCCResult(benchmarkParameters, mapping, LCC);
 
