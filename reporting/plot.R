@@ -32,4 +32,4 @@ ggplot(df, aes(x=graph, y=proc)) +
   theme_bw() +
   theme(legend.position = "bottom", legend.title = element_blank())
 
-ggsave(file="graphalatytics-suitesparse-results.pdf", width=250, height=170, units="mm")
+ggsave(file="graphalytics-suitesparse-results.pdf", width=250, height=170, units="mm")
