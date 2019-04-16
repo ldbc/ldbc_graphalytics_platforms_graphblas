@@ -2,6 +2,10 @@
 
 GraphBLAS... (TODO: provide a short description on GraphBLAS). To execute Graphalytics benchmark on GraphBLAS, follow the steps in the Graphalytics tutorial on [Running Benchmark](https://github.com/ldbc/ldbc_graphalytics/wiki/Manual%3A-Running-Benchmark) with the GraphBLAS-specific instructions listed below.
 
+### Prerequisites
+Get [SuiteSparse:GraphBLAS](https://github.com/sergiud/SuiteSparse/tree/master/GraphBLAS) and install with `sudo make install`.
+We tested the code with GraphBLAS 2.2.2 included in SuiteSparse 5.4.0.
+
 ### Obtain the platform driver
 There are two possible ways to obtain the GraphBLAS platform driver:
 
