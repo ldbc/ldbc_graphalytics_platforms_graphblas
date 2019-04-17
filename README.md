@@ -6,6 +6,8 @@ GraphBLAS... (TODO: provide a short description on GraphBLAS). To execute Grapha
 Get [SuiteSparse:GraphBLAS](https://github.com/sergiud/SuiteSparse/tree/master/GraphBLAS) and install with `sudo make install`.
 We tested the code with GraphBLAS 2.2.2 included in SuiteSparse 5.4.0.
 
+There is another [mirror on GitHub](https://github.com/jluttine/suitesparse) and you can also grab the code from [Tim Davis' site](http://faculty.cse.tamu.edu/davis/suitesparse.html).
+
 ### Obtain the platform driver
 There are two possible ways to obtain the GraphBLAS platform driver:
 
