@@ -25,18 +25,6 @@ if [ ! -f "$config/platform.properties" ]; then
 	exit 1
 fi
 
-# Construct the classpath
-PLATFORM_HOME=$(grep -E "^platform.ejml.home[	 ]*[:=]" $config/platform.properties | sed 's/platform.ejml.home[\t ]*[:=][\t ]*\([^\t ]*\).*/\1/g' | head -n 1)
-if [ -z $PLATFORM_HOME ]; then
-    echo "Error: Ejml home directory not specified."
-    echo "Define variable platform.ejml.home in $config/platform.properties"
-    exit 1
-fi
-
-# TODO Build binaries
-# mkdir -p $rootdir/bin/exe
-# (cd $rootdir/bin/exe && cmake -DCMAKE_BUILD_TYPE=Release ../../src/main/c -DPLATFORM_HOME=$PLATFORM_HOME && make all VERBOSE=1)
-
 if [ $? -ne 0 ]
 then
     echo "Compilation failed"
