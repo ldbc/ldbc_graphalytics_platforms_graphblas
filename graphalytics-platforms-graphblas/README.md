@@ -3,7 +3,11 @@
 GraphBLAS... (TODO: provide a short description on GraphBLAS). To execute Graphalytics benchmark on GraphBLAS, follow the steps in the Graphalytics tutorial on [Running Benchmark](https://github.com/ldbc/ldbc_graphalytics/wiki/Manual%3A-Running-Benchmark) with the GraphBLAS-specific instructions listed below.
 
 ### Prerequisites
-Get SuiteSparse:GraphBLAS version 2.3.2+ as a [standalone package](http://faculty.cse.tamu.edu/davis/GraphBLAS.html), decompress it and install with `sudo make install`.
+Get SuiteSparse:GraphBLAS version 2.3.2+ as a [standalone package](http://faculty.cse.tamu.edu/davis/GraphBLAS.html), decompress it and install:
+
+```console
+sudo make install && sudo ldconfig
+```
 
 The whole SuiteSparse suite follows a slower release cycle, but is available at [the authors' site](http://faculty.cse.tamu.edu/davis/suitesparse.html), with
 [multiple](https://github.com/sergiud/SuiteSparse/tree/master/GraphBLAS)
