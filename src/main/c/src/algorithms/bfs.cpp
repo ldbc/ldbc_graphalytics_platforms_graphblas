@@ -75,7 +75,7 @@ void BFS(BenchmarkParameters benchmarkParameters) {
     // The size of Adj
     unsigned long n;
     OK(GrB_Matrix_nrows(&n, A))
-    WriteOutDebugMatrix("A", A);
+    GxB_Matrix_fprint(A, "A", GxB_SUMMARY, stdout);
 
     std::cout << "Processing starts at: " << GetCurrentMilliseconds() << std::endl;
 
@@ -132,12 +132,12 @@ void BFS(BenchmarkParameters benchmarkParameters) {
         // writes their levels to v, thus updating the levels of those nodes in
         // v.  The patterns of v and q are disjoint.
         GrB_Vector_apply(v, nullptr, GrB_MIN_INT32, apply_level, q, nullptr);
-        WriteOutDebugVector("v", v);
+        //GxB_Vector_fprint(v, "v", GxB_SUMMARY, stdout);
 
         // q<!v> = q ||.&& A ; finds all the unvisited
         // successors from current q, using !v as the mask
         GrB_vxm(q, v, nullptr, Boolean, q, A, desc);
-        WriteOutDebugVector("q", q);
+        //GxB_Vector_fprint(q, "q", GxB_SUMMARY, stdout);
 
         GrB_Vector_nvals(&nvals, q);
     }
