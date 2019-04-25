@@ -53,7 +53,7 @@ IndexMap ReadMatrix(BenchmarkParameters parameters, GrB_Matrix &A) {
         GrB_Index mappedRowIndex = InsertIntoReindexMap(mapping, rowIndex, mappingIndex);
         GrB_Index mappedColumnIndex = InsertIntoReindexMap(mapping, columnIndex, mappingIndex);
 
-        if(mapping.size() % 10000 == 0) {
+        if(mapping.size() % 100000 == 0) {
             std::cout << "Processing mapping - " << mapping.size() << std::endl;
         }
 
