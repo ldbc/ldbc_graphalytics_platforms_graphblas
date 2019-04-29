@@ -6,6 +6,8 @@ extern "C" {
 #include <GraphBLAS.h>
 }
 
+#define VERBOSE
+
 /*
  * ARGUMENT PARSING FUNCTIONS
  */
@@ -27,6 +29,10 @@ time_t GetCurrentMilliseconds();
 
 void WriteOutDebugVector(const char *title, GrB_Vector result);
 void WriteOutDebugMatrix(const char *title, GrB_Matrix result);
+
+/*
+ * PROFILING MACROS
+ */
 
 
 /*

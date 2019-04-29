@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package science.atlarge.graphalytics.graphblas.algorithms.bfs;
+package science.atlarge.graphalytics.graphblas.algorithms.sssp;
 
 import science.atlarge.graphalytics.domain.algorithms.BreadthFirstSearchParameters;
 import science.atlarge.graphalytics.domain.graph.Graph;
@@ -22,20 +22,20 @@ import science.atlarge.graphalytics.graphblas.GraphblasConfiguration;
 import science.atlarge.graphalytics.graphblas.GraphblasJob;
 
 /**
- * Breadth First Search job implementation for GraphBLAS. This class is responsible for formatting BFS-specific
+ * Single Source Shortest Path job implementation for GraphBLAS. This class is responsible for formatting SSSP-specific
  * arguments to be passed to the platform executable, and does not include the implementation of the algorithm.
  *
  * @author Bálint Hegyi
  */
-public final class BreadthFirstSearchJob extends GraphblasJob {
+public final class SingleSourceShortestPath extends GraphblasJob {
 
 	/**
 	 * Creates a new ConnectedComponentsJob object with all mandatory parameters specified.
 	 *  @param platformConfig the platform configuration.
 	 * @param inputPath the path to the input graph.
 	 */
-	public BreadthFirstSearchJob(RunSpecification runSpecification, GraphblasConfiguration platformConfig,
-                                 String inputPath, String outputPath, Graph benchmarkGraph) {
+	public SingleSourceShortestPath(RunSpecification runSpecification, GraphblasConfiguration platformConfig,
+                                    String inputPath, String outputPath, Graph benchmarkGraph) {
 		super(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
 	}
 
@@ -43,7 +43,7 @@ public final class BreadthFirstSearchJob extends GraphblasJob {
 	protected void appendAlgorithmParameters() {
 
 		commandLine.addArgument("--algorithm");
-		commandLine.addArgument("bfs");
+		commandLine.addArgument("sssp");
 
 		BreadthFirstSearchParameters params =
 				(BreadthFirstSearchParameters) runSpecification.getBenchmarkRun().getAlgorithmParameters();

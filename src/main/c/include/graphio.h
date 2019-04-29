@@ -11,4 +11,4 @@ extern "C" {
 typedef std::map<GrB_Index, GrB_Index> IndexMap;
 
 // Loading function
-IndexMap ReadMatrix(BenchmarkParameters parameters, GrB_Matrix& A);
+IndexMap ReadMatrix(BenchmarkParameters parameters, GrB_Matrix &A, bool weighted = false);
