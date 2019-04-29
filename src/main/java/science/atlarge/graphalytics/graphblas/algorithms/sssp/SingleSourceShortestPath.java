@@ -16,6 +16,7 @@
 package science.atlarge.graphalytics.graphblas.algorithms.sssp;
 
 import science.atlarge.graphalytics.domain.algorithms.BreadthFirstSearchParameters;
+import science.atlarge.graphalytics.domain.algorithms.SingleSourceShortestPathsParameters;
 import science.atlarge.graphalytics.domain.graph.Graph;
 import science.atlarge.graphalytics.execution.RunSpecification;
 import science.atlarge.graphalytics.graphblas.GraphblasConfiguration;
@@ -45,8 +46,8 @@ public final class SingleSourceShortestPath extends GraphblasJob {
 		commandLine.addArgument("--algorithm");
 		commandLine.addArgument("sssp");
 
-		BreadthFirstSearchParameters params =
-				(BreadthFirstSearchParameters) runSpecification.getBenchmarkRun().getAlgorithmParameters();
+		SingleSourceShortestPathsParameters params =
+				(SingleSourceShortestPathsParameters) runSpecification.getBenchmarkRun().getAlgorithmParameters();
 		commandLine.addArgument("--source-vertex");
 		commandLine.addArgument(Long.toString(params.getSourceVertex()));
 

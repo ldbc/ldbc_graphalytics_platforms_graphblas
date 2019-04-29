@@ -27,7 +27,7 @@ IndexMap ReadMatrix(BenchmarkParameters parameters, GrB_Matrix &A, bool weighted
 
     std::string filePath{parameters.inputDir};
     // TODO: Replace this with edge.csv
-    //filePath += "/edge.csv";
+    filePath += "/edge.csv";
 
     std::ifstream file{filePath};
     if (!file.is_open()) {
@@ -59,6 +59,7 @@ IndexMap ReadMatrix(BenchmarkParameters parameters, GrB_Matrix &A, bool weighted
         GrB_Index mappedRowIndex = InsertIntoReindexMap(mapping, rowIndex, mappingIndex);
         GrB_Index mappedColumnIndex = InsertIntoReindexMap(mapping, columnIndex, mappingIndex);
 
+#ifdef VERBOSE
         if (weighted) {
             std::cout
                 << mappedRowIndex
@@ -74,6 +75,7 @@ IndexMap ReadMatrix(BenchmarkParameters parameters, GrB_Matrix &A, bool weighted
                 << mappedColumnIndex
                 << std::endl;
         }
+#endif
 
         if (mapping.size() % 100000 == 0) {
             std::cout << "Processing mapping - " << mapping.size() << std::endl;

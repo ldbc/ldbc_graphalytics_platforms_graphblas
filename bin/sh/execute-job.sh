@@ -120,16 +120,17 @@ case $ALGORITHM in
          --directed $DIRECTED --num-vertices $NUM_VERTICES \
          --log-path $LOG_PATH"
        ;;
-#
-#     sssp)
-#       COMMAND="$rootdir/bin/exe/$ALGORITHM --jobid $JOB_ID \
-#         --root $SOURCE_VERTEX \
-#         --dataset $INPUT_PATH --output $OUTPUT_PATH \
-#         --threadnum $NUM_THREADS"
-#       ;;
+
+     sssp)
+       COMMAND="$rootdir/bin/exe/$ALGORITHM --jobid $JOB_ID \
+         --dataset $INPUT_PATH --output $OUTPUT_PATH \
+         --directed $DIRECTED --num-vertices $NUM_VERTICES \
+         --source-vertex $SOURCE_VERTEX \
+         --log-path $LOG_PATH"
+       ;;
 
      *)
-       echo "Error: algorithm " + $ALGORITHM +"not defined."
+       echo "Error: algorithm $ALGORITHM not defined."
        exit 1
        ;;
 esac

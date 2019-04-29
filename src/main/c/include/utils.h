@@ -6,8 +6,6 @@ extern "C" {
 #include <GraphBLAS.h>
 }
 
-#define VERBOSE
-
 /*
  * ARGUMENT PARSING FUNCTIONS
  */

@@ -18,16 +18,16 @@ extern "C" {
  * Result serializer function
  */
 void WriteOutSSSPResult(BenchmarkParameters parameters, const IndexMap &mapping, GrB_Vector result) {
+    const GrB_Index INF_VALUE = mapping.size();
+
     GrB_Info info;
     GrB_Index n;
 
-//    std::ofstream file{parameters.outputFile};
-//    if (!file.is_open()) {
-//        std::cerr << "File " << parameters.outputFile << " does not exists" << std::endl;
-//        exit(-1);
-//    }
-
-    GrB_Index inf_value = mapping.size();
+    std::ofstream file{parameters.outputFile};
+    if (!file.is_open()) {
+        std::cerr << "File " << parameters.outputFile << " does not exists" << std::endl;
+        exit(-1);
+    }
 
     double value;
     for (auto mappedIndex : mapping) {
@@ -37,12 +37,12 @@ void WriteOutSSSPResult(BenchmarkParameters parameters, const IndexMap &mapping,
         value = 0.0;
         GrB_Vector_extractElement_FP64(&value, result, matrixIndex);
 
-        if (value == inf_value) {
-            //        file << originalIndex << " " << std::scientific << value << std::endl;
-            std::cout << originalIndex << " infinity" << std::endl;
+        if (value == INF_VALUE) {
+            file << originalIndex << " infinity" << std::endl;
+//            std::cout << originalIndex << " infinity" << std::endl;
         } else {
-            //        file << originalIndex << " " << std::scientific << value << std::endl;
-            std::cout << originalIndex << " " << std::scientific << value << std::endl;
+            file << originalIndex << " " << std::scientific << value << std::endl;
+//            std::cout << originalIndex << " " << std::scientific << value << std::endl;
         }
 
     }
@@ -60,10 +60,9 @@ void SSSP(BenchmarkParameters benchmarkParameters) {
         ComputationTimer timer{"Loading"};
         mapping = ReadMatrix(benchmarkParameters, A, true);
     }
-    WriteOutDebugMatrix("A", A);
 
     std::cout << "====" << std::endl;
-    std::cout << "Processing starts at:" << GetCurrentMilliseconds() << std::endl;
+    std::cout << "Processing starts at: " << GetCurrentMilliseconds() << std::endl;
     std::cout << "====" << std::endl << std::endl;
 
     GrB_Index n;
@@ -86,7 +85,6 @@ void SSSP(BenchmarkParameters benchmarkParameters) {
         OK(GrB_Vector_assign_FP64(dist, nullptr, nullptr, inf_value, GrB_ALL, n, nullptr))
         OK(GrB_Vector_setElement_FP64(dist, 0, mappedSourceVertex))
     }
-    WriteOutDebugVector("dist", dist);
 
     {
         ComputationTimer timer{"SSSP"};
@@ -108,13 +106,11 @@ void SSSP(BenchmarkParameters benchmarkParameters) {
                 dist,
                 A, nullptr
             ))
-            WriteOutDebugVector("dist", dist);
         }
     }
-    WriteOutDebugVector("dist", dist);
 
     std::cout << "====" << std::endl;
-    std::cout << "Processing ends at:" << GetCurrentMilliseconds() << std::endl;
+    std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
     std::cout << "====" << std::endl << std::endl;
 
     {
