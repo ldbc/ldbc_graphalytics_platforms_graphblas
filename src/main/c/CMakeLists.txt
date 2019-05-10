@@ -12,7 +12,7 @@ set(SOURCES
         src/utils.cpp
         src/graphio.cpp)
 
-link_libraries(OpenMP::OpenMP_CXX graphblas)
+link_libraries(OpenMP::OpenMP_CXX graphblas lagraph)
 
 add_executable(lcc src/algorithms/lcc.cpp ${SOURCES})
 add_executable(bfs src/algorithms/bfs.cpp ${SOURCES})

@@ -31,7 +31,7 @@ IndexMap ReadMatrix(BenchmarkParameters parameters, GrB_Matrix &A, bool weighted
 
     std::ifstream file{filePath};
     if (!file.is_open()) {
-        std::cerr << "File" << filePath << " does not exists" << std::endl;
+        std::cerr << "File " << filePath << " does not exists" << std::endl;
         exit(-1);
     }
 

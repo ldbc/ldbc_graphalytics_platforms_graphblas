@@ -8,11 +8,14 @@
 
 extern "C" {
 #include <GraphBLAS.h>
+#include <LAGraph.h>
 }
 
 #include "utils.h"
 #include "graphio.h"
 #include "computation_timer.hpp"
+
+#define LAGRAPH_FREE_ALL
 
 /*
  * Result serializer function
@@ -60,6 +63,7 @@ void SSSP(BenchmarkParameters benchmarkParameters) {
         ComputationTimer timer{"Loading"};
         mapping = ReadMatrix(benchmarkParameters, A, true);
     }
+    WriteOutDebugMatrix("A", A);
 
     std::cout << "====" << std::endl;
     std::cout << "Processing starts at: " << GetCurrentMilliseconds() << std::endl;
@@ -78,13 +82,11 @@ void SSSP(BenchmarkParameters benchmarkParameters) {
     {
         ComputationTimer timer{"dist"};
 
-        // Mapping indexes are increased by +1, so the size should be
-        // always bigger than the indices inside
-        GrB_Index inf_value = mapping.size();
         OK(GrB_Vector_new(&dist, GrB_FP64, n))
-        OK(GrB_Vector_assign_FP64(dist, nullptr, nullptr, inf_value, GrB_ALL, n, nullptr))
+//        OK(GrB_Vector_assign_FP64(dist, nullptr, nullptr, inf_value, GrB_ALL, n, nullptr))
         OK(GrB_Vector_setElement_FP64(dist, 0, mappedSourceVertex))
     }
+    WriteOutDebugVector("dist", dist);
 
     {
         ComputationTimer timer{"SSSP"};
@@ -101,13 +103,15 @@ void SSSP(BenchmarkParameters benchmarkParameters) {
             OK(GrB_vxm(
                 dist,
                 nullptr,
-                GrB_MIN_FP64,
+                nullptr,
                 GxB_MIN_PLUS_FP64,
                 dist,
                 A, nullptr
             ))
+            WriteOutDebugVector("dist", dist);
         }
     }
+    WriteOutDebugVector("dist", dist);
 
     std::cout << "====" << std::endl;
     std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
@@ -125,6 +129,30 @@ void SSSP(BenchmarkParameters benchmarkParameters) {
 }
 
 int main(int argc, char **argv) {
+    GrB_init(GrB_NONBLOCKING);
+
+    GrB_Info info;
+
     BenchmarkParameters benchmarkParameters = ParseCommandLineParameters(argc, argv);
-    SSSP(benchmarkParameters);
+    //SSSP(benchmarkParameters);
+
+    IndexMap mapping;
+    GrB_Matrix A;
+    {
+        ComputationTimer timer{"Loading"};
+        mapping = ReadMatrix(benchmarkParameters, A, true);
+//        FILE* mmfile = fopen("test.mtx", "r");
+//        LAGRAPH_OK (LAGraph_mmread (&A, mmfile)) ;
+//        fclose(mmfile);
+    }
+    for (GrB_Index i = 0; i < 3; i++) {
+        OK(GrB_Matrix_setElement_FP64(A, 0.0, i, i))
+    }
+    WriteOutDebugMatrix("A", A);
+
+    GrB_Index mappedSourceVertex = mapping[benchmarkParameters.sourceVertex];
+    GrB_Vector d = nullptr;
+    OK(LAGraph_BF_basic(&d, A, mappedSourceVertex))
+    //WriteOutDebugVector("d", d);
+    GxB_Vector_fprint(d, "d", GxB_COMPLETE, stdout);
 }

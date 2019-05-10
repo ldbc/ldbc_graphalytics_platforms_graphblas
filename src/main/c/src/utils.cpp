@@ -2,6 +2,8 @@
 
 #include "utils.h"
 
+#define VERBOSE
+
 time_t GetCurrentMilliseconds() {
     using namespace std::chrono;
     return duration_cast<milliseconds>(
@@ -60,8 +62,8 @@ void WriteOutDebugMatrix(const char *title, GrB_Matrix result) {
             } else if (info == GrB_NO_VALUE) {
                 // It is up to the user to determine what 'no value'
                 // means.  It depends on the semiring used.
-                //printf(" [no value] ");
-                printf("0 ");
+                printf(" [no value] ");
+//                printf("0 ");
             } else {
                 printf("Error! %s\n", GrB_error());
             }
