@@ -65,7 +65,6 @@ int main(int argc, char **argv) {
     }
     {
         ComputationTimer timer{"Diagonal"};
-        mapping = ReadMatrix(benchmarkParameters, A, true);
         for (GrB_Index i = 0; i < 3; i++) {
             OK(GrB_Matrix_setElement_FP64(A, 0.0, i, i))
         }
