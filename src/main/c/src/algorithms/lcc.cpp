@@ -68,7 +68,7 @@ void Lcc(BenchmarkParameters benchmarkParameters) {
     }
 
     std::cout << "====" << std::endl;
-    std::cout << "Processing starts at:" << GetCurrentMilliseconds() << std::endl;
+    std::cout << "Processing starts at: " << GetCurrentMilliseconds() << std::endl;
     std::cout << "====" << std::endl << std::endl;
 
     // The size of Adj
@@ -188,7 +188,7 @@ void Lcc(BenchmarkParameters benchmarkParameters) {
     }
 
     std::cout << "====" << std::endl;
-    std::cout << "Processing ends at:" << GetCurrentMilliseconds() << std::endl;
+    std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
     std::cout << "====" << std::endl << std::endl;
 
     {
