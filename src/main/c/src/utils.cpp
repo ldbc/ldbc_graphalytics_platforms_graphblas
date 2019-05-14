@@ -2,7 +2,7 @@
 
 #include "utils.h"
 
-#define VERBOSE
+//#define VERBOSE
 
 time_t GetCurrentMilliseconds() {
     using namespace std::chrono;

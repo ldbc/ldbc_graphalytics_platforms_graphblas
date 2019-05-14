@@ -1,6 +1,6 @@
 #pragma once
 
-#include <map>
+#include <unordered_map>
 
 extern "C" {
 #include "GraphBLAS.h"
@@ -8,7 +8,7 @@ extern "C" {
 
 #include "utils.h"
 
-typedef std::map<GrB_Index, GrB_Index> IndexMap;
+typedef std::unordered_map<GrB_Index, GrB_Index> IndexMap;
 
 // Loading function
 IndexMap ReadMatrix(BenchmarkParameters parameters, GrB_Matrix &A, bool weighted = false);

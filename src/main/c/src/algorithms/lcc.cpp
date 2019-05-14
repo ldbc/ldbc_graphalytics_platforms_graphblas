@@ -54,7 +54,7 @@ void CalculateCombinations(void *z, const void *x) {
     (*zd) = ((xd) * (xd - 1));
 }
 
-void Lcc(BenchmarkParameters benchmarkParameters) {
+void LCC(BenchmarkParameters benchmarkParameters) {
     GrB_init(GrB_NONBLOCKING);
 
     // Variable required by the OK macro
@@ -150,15 +150,15 @@ void Lcc(BenchmarkParameters benchmarkParameters) {
         WriteOutDebugMatrix("CA", CA);
     }
 
-    // (C*A)*C matrix with element wise multiplication between A2*A
-    GrB_Matrix CAC;
-    {
-        ComputationTimer timer{"CAC"};
-
-        OK(GrB_Matrix_new(&CAC, GrB_FP64, n, n))
-        OK(GrB_eWiseMult_Matrix_Monoid(CAC, nullptr, nullptr, GxB_TIMES_FP64_MONOID, CA, C, nullptr))
-        WriteOutDebugMatrix("CAC", CAC);
-    }
+//    // (C*A)*C matrix with element wise multiplication between A2*A
+//    GrB_Matrix CAC;
+//    {
+//        ComputationTimer timer{"CAC"};
+//
+//        OK(GrB_Matrix_new(&CAC, GrB_FP64, n, n))
+//        OK(GrB_eWiseMult_Matrix_Monoid(CAC, nullptr, nullptr, GxB_TIMES_FP64_MONOID, CA, C, nullptr))
+//        WriteOutDebugMatrix("CAC", CAC);
+//    }
 
     // Determine triangles by (C*A)*C row sum
     GrB_Vector Tr;
@@ -166,7 +166,7 @@ void Lcc(BenchmarkParameters benchmarkParameters) {
         ComputationTimer timer{"Tr"};
 
         OK(GrB_Vector_new(&Tr, GrB_FP64, n))
-        OK(GrB_Matrix_reduce_Monoid(Tr, nullptr, nullptr, GxB_PLUS_FP64_MONOID, CAC, nullptr))
+        OK(GrB_Matrix_reduce_Monoid(Tr, nullptr, nullptr, GxB_PLUS_FP64_MONOID, CA, nullptr))
         WriteOutDebugVector("Tr", Tr);
     }
 
@@ -199,7 +199,7 @@ void Lcc(BenchmarkParameters benchmarkParameters) {
     GrB_UnaryOp_free(&combinationOp);
     GrB_Matrix_free(&A);
     GrB_Matrix_free(&CA);
-    GrB_Matrix_free(&CAC);
+//    GrB_Matrix_free(&CAC);
     GrB_Vector_free(&Cr);
     GrB_Vector_free(&W);
     GrB_Vector_free(&Tr);
@@ -211,5 +211,5 @@ void Lcc(BenchmarkParameters benchmarkParameters) {
 
 int main(int argc, char **argv) {
     BenchmarkParameters benchmarkParameters = ParseCommandLineParameters(argc, argv);
-    Lcc(benchmarkParameters);
+    LCC(benchmarkParameters);
 }
