@@ -150,16 +150,6 @@ void LCC(BenchmarkParameters benchmarkParameters) {
         WriteOutDebugMatrix("CA", CA);
     }
 
-//    // (C*A)*C matrix with element wise multiplication between A2*A
-//    GrB_Matrix CAC;
-//    {
-//        ComputationTimer timer{"CAC"};
-//
-//        OK(GrB_Matrix_new(&CAC, GrB_FP64, n, n))
-//        OK(GrB_eWiseMult_Matrix_Monoid(CAC, nullptr, nullptr, GxB_TIMES_FP64_MONOID, CA, C, nullptr))
-//        WriteOutDebugMatrix("CAC", CAC);
-//    }
-
     // Determine triangles by (C*A)*C row sum
     GrB_Vector Tr;
     {

@@ -151,7 +151,6 @@ void BFS(BenchmarkParameters benchmarkParameters) {
     GrB_Semiring_free(&Boolean);
     GrB_Descriptor_free(&desc);
     GrB_UnaryOp_free(&apply_level);
-
 }
 
 int main(int argc, char **argv) {

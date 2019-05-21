@@ -70,11 +70,14 @@ int main(int argc, char **argv) {
         }
     }
 
+    std::cout << "Processing starts at:" << GetCurrentMilliseconds() << std::endl;
     GrB_Index mappedSourceVertex = mapping[benchmarkParameters.sourceVertex];
     GrB_Vector d = nullptr;
     {
         ComputationTimer timer{"SSSP"};
         OK(LAGraph_BF_basic(&d, A, mappedSourceVertex))
     }
-    GxB_Vector_fprint(d, "d", GxB_SHORT, stdout);
+    std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
+
+    WriteOutSSSPResult(benchmarkParameters, mapping, d);
 }
