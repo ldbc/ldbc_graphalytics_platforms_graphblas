@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    std::cout << "Processing starts at:" << GetCurrentMilliseconds() << std::endl;
+    std::cout << "Processing starts at: " << GetCurrentMilliseconds() << std::endl;
     GrB_Index mappedSourceVertex = mapping[benchmarkParameters.sourceVertex];
     GrB_Vector d = nullptr;
     {
