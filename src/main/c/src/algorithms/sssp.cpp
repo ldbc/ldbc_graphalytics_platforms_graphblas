@@ -36,13 +36,13 @@ void WriteOutSSSPResult(BenchmarkParameters parameters, const IndexMap &mapping,
         GrB_Index matrixIndex = mappedIndex.second;
 
         value = 0.0;
-        GrB_Vector_extractElement_FP64(&value, result, matrixIndex);
+        GrB_Info info = GrB_Vector_extractElement_FP64(&value, result, matrixIndex);
 
-        if (value == INF_VALUE) {
-            file << originalIndex << " infinity" << std::endl;
+        if (info == GrB_SUCCESS) {
+            file << originalIndex << " " << std::scientific << value << std::endl;
 //            std::cout << originalIndex << " infinity" << std::endl;
         } else {
-            file << originalIndex << " " << std::scientific << value << std::endl;
+            file << originalIndex << " infinity" << std::endl;
 //            std::cout << originalIndex << " " << std::scientific << value << std::endl;
         }
 
