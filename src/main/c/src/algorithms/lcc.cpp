@@ -37,7 +37,6 @@ void WriteOutLCCResult(
         GrB_Vector_extractElement_FP64(&value, result, matrixIndex);
 
         file << originalIndex << " " << std::scientific << value << std::endl;
-        std::cout << originalIndex << " " << std::scientific << value << std::endl;
     }
 }
 

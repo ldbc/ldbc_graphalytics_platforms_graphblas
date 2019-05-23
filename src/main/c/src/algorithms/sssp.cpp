@@ -40,10 +40,8 @@ void WriteOutSSSPResult(BenchmarkParameters parameters, const IndexMap &mapping,
 
         if (value == INF_VALUE) {
             file << originalIndex << " infinity" << std::endl;
-//            std::cout << originalIndex << " infinity" << std::endl;
         } else {
             file << originalIndex << " " << std::scientific << value << std::endl;
-//            std::cout << originalIndex << " " << std::scientific << value << std::endl;
         }
 
     }
