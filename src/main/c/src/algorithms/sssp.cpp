@@ -49,6 +49,7 @@ void WriteOutSSSPResult(BenchmarkParameters parameters, const IndexMap &mapping,
 int main(int argc, char **argv) {
     //GrB_init(GrB_NONBLOCKING);
     LAGraph_init();
+    GxB_set(GxB_GLOBAL_NTHREADS, 1);
 
     GrB_Info info;
 
