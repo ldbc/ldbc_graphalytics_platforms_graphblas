@@ -55,7 +55,7 @@ void CalculateCombinations(void *z, const void *x) {
 
 void LCC(BenchmarkParameters benchmarkParameters) {
     GrB_init(GrB_NONBLOCKING);
-    GxB_set(GxB_GLOBAL_NTHREADS, 1);
+    GxB_Global_Option_set(GxB_GLOBAL_NTHREADS, 1);
 
     // Variable required by the OK macro
     unsigned int info;
