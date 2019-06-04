@@ -1,36 +1,37 @@
 #pragma once
 
-#include <chrono>
+#include <stdexcept>
 
 extern "C" {
 #include <GraphBLAS.h>
+#include <LAGraph.h>
 }
 
 /*
  * ARGUMENT PARSING FUNCTIONS
  */
 typedef struct {
-    bool directed = false;
-    unsigned long sourceVertex = 0;
-    unsigned long numVertices = 0;
-    char* inputDir = nullptr;
-    char* outputFile = nullptr;
+  std::string input_dir;
+  std::string output_file;
+  bool directed = false;
+  unsigned long source_vertex = 0;
+  unsigned long thread_num = 1;
 } BenchmarkParameters;
 
-BenchmarkParameters ParseCommandLineParameters(int argc, char** argv);
+BenchmarkParameters ParseBenchmarkParameters(int argc, char **argv);
+
+typedef struct {
+  std::string vertex_file;
+  std::string edge_file;
+  std::string market_file;
+  std::string mapping_file;
+  bool weighted = false;
+  bool directed = false;
+} ConverterParameters;
+
+ConverterParameters ParseConverterParameters(int argc, char **argv);
 
 time_t GetCurrentMilliseconds();
-
-/*
- * DEBUG FUNCTIONS
- */
-
-void WriteOutDebugVector(const char *title, GrB_Vector result);
-void WriteOutDebugMatrix(const char *title, GrB_Matrix result);
-
-/*
- * PROFILING MACROS
- */
 
 
 /*
@@ -45,12 +46,13 @@ void WriteOutDebugMatrix(const char *title, GrB_Matrix result);
 // if a failure occurs, it handles the error via the CHECK macro above, and
 // returns the error status to the caller.
 
-#define OK(method)                                             \
-{                                                              \
-    info = method;                                             \
-    if (info != GrB_SUCCESS)                                   \
-    {                                                          \
-        fprintf(stderr, "GraphBLAS error:\n%s\n", GrB_error());\
-        exit(-100);                                            \
-    }                                                          \
+#define OK(method)                                         \
+{                                                          \
+    info = method;                                         \
+    if (info != GrB_SUCCESS)                               \
+    {                                                      \
+        throw std::runtime_error{                          \
+            std::string{"GraphBLAS error: "} + GrB_error() \
+        };                                                 \
+    }                                                      \
 }

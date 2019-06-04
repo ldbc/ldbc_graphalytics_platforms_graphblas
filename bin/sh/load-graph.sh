@@ -25,7 +25,7 @@ while [[ $# -gt 1 ]] # Parse two arguments: [--key value] or [-k value]
   key="$1"
   value="$2"
 
-  case $key in
+  case ${key} in
 
     --graph-name)
       GRAPH_NAME="$value"
@@ -59,7 +59,15 @@ while [[ $# -gt 1 ]] # Parse two arguments: [--key value] or [-k value]
   shift
 done
 
-# TODO Reconstruct executable commandline instructions (platform-specific).
-mkdir -p $OUTPUT_PATH
-ln -fs $INPUT_VERTEX_PATH $OUTPUT_PATH/vertex.csv
-ln -fs $INPUT_EDGE_PATH $OUTPUT_PATH/edge.csv
+mkdir -p ${OUTPUT_PATH}
+
+bin/exe/converter \
+    --input-vertex ${INPUT_VERTEX_PATH} \
+    --input-edge ${INPUT_EDGE_PATH} \
+    --output-mm  ${OUTPUT_PATH}/graph.mtx \
+    --output-vtx ${OUTPUT_PATH}/graph.vtx \
+    --weighted ${WEIGHTED} \
+    --directed ${DIRECTED}
+
+ln -fs ${INPUT_VERTEX_PATH} ${OUTPUT_PATH}/vertex.csv
+ln -fs ${INPUT_EDGE_PATH} ${OUTPUT_PATH}/edge.csv

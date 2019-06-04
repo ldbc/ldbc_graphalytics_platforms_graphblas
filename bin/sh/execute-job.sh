@@ -83,15 +83,17 @@ while [[ $# -gt 1 ]] # Parse two arguments: [--key value] or [-k value]
   shift
 done
 
-# TODO Reconstruct executable commandline instructions (platform-specific).
 case $ALGORITHM in
 
      bfs)
-       COMMAND="$rootdir/bin/exe/$ALGORITHM --jobid $JOB_ID \
-         --dataset $INPUT_PATH --output $OUTPUT_PATH \
-         --directed $DIRECTED --num-vertices $NUM_VERTICES \
+       COMMAND="$rootdir/bin/exe/$ALGORITHM \
+         --jobid $JOB_ID \
+         --dataset $INPUT_PATH \
+         --output $OUTPUT_PATH \
+         --directed $DIRECTED \
          --source-vertex $SOURCE_VERTEX \
-         --log-path $LOG_PATH"
+         --log-path $LOG_PATH \
+         --threadnum $NUM_THREADS"
        ;;
 
 #     wcc)
@@ -116,17 +118,22 @@ case $ALGORITHM in
 
      lcc)
        COMMAND="$rootdir/bin/exe/$ALGORITHM --jobid $JOB_ID \
-         --dataset $INPUT_PATH --output $OUTPUT_PATH \
-         --directed $DIRECTED --num-vertices $NUM_VERTICES \
-         --log-path $LOG_PATH"
+         --dataset $INPUT_PATH \
+         --output $OUTPUT_PATH \
+         --directed $DIRECTED \
+         --log-path $LOG_PATH \
+         --threadnum $NUM_THREADS"
        ;;
 
      sssp)
-       COMMAND="$rootdir/bin/exe/$ALGORITHM --jobid $JOB_ID \
-         --dataset $INPUT_PATH --output $OUTPUT_PATH \
-         --directed $DIRECTED --num-vertices $NUM_VERTICES \
+       COMMAND="$rootdir/bin/exe/$ALGORITHM
+         --jobid $JOB_ID \
+         --dataset $INPUT_PATH \
+         --output $OUTPUT_PATH \
+         --directed $DIRECTED
          --source-vertex $SOURCE_VERTEX \
-         --log-path $LOG_PATH"
+         --log-path $LOG_PATH \
+         --threadnum $NUM_THREADS"
        ;;
 
      *)
@@ -136,9 +143,7 @@ case $ALGORITHM in
 esac
 
 
-
 echo "Executing platform job" "$COMMAND"
 
-$COMMAND &
-echo $! > $LOG_PATH/executable.pid
+$COMMAND & echo $! > $LOG_PATH/executable.pid
 wait $!

@@ -13,7 +13,7 @@ extern "C" {
 }
 
 #include "utils.h"
-#include "graphio.h"
+#include "converter.h"
 
 #define VERBOSE
 
@@ -21,9 +21,9 @@ void WriteOutBFSResult(BenchmarkParameters parameters, IndexMap mapping, GrB_Vec
     GrB_Info info;
     GrB_Index n;
 
-    std::ofstream file{parameters.outputFile};
+    std::ofstream file{parameters.output_file};
     if (!file.is_open()) {
-        std::cerr << "File" << parameters.outputFile << "does not exists" << std::endl;
+        std::cerr << "File" << parameters.output_file << "does not exists" << std::endl;
         exit(-1);
     }
 
@@ -64,7 +64,7 @@ void ApplyLevel(int32_t *result, bool *element) {
 
 void BFS(BenchmarkParameters benchmarkParameters) {
     GrB_init(GrB_NONBLOCKING);
-    GxB_Global_Option_set(GxB_GLOBAL_NTHREADS, 1);
+
 
     GrB_Matrix A;
     std::cout << "Loading" << std::endl;
@@ -96,7 +96,7 @@ void BFS(BenchmarkParameters benchmarkParameters) {
     GrB_Vector_new(&q, GrB_BOOL, n);     // Vector<bool> q(n) = false
 
     // q[s] = true, false elsewhere
-    GrB_Index mappedSourceVertex = mapping[benchmarkParameters.sourceVertex];
+    GrB_Index mappedSourceVertex = mapping[benchmarkParameters.source_vertex];
     GrB_Vector_setElement_BOOL(q, true, mappedSourceVertex);
 
     // Note the typecast to bool.  Otherwise an error is reported, since the
@@ -133,13 +133,10 @@ void BFS(BenchmarkParameters benchmarkParameters) {
         // writes their levels to v, thus updating the levels of those nodes in
         // v.  The patterns of v and q are disjoint.
         GrB_Vector_apply(v, nullptr, GrB_MIN_INT32, apply_level, q, nullptr);
-        //GxB_Vector_fprint(v, "v", GxB_SUMMARY, stdout);
 
         // q<!v> = q ||.&& A ; finds all the unvisited
         // successors from current q, using !v as the mask
         GrB_vxm(q, v, nullptr, Boolean, q, A, desc);
-        //GxB_Vector_fprint(q, "q", GxB_SUMMARY, stdout);
-
         GrB_Vector_nvals(&nvals, q);
     }
 
@@ -156,5 +153,7 @@ void BFS(BenchmarkParameters benchmarkParameters) {
 
 int main(int argc, char **argv) {
     BenchmarkParameters benchmarkParameters = ParseCommandLineParameters(argc, argv);
+
+
     BFS(benchmarkParameters);
 }

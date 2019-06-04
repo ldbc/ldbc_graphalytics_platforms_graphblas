@@ -1,4 +1,5 @@
 #include <string>
+#include <chrono>
 
 #include "utils.h"
 
@@ -15,31 +16,61 @@ time_t GetCurrentMilliseconds() {
  * ARGUMENT PARSING FUNCTIONS
  */
 
-BenchmarkParameters ParseCommandLineParameters(int argc, char **argv) {
-    BenchmarkParameters benchmarkParameters;
+BenchmarkParameters ParseBenchmarkParameters(int argc, char **argv) {
+    BenchmarkParameters benchmark_parameters;
 
     for (int i = 0; i < argc; i++) {
         char *key = argv[i];
         char *value = argv[i + 1];
 
         if (strcmp(key, "--source-vertex") == 0) {
-            benchmarkParameters.sourceVertex = strtoul(value, nullptr, 10);
+            benchmark_parameters.source_vertex = std::stoul(value);
         }
         if (strcmp(key, "--directed") == 0) {
-            benchmarkParameters.directed = (strcmp(value, "true") == 0);
-        }
-        if (strcmp(key, "--num-vertices") == 0) {
-            benchmarkParameters.numVertices = strtoul(value, nullptr, 10);
+            benchmark_parameters.directed = (strcmp(value, "true") == 0);
         }
         if (strcmp(key, "--dataset") == 0) {
-            benchmarkParameters.inputDir = value;
+            benchmark_parameters.input_dir = value;
         }
         if (strcmp(key, "--output") == 0) {
-            benchmarkParameters.outputFile = value;
+            benchmark_parameters.output_file = value;
+        }
+        if (strcmp(key, "--threadnum") == 0) {
+            benchmark_parameters.thread_num = std::stoul(value);
         }
     }
 
-    return benchmarkParameters;
+    return benchmark_parameters;
+}
+
+ConverterParameters ParseConverterParameters(int argc, char **argv) {
+    ConverterParameters converter_parameters;
+
+    for (int i = 0; i < argc; i++) {
+        char *key = argv[i];
+        char *value = argv[i + 1];
+
+        if (strcmp(key, "--input-vertex") == 0) {
+            converter_parameters.vertex_file = value;
+        }
+        if (strcmp(key, "--input-edge") == 0) {
+            converter_parameters.edge_file = value;
+        }
+        if (strcmp(key, "--output-mm") == 0) {
+            converter_parameters.market_file = value;
+        }
+        if (strcmp(key, "--output-vtx") == 0) {
+            converter_parameters.mapping_file = value;
+        }
+        if (strcmp(key, "--weighted") == 0) {
+            converter_parameters.weighted = (strcmp(value, "true") == 0);
+        }
+        if (strcmp(key, "--directed") == 0) {
+            converter_parameters.directed = (strcmp(value, "true") == 0);
+        }
+    }
+
+    return converter_parameters;
 }
 
 /*
@@ -48,7 +79,6 @@ BenchmarkParameters ParseCommandLineParameters(int argc, char **argv) {
 
 void WriteOutDebugMatrix(const char *title, GrB_Matrix result) {
     printf("%s:\n", title);
-#ifdef VERBOSE
     GrB_Index size;
     GrB_Matrix_nrows(&size, result);
     double element;
@@ -62,8 +92,8 @@ void WriteOutDebugMatrix(const char *title, GrB_Matrix result) {
             } else if (info == GrB_NO_VALUE) {
                 // It is up to the user to determine what 'no value'
                 // means.  It depends on the semiring used.
-                printf(" [no value] ");
-//                printf("0 ");
+//                printf(" [no value] ");
+                printf("- ");
             } else {
                 printf("Error! %s\n", GrB_error());
             }
@@ -71,7 +101,6 @@ void WriteOutDebugMatrix(const char *title, GrB_Matrix result) {
         }
         printf("\n");
     }
-#endif
 }
 
 void WriteOutDebugVector(const char *title, GrB_Vector result) {
