@@ -61,13 +61,17 @@ done
 
 mkdir -p ${OUTPUT_PATH}
 
-bin/exe/converter \
-    --input-vertex ${INPUT_VERTEX_PATH} \
-    --input-edge ${INPUT_EDGE_PATH} \
-    --output-mm  ${OUTPUT_PATH}/graph.mtx \
-    --output-vtx ${OUTPUT_PATH}/graph.vtx \
-    --weighted ${WEIGHTED} \
-    --directed ${DIRECTED}
+if [[ ! -f ${OUTPUT_PATH}/graph.mtx && ! -f ${OUTPUT_PATH}/graph.vtx ]]; then
+    bin/exe/converter \
+        --input-vertex ${INPUT_VERTEX_PATH} \
+        --input-edge ${INPUT_EDGE_PATH} \
+        --output-mm  ${OUTPUT_PATH}/graph.mtx \
+        --output-vtx ${OUTPUT_PATH}/graph.vtx \
+        --weighted ${WEIGHTED} \
+        --directed ${DIRECTED}
 
-ln -fs ${INPUT_VERTEX_PATH} ${OUTPUT_PATH}/vertex.csv
-ln -fs ${INPUT_EDGE_PATH} ${OUTPUT_PATH}/edge.csv
+    ln -fs ${INPUT_VERTEX_PATH} ${OUTPUT_PATH}/vertex.csv
+    ln -fs ${INPUT_EDGE_PATH} ${OUTPUT_PATH}/edge.csv
+else
+    echo "Transformed file already existing, no load required"
+fi

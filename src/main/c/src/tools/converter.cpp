@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
     Vertex src, trg;
     std::string weight = "1.0";
 
-    std::cout << "Serialize into MM" << std::endl;
+    std::cout << "Serialize MatrixMarket" << std::endl;
     while (std::getline(edge_file, line)) {
         std::istringstream line_stream{line};
         line_stream >> src;
