@@ -24,12 +24,12 @@ void WriteOutSSSPResult(
         exit(-1);
     }
 
-    GrB_Index value;
+    double value;
     for (GrB_Index res_index = 0; res_index < mapping.size(); res_index++) {
         GrB_Index original_index = mapping[res_index];
         GrB_Index matrix_index = res_index;
 
-        GrB_Info info = GrB_Vector_extractElement_UINT64(&value, result, matrix_index);
+        GrB_Info info = GrB_Vector_extractElement_FP64(&value, result, matrix_index);
         if (info == GrB_SUCCESS) {
             file << original_index << " " << std::scientific << value << std::endl;
         } else {
@@ -42,12 +42,13 @@ GrB_Vector SSSP(GrB_Matrix A, GrB_Index sourceVertex) {
     GrB_Info info;
     GrB_Vector d;
 
-    GrB_Index nrows;
-    GrB_Matrix_nrows(&nrows, A);
+    // The size of Adj
+    GrB_Index n;
+    OK(GrB_Matrix_nrows(&n, A))
 
     {
         ComputationTimer timer{"Zero diagonalize"};
-        for (GrB_Index i = 0; i < nrows; i++) {
+        for (GrB_Index i = 0; i < n; i++) {
             OK(GrB_Matrix_setElement_FP64(A, 0.0, i, i))
         }
     }
@@ -66,8 +67,6 @@ int main(int argc, char **argv) {
     GxB_Global_Option_set(GxB_GLOBAL_NTHREADS, 1);
 
     GrB_Matrix A = ReadMatrixMarket(parameters);
-    GxB_Matrix_fprint(A, "A", GxB_COMPLETE, stdout);
-
     std::vector<GrB_Index> mapping = ReadMapping(parameters);
 
     GrB_Index sourceVertex = std::distance(mapping.begin(), std::find(
@@ -80,11 +79,7 @@ int main(int argc, char **argv) {
     GrB_Vector result = SSSP(A, sourceVertex);
     std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
 
-    WriteOutSSSPResult(
-        result,
-        mapping,
-        parameters
-    );
+    WriteOutSSSPResult(result, mapping, parameters);
 
     GrB_Matrix_free(&A);
     GrB_Vector_free(&result);

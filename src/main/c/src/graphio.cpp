@@ -2,7 +2,7 @@
 #include "computation_timer.hpp"
 
 GrB_Matrix ReadMatrixMarket(const BenchmarkParameters& parameters) {
-    ComputationTimer timer{"Matrix-Market loading"};
+    ComputationTimer total_timer{"Matrix-Market loading"};
 
     GrB_Info info;
     GrB_Matrix A;
@@ -14,6 +14,12 @@ GrB_Matrix ReadMatrixMarket(const BenchmarkParameters& parameters) {
     }
     OK(LAGraph_mmread(&A, mmfile))
     fclose(mmfile);
+
+    {
+        ComputationTimer timer{"Matrix finalization"};
+        GrB_Index nvals;
+        GrB_Matrix_nvals(&nvals, A);
+    }
 
     return A;
 }

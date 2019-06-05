@@ -181,11 +181,7 @@ int main(int argc, char **argv) {
     GrB_Vector result = LCC(A);
     std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
 
-    WriteOutLCCResult(
-        result,
-        mapping,
-        parameters
-    );
+    WriteOutLCCResult(result, mapping, parameters);
 
     GrB_Matrix_free(&A);
     GrB_Vector_free(&result);
