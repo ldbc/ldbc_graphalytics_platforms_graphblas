@@ -1,15 +1,10 @@
-//
-// Created by baprof on 6/4/19.
-//
-
-#include <fstream>
 #include <filesystem>
 
 #include "graphio.h"
 #include "computation_timer.hpp"
 
-GrB_Matrix ReadMatrixMarket(BenchmarkParameters parameters) {
-    ComputationTimer{"Matrix-Market loading"};
+GrB_Matrix ReadMatrixMarket(const BenchmarkParameters& parameters) {
+    ComputationTimer timer{"Matrix-Market loading"};
 
     GrB_Info info;
     GrB_Matrix A;
@@ -28,8 +23,8 @@ GrB_Matrix ReadMatrixMarket(BenchmarkParameters parameters) {
     return A;
 }
 
-std::vector<GrB_Index> ReadMapping(BenchmarkParameters parameters) {
-    ComputationTimer{"Mapping loading"};
+std::vector<GrB_Index> ReadMapping(const BenchmarkParameters& parameters) {
+    ComputationTimer timer{"Mapping loading"};
 
     std::filesystem::path input_dir{parameters.input_dir};
     std::ifstream vtx_file{input_dir / "graph.vtx"};

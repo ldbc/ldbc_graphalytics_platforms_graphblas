@@ -15,18 +15,18 @@
  */
 package science.atlarge.graphalytics.graphblas;
 
-import science.atlarge.graphalytics.domain.benchmark.BenchmarkRun;
-import science.atlarge.graphalytics.domain.graph.Graph;
-import science.atlarge.graphalytics.execution.RunSpecification;
-import science.atlarge.graphalytics.execution.BenchmarkRunSetup;
-import org.apache.commons.exec.util.StringUtils;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
-
+import org.apache.commons.exec.util.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import science.atlarge.graphalytics.domain.benchmark.BenchmarkRun;
+import science.atlarge.graphalytics.domain.graph.Graph;
+import science.atlarge.graphalytics.execution.BenchmarkRunSetup;
+import science.atlarge.graphalytics.execution.RunSpecification;
+
 import java.io.IOException;
 import java.nio.file.Paths;
 
@@ -61,7 +61,6 @@ public abstract class GraphblasJob {
 	 */
 	public GraphblasJob(RunSpecification runSpecification, GraphblasConfiguration platformConfig,
 						String inputPath, String outputPath, Graph benchmarkGraph) {
-
 		BenchmarkRun benchmarkRun = runSpecification.getBenchmarkRun();
 		BenchmarkRunSetup benchmarkRunSetup = runSpecification.getBenchmarkRunSetup();
 
@@ -96,13 +95,12 @@ public abstract class GraphblasJob {
 		String outputPath = getOutputPath();
 
 		// List of platform parameters.
-		int numMachines = platformConfig.getNumMachines();
 		int numThreads = platformConfig.getNumThreads();
 
 		appendBenchmarkParameters(jobId, logDir);
 		appendAlgorithmParameters();
 		appendDatasetParameters(inputPath, outputPath);
-		appendPlatformConfigurations(numMachines, numThreads);
+		appendPlatformConfigurations(numThreads);
 
 		String commandString = StringUtils.toString(commandLine.toStrings(), " ");
 		LOG.info(String.format("Execute benchmark job with command-line: [%s]", commandString));
@@ -118,7 +116,6 @@ public abstract class GraphblasJob {
 	 * Appends the benchmark-specific parameters for the executable to a CommandLine object.
 	 */
 	private void appendBenchmarkParameters(String jobId, String logPath) {
-
 		commandLine.addArgument("--job-id");
 		commandLine.addArgument(jobId);
 
@@ -127,37 +124,26 @@ public abstract class GraphblasJob {
 
 		commandLine.addArgument("--directed");
 		commandLine.addArgument(Boolean.toString(benchmarkGraph.isDirected()));
-
-		commandLine.addArgument("--num-vertices");
-		commandLine.addArgument(Long.toString(benchmarkGraph.getNumberOfVertices()));
-
 	}
 
 	/**
 	 * Appends the dataset-specific parameters for the executable to a CommandLine object.
 	 */
 	private void appendDatasetParameters(String inputPath, String outputPath) {
-
 		commandLine.addArgument("--input-path");
 		commandLine.addArgument(Paths.get(inputPath).toString());
 
 		commandLine.addArgument("--output-path");
 		commandLine.addArgument(Paths.get(outputPath).toString());
-
 	}
 
 
 	/**
 	 * Appends the platform-specific parameters for the executable to a CommandLine object.
 	 */
-	private void appendPlatformConfigurations(int numMachines, int numThreads) {
-
-		commandLine.addArgument("--num-machines");
-		commandLine.addArgument(String.valueOf(numMachines));
-
+	private void appendPlatformConfigurations(int numThreads) {
 		commandLine.addArgument("--num-threads");
 		commandLine.addArgument(String.valueOf(numThreads));
-
 	}
 
 

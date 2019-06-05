@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
     }
 
     VertexMapping mapping;
-    Vertex mappedIndex = 0;
+    Vertex mappedIndex = 1;
     Vertex vertex;
     // Load and remap all the vertices
     std::cout << "Remapping vertices" << std::endl;
@@ -61,8 +61,8 @@ int main(int argc, char **argv) {
         market_file << " symmetric" << std::endl;
     }
     market_file
-        << mappedIndex + 1 << " "
-        << mappedIndex + 1 << " "
+        << mappedIndex << " "
+        << mappedIndex << " "
         << edge_count << std::endl;
 
     std::string line;
@@ -80,8 +80,8 @@ int main(int argc, char **argv) {
         }
 
         market_file
-            << mapping[src] + 1 << " "
-            << mapping[trg] + 1 << " "
+            << mapping[src] << " "
+            << mapping[trg] << " "
             << weight << std::endl;
     }
 

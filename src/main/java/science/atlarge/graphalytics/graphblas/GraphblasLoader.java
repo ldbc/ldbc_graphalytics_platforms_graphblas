@@ -15,7 +15,6 @@
  */
 package science.atlarge.graphalytics.graphblas;
 
-import science.atlarge.graphalytics.domain.graph.FormattedGraph;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
@@ -23,6 +22,8 @@ import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.exec.util.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import science.atlarge.graphalytics.domain.graph.FormattedGraph;
+
 import java.nio.file.Paths;
 
 

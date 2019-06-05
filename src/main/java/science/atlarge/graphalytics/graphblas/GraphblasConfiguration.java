@@ -33,15 +33,12 @@ public final class GraphblasConfiguration {
 	protected static final Logger LOG = LogManager.getLogger();
 
 	private static final String BENCHMARK_PROPERTIES_FILE = "benchmark.properties";
-	private static final String HOME_PATH_KEY = "platform.graphblas.home";
-	private static final String NUM_MACHINES_KEY = "platform.graphblas.num-machines";
 	private static final String NUM_THREADS_KEY = "platform.graphblas.num-threads";
 
 	private String loaderPath;
 	private String unloaderPath;
 	private String executablePath;
 	private String terminatorPath;
-	private int numMachines = 1;
 	private int numThreads = 1;
 
 	/**
@@ -89,20 +86,6 @@ public final class GraphblasConfiguration {
 	}
 
 	/**
-	 * @return the number of machines
-	 */
-	public int getNumMachines() {
-		return numMachines;
-	}
-
-	/**
-	 * @param numMachines the number of machines
-	 */
-	public void setNumMachines(int numMachines) {
-		this.numMachines = numMachines;
-	}
-
-	/**
 	 * @param numThreads the number of threads to use on each machine
 	 */
 	public void setNumThreads(int numThreads) {
@@ -140,13 +123,6 @@ public final class GraphblasConfiguration {
 
 		String terminatorPath = Paths.get("./bin/sh/terminate-job.sh").toString();
 		platformConfig.setTerminatorPath(terminatorPath);
-
-		Integer numMachines = configuration.getInteger(NUM_MACHINES_KEY, null);
-		if (numMachines != null) {
-			platformConfig.setNumMachines(numMachines);
-		} else {
-			platformConfig.setNumMachines(1);
-		}
 
 		Integer numThreads = configuration.getInteger(NUM_THREADS_KEY, null);
 		if (numThreads != null) {

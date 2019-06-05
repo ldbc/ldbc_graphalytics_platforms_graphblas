@@ -15,7 +15,6 @@
  */
 package science.atlarge.graphalytics.graphblas.algorithms.sssp;
 
-import science.atlarge.graphalytics.domain.algorithms.BreadthFirstSearchParameters;
 import science.atlarge.graphalytics.domain.algorithms.SingleSourceShortestPathsParameters;
 import science.atlarge.graphalytics.domain.graph.Graph;
 import science.atlarge.graphalytics.execution.RunSpecification;

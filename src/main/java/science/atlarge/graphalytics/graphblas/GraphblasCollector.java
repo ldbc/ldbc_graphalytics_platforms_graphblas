@@ -16,11 +16,11 @@
 package science.atlarge.graphalytics.graphblas;
 
 import org.apache.commons.io.output.TeeOutputStream;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import science.atlarge.graphalytics.configuration.GraphalyticsExecutionException;
 import science.atlarge.graphalytics.report.result.BenchmarkMetric;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import java.io.*;
 import java.math.BigDecimal;
 import java.nio.file.FileVisitResult;

@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 package science.atlarge.graphalytics.graphblas.algorithms.lcc;
-import science.atlarge.graphalytics.domain.algorithms.Algorithm;
-import science.atlarge.graphalytics.domain.algorithms.BreadthFirstSearchParameters;
+
 import science.atlarge.graphalytics.domain.graph.Graph;
 import science.atlarge.graphalytics.execution.RunSpecification;
-import science.atlarge.graphalytics.graphblas.GraphblasJob;
 import science.atlarge.graphalytics.graphblas.GraphblasConfiguration;
+import science.atlarge.graphalytics.graphblas.GraphblasJob;
 
 /**
  * Local Clustering Coefficient job implementation for GraphBLAS. This class is responsible for formatting LCC-specific
@@ -41,9 +40,7 @@ public final class LocalClusteringCoefficientJob extends GraphblasJob {
 
 	@Override
 	protected void appendAlgorithmParameters() {
-
 		commandLine.addArgument("--algorithm");
 		commandLine.addArgument("lcc");
-
 	}
 }

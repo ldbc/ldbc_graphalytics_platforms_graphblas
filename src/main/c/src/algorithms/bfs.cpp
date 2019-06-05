@@ -1,44 +1,40 @@
 /*
  * LCC algorithm implementation in GraphBLAS.
- * Based on SuitSparse::GraphBLAS demo
  */
 
-#include <iostream>
-#include <iomanip>
-#include <ctime>
-#include <fstream>
+#include <algorithm>
 
 extern "C" {
 #include <GraphBLAS.h>
+#include <LAGraph.h>
 }
 
 #include "utils.h"
-#include "converter.h"
+#include "graphio.h"
+#include "computation_timer.hpp"
 
-#define VERBOSE
-
-void WriteOutBFSResult(BenchmarkParameters parameters, IndexMap mapping, GrB_Vector result) {
-    GrB_Info info;
-    GrB_Index n;
-
+void WriteOutBFSResult(
+    GrB_Vector result,
+    const std::vector<GrB_Index> &mapping,
+    const BenchmarkParameters &parameters
+) {
     std::ofstream file{parameters.output_file};
     if (!file.is_open()) {
-        std::cerr << "File" << parameters.output_file << "does not exists" << std::endl;
+        std::cerr << "File " << parameters.output_file << " does not exists" << std::endl;
         exit(-1);
     }
 
-    int64_t value;
-    for (auto mappedIndex : mapping) {
-        GrB_Index originalIndex = mappedIndex.first;
-        GrB_Index matrixIndex = mappedIndex.second;
+    GrB_Index value;
+    for (GrB_Index res_index = 0; res_index < mapping.size(); res_index++) {
+        GrB_Index original_index = mapping[res_index];
+        GrB_Index matrix_index = res_index;
 
-        info = GrB_Vector_extractElement_INT64(&value, result, matrixIndex);
-        if (info == GrB_NO_VALUE) {
-            value = INT64_MAX;
+        GrB_Info info = GrB_Vector_extractElement_UINT64(&value, result, matrix_index);
+        if (info == GrB_SUCCESS) {
+            file << original_index << " " << std::scientific << value << std::endl;
+        } else {
+            file << original_index << " " << "9223372036854775807" << std::endl;
         }
-
-        file << originalIndex << " " << value << std::endl;
-        //std::cout << originalIndex << " " << value << std::endl;
     }
 }
 
@@ -62,13 +58,9 @@ void ApplyLevel(int32_t *result, bool *element) {
     (*result) = level;
 }
 
-void BFS(BenchmarkParameters benchmarkParameters) {
+GrB_Vector BFS(GrB_Matrix A, GrB_Index source_vertex) {
     GrB_init(GrB_NONBLOCKING);
-
-
-    GrB_Matrix A;
-    std::cout << "Loading" << std::endl;
-    IndexMap mapping = ReadMatrix(benchmarkParameters, A);
+    GxB_Global_Option_set(GxB_GLOBAL_NTHREADS, 1);
 
     // Variable required by the OK macro
     unsigned int info;
@@ -96,8 +88,7 @@ void BFS(BenchmarkParameters benchmarkParameters) {
     GrB_Vector_new(&q, GrB_BOOL, n);     // Vector<bool> q(n) = false
 
     // q[s] = true, false elsewhere
-    GrB_Index mappedSourceVertex = mapping[benchmarkParameters.source_vertex];
-    GrB_Vector_setElement_BOOL(q, true, mappedSourceVertex);
+    GrB_Vector_setElement_BOOL(q, true, source_vertex);
 
     // Note the typecast to bool.  Otherwise an error is reported, since the
     // _Generic function selects the wrong function (int32, not boolean).  This
@@ -133,27 +124,62 @@ void BFS(BenchmarkParameters benchmarkParameters) {
         // writes their levels to v, thus updating the levels of those nodes in
         // v.  The patterns of v and q are disjoint.
         GrB_Vector_apply(v, nullptr, GrB_MIN_INT32, apply_level, q, nullptr);
+        //GxB_Vector_fprint(v, "v", GxB_SUMMARY, stdout);
 
         // q<!v> = q ||.&& A ; finds all the unvisited
         // successors from current q, using !v as the mask
         GrB_vxm(q, v, nullptr, Boolean, q, A, desc);
+        //GxB_Vector_fprint(q, "q", GxB_SUMMARY, stdout);
+
         GrB_Vector_nvals(&nvals, q);
     }
 
     std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
-
-    WriteOutBFSResult(benchmarkParameters, mapping, v);
 
     GrB_Vector_free(&q);
     GrB_Monoid_free(&Lor);
     GrB_Semiring_free(&Boolean);
     GrB_Descriptor_free(&desc);
     GrB_UnaryOp_free(&apply_level);
+
+    return v;
+}
+
+GrB_Vector LABFS(GrB_Matrix A, GrB_Index sourceVertex) {
+    ComputationTimer timer{"BFS"};
+
+    GrB_Info info;
+    GrB_Vector d;
+    OK(LAGraph_bfs_simple(&d, A, sourceVertex))
+
+    return d;
 }
 
 int main(int argc, char **argv) {
-    BenchmarkParameters benchmarkParameters = ParseCommandLineParameters(argc, argv);
+    BenchmarkParameters parameters = ParseBenchmarkParameters(argc, argv);
 
+    LAGraph_init();
+    GxB_Global_Option_set(GxB_GLOBAL_NTHREADS, 1);
 
-    BFS(benchmarkParameters);
+    GrB_Matrix A = ReadMatrixMarket(parameters);
+    std::vector<GrB_Index> mapping = ReadMapping(parameters);
+
+    GrB_Index sourceVertex = std::distance(mapping.begin(), std::find(
+        mapping.begin(),
+        mapping.end(),
+        parameters.source_vertex
+    ));
+
+    std::cout << "Processing starts at: " << GetCurrentMilliseconds() << std::endl;
+    GrB_Vector result = BFS(A, sourceVertex);
+    std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
+
+    WriteOutBFSResult(
+        result,
+        mapping,
+        parameters
+    );
+
+    GrB_Matrix_free(&A);
+    GrB_Vector_free(&result);
 }
