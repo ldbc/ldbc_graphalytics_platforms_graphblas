@@ -38,7 +38,7 @@ void WriteOutSSSPResult(
     }
 }
 
-GrB_Vector SSSP(GrB_Matrix A, GrB_Index sourceVertex) {
+GrB_Vector LA_SSSP(GrB_Matrix A, GrB_Index sourceVertex) {
     GrB_Info info;
     GrB_Vector d;
 
@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
     BenchmarkParameters parameters = ParseBenchmarkParameters(argc, argv);
 
     LAGraph_init();
-    GxB_Global_Option_set(GxB_GLOBAL_NTHREADS, 1);
+    GxB_Global_Option_set(GxB_GLOBAL_NTHREADS, parameters.thread_num);
 
     GrB_Matrix A = ReadMatrixMarket(parameters);
     std::vector<GrB_Index> mapping = ReadMapping(parameters);
@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
     ));
 
     std::cout << "Processing starts at: " << GetCurrentMilliseconds() << std::endl;
-    GrB_Vector result = SSSP(A, sourceVertex);
+    GrB_Vector result = LA_SSSP(A, sourceVertex);
     std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
 
     WriteOutSSSPResult(result, mapping, parameters);

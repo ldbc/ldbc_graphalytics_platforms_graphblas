@@ -168,17 +168,29 @@ GrB_Vector LCC(GrB_Matrix A) {
     return LCC;
 }
 
+GrB_Vector LA_LCC(GrB_Matrix A) {
+    GrB_Info info;
+    GrB_Vector d;
+
+    {
+        ComputationTimer timer{"LCC"};
+        OK(LAGraph_lcc(&d, A, false))
+    }
+
+    return d;
+}
+
 int main(int argc, char **argv) {
     BenchmarkParameters parameters = ParseBenchmarkParameters(argc, argv);
 
     LAGraph_init();
-    GxB_Global_Option_set(GxB_GLOBAL_NTHREADS, 1);
+    GxB_Global_Option_set(GxB_GLOBAL_NTHREADS, parameters.thread_num);
 
     GrB_Matrix A = ReadMatrixMarket(parameters);
     std::vector<GrB_Index> mapping = ReadMapping(parameters);
 
     std::cout << "Processing starts at: " << GetCurrentMilliseconds() << std::endl;
-    GrB_Vector result = LCC(A);
+    GrB_Vector result = LA_LCC(A);
     std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
 
     WriteOutLCCResult(result, mapping, parameters);
