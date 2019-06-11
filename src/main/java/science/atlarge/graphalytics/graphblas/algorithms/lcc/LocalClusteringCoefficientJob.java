@@ -29,7 +29,7 @@ import science.atlarge.graphalytics.graphblas.GraphblasJob;
 public final class LocalClusteringCoefficientJob extends GraphblasJob {
 
 	/**
-	 * Creates a new ConnectedComponentsJob object with all mandatory parameters specified.
+	 * Creates a new LocalClusteringCoefficientJob object with all mandatory parameters specified.
 	 *  @param platformConfig the platform configuration.
 	 * @param inputPath the path to the input graph.
 	 */

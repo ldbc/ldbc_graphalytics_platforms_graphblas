@@ -12,11 +12,11 @@
 using namespace std::chrono;
 
 class ComputationTimer {
-  const char *name;
+  const std::string name;
   const high_resolution_clock::time_point start_time;
 
  public:
-  explicit ComputationTimer(const char *name) :
+  explicit ComputationTimer(const std::string& name) :
       name(name),
       start_time(high_resolution_clock::now()) {
       std::cout << this->name << " starts" << std::endl;

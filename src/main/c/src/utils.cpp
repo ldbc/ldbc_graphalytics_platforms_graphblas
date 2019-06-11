@@ -23,15 +23,23 @@ BenchmarkParameters ParseBenchmarkParameters(int argc, char **argv) {
         char *key = argv[i];
         char *value = argv[i + 1];
 
-        if (strcmp(key, "--source-vertex") == 0) {
-            benchmark_parameters.source_vertex = std::stoul(value);
+        if (strcmp(key, "--dataset") == 0) {
+            benchmark_parameters.input_dir = value;
         }
         if (strcmp(key, "--directed") == 0) {
             benchmark_parameters.directed = (strcmp(value, "true") == 0);
         }
-        if (strcmp(key, "--dataset") == 0) {
-            benchmark_parameters.input_dir = value;
+
+        if (strcmp(key, "--source-vertex") == 0) {
+            benchmark_parameters.source_vertex = std::stoul(value);
         }
+        if (strcmp(key, "--damping-factor") == 0) {
+            benchmark_parameters.damping_factor = std::stod(value);
+        }
+        if (strcmp(key, "--max-iteration") == 0) {
+            benchmark_parameters.max_iteration = std::stoul(value);
+        }
+
         if (strcmp(key, "--output") == 0) {
             benchmark_parameters.output_file = value;
         }

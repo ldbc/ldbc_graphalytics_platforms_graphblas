@@ -25,6 +25,8 @@ void WriteOutLCCResult(
         std::cerr << "File " << parameters.output_file << " does not exists" << std::endl;
         exit(-1);
     }
+    file.precision(16);
+    file << std::scientific;
 
     double value;
     for (GrB_Index res_index = 0; res_index < mapping.size(); res_index++) {
@@ -33,7 +35,7 @@ void WriteOutLCCResult(
 
         GrB_Info info = GrB_Vector_extractElement_FP64(&value, result, matrix_index);
         if (info == GrB_SUCCESS) {
-            file << original_index << " " << std::scientific << value << std::endl;
+            file << original_index << " " << value << std::endl;
         } else {
             file << original_index << " " << 0.0 << std::endl;
         }

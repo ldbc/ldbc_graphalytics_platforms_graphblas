@@ -71,10 +71,6 @@ while [[ $# -gt 1 ]] # Parse two arguments: [--key value] or [-k value]
       DIRECTED="$value"
       shift;;
 
-    --num-vertices)
-      NUM_VERTICES="$value"
-      shift;;
-
     *)
       echo "Error: invalid option: " "$key"
       exit 1
@@ -108,8 +104,8 @@ case $ALGORITHM in
          --dataset $INPUT_PATH \
          --output $OUTPUT_PATH \
          --directed $DIRECTED \
-         --dampingfactor $DAMPING_FACTOR \
-         --iteration $MAX_ITERATION \
+         --damping-factor $DAMPING_FACTOR \
+         --max-iteration $MAX_ITERATION \
          --log-path $LOG_PATH \
          --threadnum $NUM_THREADS"
        ;;

@@ -54,20 +54,25 @@ int main(int argc, char **argv) {
 
     // Write header
     std::cout << "Write header" << std::endl;
-    market_file << "%%MatrixMarket matrix coordinate real";
-    if (parameters.directed) {
-        market_file << " general" << std::endl;
-    } else {
-        market_file << " symmetric" << std::endl;
-    }
+
+    market_file << "%%MatrixMarket matrix coordinate ";
+    market_file << (parameters.weighted ? "real" : "integer");
+    market_file << " ";
+    market_file << (parameters.directed ? "general" : "symmetric");
+    market_file << std::endl;
+
+    market_file << "%%GraphBLAS ";
+    market_file << (parameters.weighted ? "GrB_FP64" : "GrB_BOOL");
+    market_file << std::endl;
+
     market_file
-        << mappedIndex << " "
-        << mappedIndex << " "
+        << (mappedIndex - 1) << " "
+        << (mappedIndex - 1) << " "
         << edge_count << std::endl;
 
     std::string line;
     Vertex src, trg;
-    std::string weight = "1.0";
+    std::string weight = "1";
 
     std::cout << "Serialize MatrixMarket" << std::endl;
     while (std::getline(edge_file, line)) {

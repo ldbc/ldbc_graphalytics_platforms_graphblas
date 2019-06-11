@@ -32,7 +32,7 @@ void WriteOutBFSResult(
 
         GrB_Info info = GrB_Vector_extractElement_UINT64(&value, result, matrix_index);
         if (info == GrB_SUCCESS) {
-            file << original_index << " " << std::scientific << (value + offset) << std::endl;
+            file << original_index << " " << (value + offset) << std::endl;
         } else {
             file << original_index << " " << "9223372036854775807" << std::endl;
         }

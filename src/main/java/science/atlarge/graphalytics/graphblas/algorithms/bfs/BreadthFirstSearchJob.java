@@ -30,7 +30,7 @@ import science.atlarge.graphalytics.graphblas.GraphblasJob;
 public final class BreadthFirstSearchJob extends GraphblasJob {
 
 	/**
-	 * Creates a new ConnectedComponentsJob object with all mandatory parameters specified.
+	 * Creates a new BreadthFirstSearchJob object with all mandatory parameters specified.
 	 *  @param platformConfig the platform configuration.
 	 * @param inputPath the path to the input graph.
 	 */
@@ -41,7 +41,6 @@ public final class BreadthFirstSearchJob extends GraphblasJob {
 
 	@Override
 	protected void appendAlgorithmParameters() {
-
 		commandLine.addArgument("--algorithm");
 		commandLine.addArgument("bfs");
 

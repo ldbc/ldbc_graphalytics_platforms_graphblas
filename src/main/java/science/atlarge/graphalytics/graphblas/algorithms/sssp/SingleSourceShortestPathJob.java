@@ -27,21 +27,20 @@ import science.atlarge.graphalytics.graphblas.GraphblasJob;
  *
  * @author Bálint Hegyi
  */
-public final class SingleSourceShortestPath extends GraphblasJob {
+public final class SingleSourceShortestPathJob extends GraphblasJob {
 
 	/**
-	 * Creates a new ConnectedComponentsJob object with all mandatory parameters specified.
+	 * Creates a new SingleSourceShortestPathJob object with all mandatory parameters specified.
 	 *  @param platformConfig the platform configuration.
 	 * @param inputPath the path to the input graph.
 	 */
-	public SingleSourceShortestPath(RunSpecification runSpecification, GraphblasConfiguration platformConfig,
-                                    String inputPath, String outputPath, Graph benchmarkGraph) {
+	public SingleSourceShortestPathJob(RunSpecification runSpecification, GraphblasConfiguration platformConfig,
+									   String inputPath, String outputPath, Graph benchmarkGraph) {
 		super(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
 	}
 
 	@Override
 	protected void appendAlgorithmParameters() {
-
 		commandLine.addArgument("--algorithm");
 		commandLine.addArgument("sssp");
 

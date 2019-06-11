@@ -25,7 +25,8 @@ import science.atlarge.graphalytics.domain.graph.LoadedGraph;
 import science.atlarge.graphalytics.execution.*;
 import science.atlarge.graphalytics.graphblas.algorithms.bfs.BreadthFirstSearchJob;
 import science.atlarge.graphalytics.graphblas.algorithms.lcc.LocalClusteringCoefficientJob;
-import science.atlarge.graphalytics.graphblas.algorithms.sssp.SingleSourceShortestPath;
+import science.atlarge.graphalytics.graphblas.algorithms.pr.PageRankJob;
+import science.atlarge.graphalytics.graphblas.algorithms.sssp.SingleSourceShortestPathJob;
 import science.atlarge.graphalytics.report.result.BenchmarkMetrics;
 
 import java.nio.file.Path;
@@ -117,7 +118,10 @@ public class GraphblasPlatform implements Platform {
 				job = new BreadthFirstSearchJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
 				break;
 			case SSSP:
-				job = new SingleSourceShortestPath(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
+				job = new SingleSourceShortestPathJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
+				break;
+			case PR:
+				job = new PageRankJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
 				break;
 			default:
 				throw new PlatformExecutionException("Failed to load algorithm implementation.");
