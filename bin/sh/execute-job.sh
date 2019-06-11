@@ -108,8 +108,8 @@ case $ALGORITHM in
          --dataset $INPUT_PATH \
          --output $OUTPUT_PATH \
          --directed $DIRECTED \
-         --dampingfactor $DAMPING_FACTOR \
-         --iteration $MAX_ITERATION \
+         --damping-factor $DAMPING_FACTOR \
+         --max-iteration $MAX_ITERATION \
          --log-path $LOG_PATH \
          --threadnum $NUM_THREADS"
        ;;
