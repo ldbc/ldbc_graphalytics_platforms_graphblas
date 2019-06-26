@@ -35,7 +35,7 @@ void WriteOutWCCResult(
         if (info == GrB_SUCCESS) {
             file << original_index << " " << value << std::endl;
         } else {
-            file << original_index << " infinity" << std::endl;
+            file << original_index << " NaN" << std::endl;
         }
     }
 }
@@ -67,11 +67,9 @@ GrB_Vector WeaklyConnectedComponents(GrB_Matrix A, bool directed) {
     } else {
         C = A;
     }
+    GrB_Vector components = LAGraph_lacc(C);
 
-    WriteOutDebugMatrix("C", C);
-
-    GrB_Vector parents = LAGraph_lacc(C);
-    GxB_Vector_fprint(parents, "parents", GxB_COMPLETE, stderr);
+    return components;
 }
 
 int main(int argc, char **argv) {
@@ -84,11 +82,11 @@ int main(int argc, char **argv) {
     std::vector<GrB_Index> mapping = ReadMapping(parameters);
 
     std::cout << "Processing starts at: " << GetCurrentMilliseconds() << std::endl;
-    WeaklyConnectedComponents(A, parameters.directed);
+    GrB_Vector result = WeaklyConnectedComponents(A, parameters.directed);
     std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
 
-    //WriteOutPRResult(result, mapping, parameters);
+    WriteOutWCCResult(result, mapping, parameters);
 
     GrB_Matrix_free(&A);
-    //GrB_Vector_free(&result);
+    GrB_Vector_free(&result);
 }
