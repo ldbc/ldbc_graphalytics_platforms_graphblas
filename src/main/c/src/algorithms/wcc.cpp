@@ -23,15 +23,13 @@ void WriteOutWCCResult(
         std::cerr << "File " << parameters.output_file << " does not exists" << std::endl;
         exit(-1);
     }
-    file.precision(16);
-    file << std::scientific;
 
-    double value;
+    bool value;
     for (GrB_Index res_index = 0; res_index < mapping.size(); res_index++) {
         GrB_Index original_index = mapping[res_index];
         GrB_Index matrix_index = res_index;
 
-        GrB_Info info = GrB_Vector_extractElement_FP64(&value, result, matrix_index);
+        GrB_Info info = GrB_Vector_extractElement_BOOL(&value, result, matrix_index);
         if (info == GrB_SUCCESS) {
             file << original_index << " " << value << std::endl;
         } else {
