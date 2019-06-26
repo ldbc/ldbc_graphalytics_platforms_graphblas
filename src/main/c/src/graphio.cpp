@@ -16,9 +16,8 @@ GrB_Matrix ReadMatrixMarket(const BenchmarkParameters& parameters) {
     fclose(mmfile);
 
     {
-        ComputationTimer timer{"Matrix finalization"};
-        GrB_Index nvals;
-        GrB_Matrix_nvals(&nvals, A);
+        ComputationTimer timer{"Matrix finalization", total_timer};
+        GrB_wait();
     }
 
     return A;

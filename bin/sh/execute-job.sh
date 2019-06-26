@@ -96,11 +96,15 @@ case $ALGORITHM in
          --threadnum $NUM_THREADS"
        ;;
 
-#     wcc)
-#       COMMAND="$rootdir/bin/exe/$ALGORITHM --jobid $JOB_ID \
-#         --dataset $INPUT_PATH --output $OUTPUT_PATH \
-#         --threadnum $NUM_THREADS"
-#       ;;
+     wcc)
+       COMMAND="$rootdir/bin/exe/$ALGORITHM \
+         --jobid $JOB_ID \
+         --dataset $INPUT_PATH \
+         --output $OUTPUT_PATH \
+         --directed $DIRECTED \
+         --log-path $LOG_PATH \
+         --threadnum $NUM_THREADS"
+       ;;
 
      pr)
        COMMAND="$rootdir/bin/exe/$ALGORITHM \

@@ -6,13 +6,19 @@ set(CMAKE_CXX_STANDARD 17)
 link_directories(/usr/local/lib64)
 include_directories(include)
 
-set(SOURCES src/utils.cpp src/graphio.cpp)
+add_library(
+        graphblas_utils
+        SHARED
+        src/utils.cpp src/graphio.cpp
+)
 
 link_libraries(graphblas lagraph stdc++fs)
+link_libraries(graphblas_utils)
 
-add_executable(lcc src/algorithms/lcc.cpp ${SOURCES})
-add_executable(bfs src/algorithms/bfs.cpp ${SOURCES})
-add_executable(sssp src/algorithms/sssp.cpp ${SOURCES})
-add_executable(pr src/algorithms/pr.cpp ${SOURCES})
+add_executable(lcc src/algorithms/lcc.cpp)
+add_executable(bfs src/algorithms/bfs.cpp)
+add_executable(sssp src/algorithms/sssp.cpp)
+add_executable(pr src/algorithms/pr.cpp)
+add_executable(wcc src/algorithms/wcc.cpp)
 
 add_executable(converter src/tools/converter.cpp ${SOURCES})
