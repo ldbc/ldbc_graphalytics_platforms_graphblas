@@ -65,7 +65,8 @@ GrB_Vector WeaklyConnectedComponents(GrB_Matrix A, bool directed) {
     } else {
         C = A;
     }
-    GrB_Vector components = LAGraph_lacc(C);
+    GrB_Vector components = NULL;
+    LAGraph_lacc(C, &components);
 
     return components;
 }

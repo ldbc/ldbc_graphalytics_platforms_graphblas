@@ -48,7 +48,8 @@ GrB_Vector LA_LCC(GrB_Matrix A) {
 
     {
         ComputationTimer timer{"LCC"};
-        OK(LAGraph_lcc(&d, A, false))
+        double timing[2];
+        OK(LAGraph_lcc(&d, A, false, timing))
     }
 
     return d;
