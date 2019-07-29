@@ -1,0 +1,10 @@
+language: java
+jdk:
+  - openjdk8
+install: true
+script:
+    - cd graphalytics-platforms-ejml
+    - mvn test -B
+    - cd ..
+    - cd graphalytics-platforms-graphblas
+    - mvn test -B
