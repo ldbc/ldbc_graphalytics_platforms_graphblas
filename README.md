@@ -1,4 +1,4 @@
-# SuiteSparse:GraphBLAS platform driver for LDBC Graphalytics
+# SuiteSparse:GraphBLAS driver for LDBC Graphalytics
 
 [![Build Status](https://travis-ci.com/FTSRG/ldbc-graphalytics-platform-graphblas.svg?branch=master)](https://travis-ci.com/FTSRG/ldbc-graphalytics-platform-graphblas)
 
