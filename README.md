@@ -46,3 +46,11 @@ bin/sh/run-benchmark.sh
 ### Docker
 
 There's a `Dockerfile` included which shows how to compile GraphBLAS, LAGraph and how to use this driver.
+
+To build it, run:
+
+```console
+docker build . --tag ldbc/datagen
+```
+
+The compilation takes approx. 15-30 minutes.
