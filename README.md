@@ -5,30 +5,44 @@
 GraphBLAS... (TODO: provide a short description on GraphBLAS). To execute Graphalytics benchmark on GraphBLAS, follow the steps in the Graphalytics tutorial on [Running Benchmark](https://github.com/ldbc/ldbc_graphalytics/wiki/Manual%3A-Running-Benchmark) with the GraphBLAS-specific instructions listed below.
 
 ### Prerequisites
-Get SuiteSparse:GraphBLAS version 2.3.2+ as a [standalone package](http://faculty.cse.tamu.edu/davis/GraphBLAS.html), decompress it and install:
+
+Get [SuiteSparse:GraphBLAS v3.0.1+](http://faculty.cse.tamu.edu/davis/GraphBLAS.html), decompress it and install:
 
 ```console
-sudo make install && sudo ldconfig
+wget http://faculty.cse.tamu.edu/davis/GraphBLAS/GraphBLAS-3.0.1.tar.gz
+tar xf GraphBLAS-3.0.1.tar.gz
+cd GraphBLAS
+make && sudo make install && sudo ldconfig
 ```
 
-The whole SuiteSparse suite follows a slower release cycle, but is available at [the authors' site](http://faculty.cse.tamu.edu/davis/suitesparse.html), with
-[multiple](https://github.com/sergiud/SuiteSparse/tree/master/GraphBLAS)
-[mirrors](https://github.com/jluttine/suitesparse)
-on GitHub.
+Get [LAGraph](https://github.com/GraphBLAS/LAGraph), and install it
 
-### Obtain the platform driver
-There are two possible ways to obtain the GraphBLAS platform driver:
+```console
+git clone https://github.com/GraphBLAS/LAGraph
+cd LAGraph
+make && sudo make install && sudo ldconfig
+```
 
- 1. **Download the (prebuilt) [GraphBLAS platform driver](http://graphalytics.site/dist/stable/) distribution from our website.
+### Configure the benchmark
 
- 2. **Build the platform drivers**: 
-  - Download the source code from this repository.
-  - Execute `mvn clean package` in the root directory (See details in [Software Build](https://github.com/ldbc/ldbc_graphalytics/wiki/Documentation:-Software-Build)).
-  - Extract the distribution from  `graphalytics-{graphalytics-version}-graphblas-{platform-version}.tar.gz`.
+Follow the steps given in the [LDBC Graphalytics wiki](https://github.com/ldbc/ldbc_graphalytics/wiki).
 
-### Verify the necessary prerequisites
-The softwares listed below are required by the GraphBLAS platform driver, which should be properly configured in the cluster environment....
+A snippets to get things started:
 
-### Adjust the benchmark configurations
-Adjust the GraphBLAS configurations in `config/platform.properties`...
+```console
+mvn package
+tar xf graphalytics-*.tar.gz
+cd graphalytics-*
+cp -r config-template config
+bin/sh/compile-benchmark.sh
+```
 
+Set the benchmark configurations, including the graphs to be used, the directories of the graphs and the validation data in `config/benchmark.properties`, `config/benchmarks/...`, etc. Then, run the benchmark with:
+
+```console
+bin/sh/run-benchmark.sh
+```
+
+### Docker
+
+There's a `Dockerfile` included which shows how to compile GraphBLAS, LAGraph and how to use this driver.
