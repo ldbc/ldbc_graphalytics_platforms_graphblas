@@ -42,14 +42,14 @@ void WriteOutLCCResult(
     }
 }
 
-GrB_Vector LA_LCC(GrB_Matrix A) {
+GrB_Vector LA_LCC(GrB_Matrix A, bool symmetric) {
     GrB_Info info;
     GrB_Vector d;
 
     {
         ComputationTimer timer{"LCC"};
         double timing[2];
-        OK(LAGraph_lcc(&d, A, false, timing))
+        OK(LAGraph_lcc(&d, A, symmetric, false, timing))
     }
 
     return d;
@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
     std::vector<GrB_Index> mapping = ReadMapping(parameters);
 
     std::cout << "Processing starts at: " << GetCurrentMilliseconds() << std::endl;
-    GrB_Vector result = LA_LCC(A);
+    GrB_Vector result = LA_LCC(A, !parameters.directed);
     std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
 
     WriteOutLCCResult(result, mapping, parameters);
