@@ -8,7 +8,7 @@ GraphBLAS... (TODO: provide a short description on GraphBLAS). To execute Grapha
 
 Get [SuiteSparse:GraphBLAS v3.0.1+](http://faculty.cse.tamu.edu/davis/GraphBLAS.html), decompress it and install:
 
-```console
+```bash
 wget http://faculty.cse.tamu.edu/davis/GraphBLAS/GraphBLAS-3.0.1.tar.gz
 tar xf GraphBLAS-3.0.1.tar.gz
 cd GraphBLAS
@@ -17,7 +17,7 @@ make && sudo make install && sudo ldconfig
 
 Get [LAGraph](https://github.com/GraphBLAS/LAGraph), and install it
 
-```console
+```bash
 git clone https://github.com/GraphBLAS/LAGraph
 cd LAGraph
 make && sudo make install && sudo ldconfig
@@ -29,7 +29,7 @@ Follow the steps given in the [LDBC Graphalytics wiki](https://github.com/ldbc/l
 
 A snippets to get things started:
 
-```console
+```bash
 mvn package
 tar xf graphalytics-*.tar.gz
 cd graphalytics-*
@@ -39,7 +39,7 @@ bin/sh/compile-benchmark.sh
 
 Set the benchmark configurations, including the graphs to be used, the directories of the graphs and the validation data in `config/benchmark.properties`, `config/benchmarks/...`, etc. Then, run the benchmark with:
 
-```console
+```bash
 bin/sh/run-benchmark.sh
 ```
 
@@ -49,8 +49,8 @@ There's a `Dockerfile` included which shows how to compile GraphBLAS, LAGraph an
 
 To build it, run:
 
-```console
-docker build . --tag ldbc/datagen
+```bash
+docker build . --tag ldbc/graphalytics-graphblas
 ```
 
 The compilation takes approx. 15-30 minutes.
