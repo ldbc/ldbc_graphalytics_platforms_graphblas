@@ -84,9 +84,24 @@ int main(int argc, char **argv) {
             line_stream >> weight;
         }
 
+        uint64_t first;
+        uint64_t second;
+
+        // According to the MatrixMarket specification, for symmetric, skew-symmetric, and Hermitian matrices
+        // "Only entries on or below the main diagonal are provided in the file", i.e. A_ij where i >= j
+        // (see Table 2 on P9 in https://math.nist.gov/MatrixMarket/reports/MMformat.ps.gz).
+        // Therefore, for the symmetric (undirected) case, we flip the entries if mapping[src] < mapping[trg].
+        if (!parameters.directed && mapping[src] < mapping[trg]) {
+            first = mapping[trg];
+            second = mapping[src];
+        } else {
+            first = mapping[src];
+            second = mapping[trg];
+        }
+
         market_file
-            << mapping[src] << " "
-            << mapping[trg] << " "
+            << first << " "
+            << second << " "
             << weight << std::endl;
     }
 
