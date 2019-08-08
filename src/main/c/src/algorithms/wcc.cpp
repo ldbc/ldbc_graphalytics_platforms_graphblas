@@ -46,13 +46,6 @@ GrB_Vector WeaklyConnectedComponents(GrB_Matrix A, bool directed) {
     GrB_Matrix_nrows(&n, A);
 
     GrB_Matrix C = A;
-    {
-        ComputationTimer timer{"Zero diagonalize"};
-        for (GrB_Index i = 0; i < n; i++) {
-            OK(GrB_Matrix_setElement_FP64(C, 0, i, i))
-        }
-    }
-
     if (directed) {
         OK(GrB_Matrix_new(&C, GrB_BOOL, n, n))
 
