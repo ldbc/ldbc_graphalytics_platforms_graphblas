@@ -24,17 +24,13 @@ void WriteOutWCCResult(
         exit(-1);
     }
 
-    bool value;
+    uint64_t component;
     for (GrB_Index res_index = 0; res_index < mapping.size(); res_index++) {
         GrB_Index original_index = mapping[res_index];
         GrB_Index matrix_index = res_index;
 
-        GrB_Info info = GrB_Vector_extractElement_BOOL(&value, result, matrix_index);
-        if (info == GrB_SUCCESS) {
-            file << original_index << " " << value << std::endl;
-        } else {
-            file << original_index << " NaN" << std::endl;
-        }
+        GrB_Info info = GrB_Vector_extractElement_UINT64(&component, result, matrix_index) ;
+        file << original_index << " " << component << std::endl;
     }
 }
 
