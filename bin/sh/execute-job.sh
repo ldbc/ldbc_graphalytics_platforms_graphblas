@@ -108,7 +108,7 @@ case $ALGORITHM in
 
      pr)
        COMMAND="$rootdir/bin/exe/$ALGORITHM \
-          --jobid $JOB_ID \
+         --jobid $JOB_ID \
          --dataset $INPUT_PATH \
          --output $OUTPUT_PATH \
          --directed $DIRECTED \
@@ -118,12 +118,16 @@ case $ALGORITHM in
          --threadnum $NUM_THREADS"
        ;;
 
-#     cdlp)
-#       COMMAND="$rootdir/bin/exe/$ALGORITHM --jobid $JOB_ID \
-#         --iteration $MAX_ITERATION \
-#         --dataset $INPUT_PATH --output $OUTPUT_PATH \
-#         --threadnum $NUM_THREADS"
-#       ;;
+     cdlp)
+       COMMAND="$rootdir/bin/exe/$ALGORITHM \
+         --jobid $JOB_ID \
+         --dataset $INPUT_PATH \
+         --output $OUTPUT_PATH \
+         --directed $DIRECTED \
+         --max-iteration $MAX_ITERATION \
+         --log-path $LOG_PATH \
+         --threadnum $NUM_THREADS"
+       ;;
 
      lcc)
        COMMAND="$rootdir/bin/exe/$ALGORITHM \
