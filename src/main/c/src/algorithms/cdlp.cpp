@@ -28,14 +28,14 @@ void WriteOutCDLPResult(
     file.precision(16);
     file << std::scientific;
 
-    uint64_t value;
     for (GrB_Index res_index = 0; res_index < mapping.size(); res_index++) {
-        GrB_Index original_index = mapping[res_index];
-        GrB_Index label_in_matrix;
-        GrB_Vector_extractElement_UINT64(&value, result, label_in_matrix);
-        GrB_Index label_in_graph = mapping[label_in_matrix];
+        GrB_Index original_vertex_index = mapping[res_index];
 
-        file << original_index << " " << label_in_graph << std::endl;
+        uint64_t res_label;
+        GrB_Vector_extractElement_UINT64(&res_label, result, res_index);
+        GrB_Index original_label = mapping[res_label];
+
+        file << original_vertex_index << " " << original_label << std::endl;
     }
 }
 
