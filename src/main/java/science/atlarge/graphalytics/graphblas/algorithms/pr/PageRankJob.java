@@ -43,7 +43,6 @@ public final class PageRankJob extends GraphblasJob {
 
     @Override
     protected void appendAlgorithmParameters() {
-
         commandLine.addArgument("--algorithm");
         commandLine.addArgument("pr");
 
