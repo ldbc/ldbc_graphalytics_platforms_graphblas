@@ -46,7 +46,7 @@ GrB_Vector LA_CDLP(GrB_Matrix A, bool symmetric, int itermax) {
     {
         ComputationTimer timer{"CDLP"};
         double timing[2];
-        OK(LAGraph_cdlp(&l, A, symmetric, itermax, timing))
+        OK(LAGraph_cdlp(&l, A, symmetric, false, itermax, timing))
     }
 
     return l;

@@ -24,6 +24,7 @@ import science.atlarge.graphalytics.domain.graph.Graph;
 import science.atlarge.graphalytics.domain.graph.LoadedGraph;
 import science.atlarge.graphalytics.execution.*;
 import science.atlarge.graphalytics.graphblas.algorithms.bfs.BreadthFirstSearchJob;
+import science.atlarge.graphalytics.graphblas.algorithms.cdlp.CommunityDetectionLPJob;
 import science.atlarge.graphalytics.graphblas.algorithms.lcc.LocalClusteringCoefficientJob;
 import science.atlarge.graphalytics.graphblas.algorithms.pr.PageRankJob;
 import science.atlarge.graphalytics.graphblas.algorithms.sssp.SingleSourceShortestPathJob;
@@ -112,17 +113,20 @@ public class GraphblasPlatform implements Platform {
 
 		GraphblasJob job;
 		switch (algorithm) {
-			case LCC:
-				job = new LocalClusteringCoefficientJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
-				break;
 			case BFS:
 				job = new BreadthFirstSearchJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
 				break;
-			case SSSP:
-				job = new SingleSourceShortestPathJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
+			case CDLP:
+				job = new CommunityDetectionLPJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
+				break;
+			case LCC:
+				job = new LocalClusteringCoefficientJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
 				break;
 			case PR:
 				job = new PageRankJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
+				break;
+			case SSSP:
+				job = new SingleSourceShortestPathJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
 				break;
 			case WCC:
 				job = new WeaklyConnectedComponents(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
