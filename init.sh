@@ -10,4 +10,3 @@ tar xf $PROJECT-bin.tar.gz
 cd $PROJECT/
 cp -r config-template config
 bin/sh/compile-benchmark.sh
-bin/sh/run-benchmark.sh
