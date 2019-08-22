@@ -37,8 +37,9 @@ To initialize the benchmark package, run:
 
 where `MY_GRAPH_DIR` should point to the directory of the graphs and the validation data. The default value is `~/graphs`.
 
-Edit the rest of the configurations (e.g. graphs to be included in the benchmark) in the `config/benchmark.properties`, `config/benchmarks/...`, etc. files.
-Then, run the benchmark with:
+Edit the rest of the configurations (e.g. graphs to be included in the benchmark) in the `config` directory. In particular, to increase the number of threads, edit `config/platform.properties` and set the value of `platform.graphblas.num-threads`.
+
+Run the benchmark with:
 
 ```bash
 bin/sh/run-benchmark.sh
