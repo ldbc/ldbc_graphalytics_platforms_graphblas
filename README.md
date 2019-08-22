@@ -29,17 +29,16 @@ make && sudo make install && sudo ldconfig
 
 Follow the steps given in the [LDBC Graphalytics wiki](https://github.com/ldbc/ldbc_graphalytics/wiki).
 
-A snippets to get things started:
+To initialize the benchmark package, run:
 
 ```bash
-mvn package
-tar xf graphalytics-*.tar.gz
-cd graphalytics-*
-cp -r config-template config
-bin/sh/compile-benchmark.sh
+./init.sh MY_GRAPH_DIR
 ```
 
-Set the benchmark configurations, including the graphs to be used, the directories of the graphs and the validation data in `config/benchmark.properties`, `config/benchmarks/...`, etc. Then, run the benchmark with:
+where `MY_GRAPH_DIR` should point to the directory of the graphs and the validation data. The default value is `~/graphs`.
+
+Edit the rest of the configurations (e.g. graphs to be included in the benchmark) in the `config/benchmark.properties`, `config/benchmarks/...`, etc. files.
+Then, run the benchmark with:
 
 ```bash
 bin/sh/run-benchmark.sh
