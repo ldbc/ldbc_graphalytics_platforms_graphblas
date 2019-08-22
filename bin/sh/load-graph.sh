@@ -69,9 +69,7 @@ if [[ ! -f ${OUTPUT_PATH}/graph.mtx && ! -f ${OUTPUT_PATH}/graph.vtx ]]; then
         --output-vtx ${OUTPUT_PATH}/graph.vtx \
         --weighted ${WEIGHTED} \
         --directed ${DIRECTED}
-
-    ln -fs ${INPUT_VERTEX_PATH} ${OUTPUT_PATH}/vertex.csv
-    ln -fs ${INPUT_EDGE_PATH} ${OUTPUT_PATH}/edge.csv
 else
     echo "Transformed file already existing, no load required"
 fi
+
