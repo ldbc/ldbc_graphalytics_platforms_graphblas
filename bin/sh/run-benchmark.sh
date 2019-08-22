@@ -66,4 +66,3 @@ export CLASSPATH=$config:$(find ${rootdir}/$LIBRARY_JAR):$platform_classpath
 echo $CLASSPATH
 
 java -cp $CLASSPATH $java_opts science.atlarge.graphalytics.BenchmarkSuite
-

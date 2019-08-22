@@ -72,4 +72,3 @@ if [[ ! -f ${OUTPUT_PATH}/graph.mtx && ! -f ${OUTPUT_PATH}/graph.vtx ]]; then
 else
     echo "Transformed file already existing, no load required"
 fi
-
