@@ -37,13 +37,13 @@ RUN mvn install
 # Copy the project
 WORKDIR /opt/
 COPY . /opt/graphalytics-graphblas
-WORKDIR /opt/graphalytics-graphblas/graphalytics-platforms-graphblas
+WORKDIR /opt/graphalytics-graphblas/
 
 # Build the project
 RUN mvn package
 RUN tar xf *.tar.gz
 RUN mv graphalytics-*/ graphalytics
-WORKDIR /opt/graphalytics-graphblas/graphalytics-platforms-graphblas/graphalytics
+WORKDIR /opt/graphalytics-graphblas/graphalytics
 
 # Run benchmark
 RUN cp -r config-template config
