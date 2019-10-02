@@ -3,6 +3,12 @@ project(GraphBLAS)
 
 set(CMAKE_CXX_STANDARD 17)
 
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
+    message(FATAL_ERROR "Insufficient gcc version")
+  endif()
+endif()
+
 link_directories(/usr/local/lib64)
 include_directories(include)
 
