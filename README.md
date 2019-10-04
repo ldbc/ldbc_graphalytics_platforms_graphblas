@@ -8,11 +8,11 @@ To execute the Graphalytics benchmark on GraphBLAS, follow the steps in the Grap
 
 ### Prerequisites
 
-Get [SuiteSparse:GraphBLAS v3.0.1+](http://faculty.cse.tamu.edu/davis/GraphBLAS.html), decompress it and install:
+Get [SuiteSparse:GraphBLAS v3.1.0+](http://faculty.cse.tamu.edu/davis/GraphBLAS.html), decompress it and install:
 
 ```bash
-wget http://faculty.cse.tamu.edu/davis/GraphBLAS/GraphBLAS-3.0.1.tar.gz
-tar xf GraphBLAS-3.0.1.tar.gz
+wget http://faculty.cse.tamu.edu/davis/GraphBLAS/GraphBLAS-3.1.0.tar.gz
+tar xf GraphBLAS-3.1.0.tar.gz
 cd GraphBLAS
 make && sudo make install && sudo ldconfig
 ```
