@@ -3,7 +3,9 @@
 set -e
 
 GRAPHS_DIR=${1:-~/graphs}
-PROJECT=graphalytics-1.0.0-graphblas-0.1-SNAPSHOT
+GRAPHALYTICS_VERSION=1.2.0-SNAPSHOT
+PROJECT_VERSION=0.1-SNAPSHOT
+PROJECT=graphalytics-$GRAPHALYTICS_VERSION-graphblas-$PROJECT_VERSION
 
 rm -rf $PROJECT
 mvn package
