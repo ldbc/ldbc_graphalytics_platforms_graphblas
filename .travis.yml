@@ -1,6 +1,10 @@
 language: java
 jdk:
- - openjdk8
-install: true
+- openjdk8
+install:
+- git clone https://github.com/ldbc/ldbc_graphalytics/
+- cd ldbc_graphalytics
+- mvn install -DskipTests
+- cd ..
 script:
 - mvn test -B
