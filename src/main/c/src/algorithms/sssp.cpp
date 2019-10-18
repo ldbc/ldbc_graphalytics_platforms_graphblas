@@ -56,7 +56,9 @@ GrB_Vector LA_SSSP(GrB_Matrix A, GrB_Index sourceVertex) {
     }
     {
         ComputationTimer timer{"SSSP"};
-        OK(LAGraph_BF_basic(&d, A, sourceVertex))
+        GrB_Matrix AT;
+        GrB_transpose(AT, NULL, NULL, A, NULL);
+        OK(LAGraph_BF_basic_pushpull(&d, A, AT, sourceVertex))
     }
 
     return d;
