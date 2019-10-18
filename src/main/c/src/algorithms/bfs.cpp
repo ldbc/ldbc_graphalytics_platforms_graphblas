@@ -44,7 +44,9 @@ GrB_Vector LA_BFS(GrB_Matrix A, GrB_Index sourceVertex) {
 
     GrB_Info info;
     GrB_Vector d;
-    OK(LAGraph_bfs_simple(&d, A, sourceVertex))
+    GrB_Matrix AT;
+    GrB_transpose(AT, NULL, NULL, A, NULL);
+    OK(LAGraph_bfs_pushpull(&d, NULL, A, AT, sourceVertex, 0, false))
 
     return d;
 }
