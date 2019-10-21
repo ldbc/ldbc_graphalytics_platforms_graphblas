@@ -7,7 +7,7 @@ RUN apt-get install -y bash curl maven cmake m4 g++
 
 # Download GraphBLAS and LAGraph
 WORKDIR /opt
-RUN curl -L 'http://faculty.cse.tamu.edu/davis/GraphBLAS/GraphBLAS-3.1.0.tar.gz' | tar -xz
+RUN curl -L 'http://faculty.cse.tamu.edu/davis/GraphBLAS/GraphBLAS-3.1.1.tar.gz' | tar -xz
 RUN git clone https://github.com/GraphBLAS/LAGraph
 
 # Download Graphalytics
