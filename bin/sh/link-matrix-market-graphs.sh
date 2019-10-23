@@ -15,8 +15,8 @@ for m in $MM_DIR/*.mtx; do
     f=$(basename -- "$m")
     # drop extension and postfix: ".mtx" is 4 characters
     g="${f::-4}"
-    # skip files with postfix
-    p="${f::-5}"
+    # get postfix, skip files that have a postfix
+    p="${g:(-5)}"
     [[ $p == "-bool" ]] && continue
     [[ $p == "-fp64" ]] && continue
 
