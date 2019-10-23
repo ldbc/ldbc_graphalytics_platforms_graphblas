@@ -7,13 +7,6 @@ fi
 
 MM_DIR=$1
 
-# make sure files are extracted
-pushd .
-cd $MM_DIR
-7z x -aos '*.7z'
-7z x -aos '*.7z?dl=1'
-popd
-
 mkdir -p intermediate
 
 # unweighted graphs
