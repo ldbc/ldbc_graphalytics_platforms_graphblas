@@ -10,6 +10,24 @@ MM_DIR=$1
 mkdir -p intermediate
 
 # unweighted graphs
+for m in $MM_DIR/*.mtx; do
+    # get base filename without path
+    f=$(basename -- "$m")
+    # drop extension and postfix: ".mtx" is 4 characters
+    g="${f::-4}"
+    # skip files with postfix
+    p="${f::-5}"
+    [[ $p == "-bool" ]] && continue
+    [[ $p == "-fp64" ]] && continue
+
+    # create directory and add symlinks
+    mkdir -p intermediate/$g
+    ln -s $MM_DIR/$g.mtx intermediate/$g/graph.mtx
+    ln -s $MM_DIR/$g.vtx intermediate/$g/graph.vtx
+    echo $m linked to intermediate/$g/graph.vtx
+done
+
+# unweighted variants of weighted graphs
 for m in $MM_DIR/*-bool.mtx; do
     # get base filename without path
     f=$(basename -- "$m")
@@ -21,7 +39,7 @@ for m in $MM_DIR/*-bool.mtx; do
     mkdir -p intermediate/$g
     ln -s $MM_DIR/$g-bool.mtx intermediate/$g/graph.mtx
     ln -s $MM_DIR/$g-bool.vtx intermediate/$g/graph.vtx
-    echo $m linked
+    echo $m linked to intermediate/$g/graph.vtx
 done
 
 # weighted graphs
@@ -36,5 +54,5 @@ for m in $MM_DIR/*-fp64.mtx; do
     mkdir -p intermediate/$g.e_weight
     ln -s $MM_DIR/$g-fp64.mtx intermediate/$g.e_weight/graph.mtx
     ln -s $MM_DIR/$g-fp64.vtx intermediate/$g.e_weight/graph.vtx
-    echo $m linked
+    echo $m linked to intermediate/$g/graph.vtx
 done
