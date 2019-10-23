@@ -34,7 +34,7 @@ for m in $MM_DIR/*-fp64.mtx; do
 
     # create directory and add symlinks
     mkdir -p intermediate/$g.e_weight
-    ln -s $MM_DIR/$g-bool.mtx intermediate/$g.e_weight/graph.mtx
-    ln -s $MM_DIR/$g-bool.vtx intermediate/$g.e_weight/graph.vtx
+    ln -s $MM_DIR/$g-fp64.mtx intermediate/$g.e_weight/graph.mtx
+    ln -s $MM_DIR/$g-fp64.vtx intermediate/$g.e_weight/graph.vtx
     echo $m linked
 done
