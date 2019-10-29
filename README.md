@@ -37,6 +37,8 @@ To initialize the benchmark package, run:
 
 where `MY_GRAPH_DIR` should point to the directory of the graphs and the validation data. The default value is `~/graphs`.
 
+If you have the Matrix Market files pre-generated, symlink them using the `bin/sh/link-matrix-market.sh` script.
+
 Edit the rest of the configurations (e.g. graphs to be included in the benchmark) in the `config` directory. In particular, to increase the number of threads, edit `config/platform.properties` and set the value of `platform.graphblas.num-threads`.
 
 Run the benchmark with:
