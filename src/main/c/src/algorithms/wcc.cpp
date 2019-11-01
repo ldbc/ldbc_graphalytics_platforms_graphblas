@@ -1,5 +1,5 @@
 /*
- * LCC algorithm implementation in GraphBLAS.
+ * WCC algorithm implementation in GraphBLAS.
  */
 
 #include <algorithm>
