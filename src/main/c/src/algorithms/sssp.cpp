@@ -73,11 +73,16 @@ int main(int argc, char **argv) {
     GrB_Matrix A = ReadMatrixMarket(parameters);
     std::vector<GrB_Index> mapping = ReadMapping(parameters);
 
-    GrB_Index sourceVertex = std::distance(mapping.begin(), std::find(
-        mapping.begin(),
-        mapping.end(),
-        parameters.source_vertex
-    ));
+    auto source_vertex_iter = std::find(
+            mapping.begin(),
+            mapping.end(),
+            parameters.source_vertex
+    );
+    if (source_vertex_iter == mapping.end()) {
+        std::cout << "Source vertex not found in mapping" << std::endl;
+        return -1;
+    }
+    GrB_Index sourceVertex = std::distance(mapping.begin(), source_vertex_iter);
 
     std::cout << "Processing starts at: " << GetCurrentMilliseconds() << std::endl;
     GrB_Vector result = LA_SSSP(A, sourceVertex);
