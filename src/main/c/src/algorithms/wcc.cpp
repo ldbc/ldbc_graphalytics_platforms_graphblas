@@ -41,21 +41,11 @@ GrB_Vector WeaklyConnectedComponents(GrB_Matrix A, bool directed) {
     GrB_Index n;
     GrB_Matrix_nrows(&n, A);
 
-    GrB_Matrix C = A;
-    if (directed) {
-        OK(GrB_Matrix_new(&C, GrB_BOOL, n, n))
-
-        GrB_Descriptor desc;
-        OK(GrB_Descriptor_new(&desc))
-        OK(GrB_Descriptor_set(desc, GrB_INP1, GrB_TRAN))
-
-        OK(GrB_eWiseAdd_Matrix_BinaryOp(C, GrB_NULL, GrB_NULL, GrB_LOR, A, A, desc))
-        OK(GrB_Descriptor_free(&desc))
-    } else {
-        C = A;
-    }
     GrB_Vector components = NULL;
-    LAGraph_cc(C, &components);
+
+    // directed graph are symmetric and need to be sanitized
+    bool sanitize = directed;
+    LAGraph_cc(&components, A, sanitize);
 
     return components;
 }
