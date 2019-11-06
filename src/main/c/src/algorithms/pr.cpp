@@ -14,7 +14,7 @@
 /*
  * Result serializer function
  */
-void WriteOutPageRankResult(
+void SerializePageRankResult(
     GrB_Vector result,
     const std::vector<GrB_Index> &mapping,
     const BenchmarkParameters &parameters
@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
     GrB_Vector result = LAGraph_PageRank2(A, parameters.damping_factor, parameters.max_iteration);
     std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
 
-    WriteOutPageRankResult(result, mapping, parameters);
+    SerializePageRankResult(result, mapping, parameters);
 
     GrB_Matrix_free(&A);
     GrB_Vector_free(&result);

@@ -85,7 +85,7 @@ ConverterParameters ParseConverterParameters(int argc, char **argv) {
  * DEBUG FUNCTIONS
  */
 
-void WriteOutDebugMatrix(const char *title, GrB_Matrix result) {
+void SerializeDebugMatrix(const char *title, GrB_Matrix result) {
     printf("%s:\n", title);
     GrB_Index size;
     GrB_Matrix_nrows(&size, result);
@@ -111,7 +111,7 @@ void WriteOutDebugMatrix(const char *title, GrB_Matrix result) {
     }
 }
 
-void WriteOutDebugVector(const char *title, GrB_Vector result) {
+void SerializeDebugVector(const char *title, GrB_Vector result) {
     printf("%s:\n", title);
 #ifdef VERBOSE
     GrB_Index size;

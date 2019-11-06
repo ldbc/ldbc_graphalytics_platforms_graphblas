@@ -14,7 +14,7 @@
 /*
  * Result serializer function
  */
-void WriteOutCDLPResult(
+void SerializeCDLPResult(
     GrB_Vector result,
     const std::vector<GrB_Index> &mapping,
     const BenchmarkParameters &parameters
@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
     GrB_Vector result = LA_CDLP(A, !parameters.directed, parameters.max_iteration);
     std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
 
-    WriteOutCDLPResult(result, mapping, parameters);
+    SerializeCDLPResult(result, mapping, parameters);
 
     GrB_Matrix_free(&A);
     GrB_Vector_free(&result);

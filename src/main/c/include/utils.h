@@ -35,7 +35,7 @@ ConverterParameters ParseConverterParameters(int argc, char **argv);
 
 time_t GetCurrentMilliseconds();
 
-void WriteOutDebugMatrix(const char *title, GrB_Matrix result);
+void SerializeDebugMatrix(const char *title, GrB_Matrix result);
 
 /*
  * GRAPHBLAS HELPER MACROS

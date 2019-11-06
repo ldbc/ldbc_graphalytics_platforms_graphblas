@@ -14,7 +14,7 @@
 /*
  * Result serializer function
  */
-void WriteOutLCCResult(
+void SerializeLCCResult(
     GrB_Vector result,
     const std::vector<GrB_Index> &mapping,
     const BenchmarkParameters &parameters
@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
     GrB_Vector result = LA_LCC(A, !parameters.directed);
     std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
 
-    WriteOutLCCResult(result, mapping, parameters);
+    SerializeLCCResult(result, mapping, parameters);
 
     GrB_Matrix_free(&A);
     GrB_Vector_free(&result);

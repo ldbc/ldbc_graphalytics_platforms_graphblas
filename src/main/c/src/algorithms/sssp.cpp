@@ -13,7 +13,7 @@ extern "C" {
 #include "graphio.h"
 #include "computation_timer.hpp"
 
-void WriteOutSSSPResult(
+void SerializeSSSPResult(
     GrB_Vector result,
     const std::vector<GrB_Index> &mapping,
     const BenchmarkParameters &parameters
@@ -92,7 +92,7 @@ int main(int argc, char **argv) {
     GrB_Vector result = LA_SSSP(A, sourceVertex, parameters.directed);
     std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
 
-    WriteOutSSSPResult(result, mapping, parameters);
+    SerializeSSSPResult(result, mapping, parameters);
 
     GrB_Matrix_free(&A);
     GrB_Vector_free(&result);
