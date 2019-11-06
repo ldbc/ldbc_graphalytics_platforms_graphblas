@@ -40,7 +40,7 @@ void WriteOutSSSPResult(
     }
 }
 
-GrB_Vector LA_SSSP(GrB_Matrix A, GrB_Index sourceVertex) {
+GrB_Vector LA_SSSP(GrB_Matrix A, GrB_Index sourceVertex, bool directed) {
     GrB_Info info;
     GrB_Vector d;
 
@@ -56,8 +56,12 @@ GrB_Vector LA_SSSP(GrB_Matrix A, GrB_Index sourceVertex) {
     }
     {
         ComputationTimer timer{"SSSP"};
-        GrB_Matrix AT;
-        GrB_transpose(AT, NULL, NULL, A, NULL);
+        GrB_Matrix AT = NULL;
+        if (directed) {
+            GrB_transpose(AT, NULL, NULL, A, NULL);
+        } else {
+            AT = A;
+        }
         OK(LAGraph_BF_basic_pushpull(&d, A, AT, sourceVertex))
     }
 
@@ -85,7 +89,7 @@ int main(int argc, char **argv) {
     GrB_Index sourceVertex = std::distance(mapping.begin(), source_vertex_iter);
 
     std::cout << "Processing starts at: " << GetCurrentMilliseconds() << std::endl;
-    GrB_Vector result = LA_SSSP(A, sourceVertex);
+    GrB_Vector result = LA_SSSP(A, sourceVertex, parameters.directed);
     std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
 
     WriteOutSSSPResult(result, mapping, parameters);

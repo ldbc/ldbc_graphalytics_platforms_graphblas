@@ -39,16 +39,22 @@ void WriteOutBFSResult(
     }
 }
 
-GrB_Vector LA_BFS(GrB_Matrix A, GrB_Index sourceVertex) {
+GrB_Vector LA_BFS(GrB_Matrix A, GrB_Index sourceVertex, bool directed) {
     ComputationTimer timer{"BFS"};
 
     GrB_Info info;
-    GrB_Vector d;
-    GrB_Matrix AT;
-    GrB_transpose(AT, NULL, NULL, A, NULL);
-    OK(LAGraph_bfs_pushpull(&d, NULL, A, AT, sourceVertex, 0, false))
 
-    return d;
+    GrB_Matrix AT = NULL;
+    if (directed) {
+        GrB_transpose(AT, NULL, NULL, A, NULL);
+    } else {
+        AT = A;
+    }
+
+    GrB_Vector v;
+    OK(LAGraph_bfs_pushpull(&v, NULL, A, AT, sourceVertex, 0, false))
+
+    return v;
 }
 
 int main(int argc, char **argv) {
@@ -72,7 +78,7 @@ int main(int argc, char **argv) {
     GrB_Index sourceVertex = std::distance(mapping.begin(), source_vertex_iter);
 
     std::cout << "Processing starts at: " << GetCurrentMilliseconds() << std::endl;
-    GrB_Vector result = LA_BFS(A, sourceVertex);
+    GrB_Vector result = LA_BFS(A, sourceVertex, parameters.directed);
     std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
 
     WriteOutBFSResult(result, mapping, parameters, -1);
