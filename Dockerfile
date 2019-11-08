@@ -30,7 +30,7 @@ RUN ldconfig
 
 # Build LAGraph
 WORKDIR /opt/LAGraph
-RUN make
+RUN JOBS=$(nproc) make
 RUN make install
 RUN ldconfig
 
