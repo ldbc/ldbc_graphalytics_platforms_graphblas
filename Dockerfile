@@ -24,7 +24,7 @@ RUN curl 'https://atlarge.ewi.tudelft.nl/graphalytics/zip/example-undirected.zip
 
 # Build GraphBLAS
 WORKDIR /opt/GraphBLAS
-RUN make
+RUN JOBS=$(nproc) make
 RUN make install
 RUN ldconfig
 
