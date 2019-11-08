@@ -22,6 +22,6 @@ sed -i "s|^platform.graphblas.num-threads =$|platform.graphblas.num-threads = $(
 
 bin/sh/compile-benchmark.sh
 
-if [ ! -z $MATRICES_DIR ]; then
+if [ -d $MATRICES_DIR ]; then
 	bin/sh/link-matrix-market-graphs.sh $MATRICES_DIR
 fi
