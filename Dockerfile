@@ -5,9 +5,13 @@ FROM openjdk:8-jdk-stretch
 RUN apt-get update
 RUN apt-get install -y bash curl maven cmake m4 g++
 
-# Download GraphBLAS and LAGraph
+# Download GraphBLAS
 WORKDIR /opt
 RUN curl -L 'http://faculty.cse.tamu.edu/davis/GraphBLAS/GraphBLAS-3.1.1.tar.gz' | tar -xz
+# drop version number from the GraphBLAS directory
+RUN mv GraphBLAS-* GraphBLAS
+
+# Download LAGraph
 RUN git clone https://github.com/GraphBLAS/LAGraph
 
 # Download Graphalytics
