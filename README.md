@@ -8,6 +8,19 @@ To execute the Graphalytics benchmark on GraphBLAS, follow the steps in the Grap
 
 ### Prerequisites
 
+Set up Make to run in parallel:
+
+```bash
+export JOBS=$(nproc)
+```
+
+The default compiler on most Linux system is the GCC. To use the Intel C++ Compiler, get a license, install it, [configure it](https://github.com/FTSRG/cheat-sheets/wiki/GraphBLAS), and issue the following commands:
+
+```bash
+export CC=icc
+export CXX=icc
+```
+
 Get [SuiteSparse:GraphBLAS v3.1.0+](http://faculty.cse.tamu.edu/davis/GraphBLAS.html), decompress it and install:
 
 ```bash
@@ -57,4 +70,4 @@ To build it, run:
 docker build . --tag ldbc/graphalytics-graphblas
 ```
 
-The compilation takes approx. 15-30 minutes.
+Depending on the number of CPU cores and the speed of your internet connection, building the image takes approx. 3-30 minutes.
