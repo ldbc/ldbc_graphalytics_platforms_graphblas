@@ -45,7 +45,7 @@ GrB_Vector WeaklyConnectedComponents(GrB_Matrix A, bool directed) {
 
     // directed graph are symmetric and need to be sanitized
     bool sanitize = directed;
-    LAGraph_cc(&components, A, sanitize);
+    LAGraph_fast_sv(&components, A, sanitize);
 
     return components;
 }
