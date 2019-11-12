@@ -25,18 +25,46 @@ void SerializeBFSResult(
         exit(-1);
     }
 
-    GrB_Index value;
-    for (GrB_Index res_index = 0; res_index < mapping.size(); res_index++) {
-        GrB_Index original_index = mapping[res_index];
-        GrB_Index matrix_index = res_index;
+    GrB_Info info;
+    GrB_Index n = mapping.size();
 
-        GrB_Info info = GrB_Vector_extractElement_UINT64(&value, result, matrix_index);
-        if (info == GrB_SUCCESS) {
+    GrB_Index nvals;
+    OK(GrB_Vector_nvals(&nvals, result));
+
+    GrB_Index *I = NULL;
+    I = (GrB_Index*) LAGraph_malloc ((nvals + 1), sizeof (GrB_Index));
+
+    int64_t *X = NULL;
+    X = (int64_t *) LAGraph_malloc((nvals + 1), sizeof(int64_t));
+
+    // LAGraph returns uses int32 values if the number of vertices is sufficiently
+    // small and int64s otherwise
+    if (nvals > INT32_MAX) {
+        OK(GrB_Vector_extractTuples_INT64(I, X, &nvals, result));
+    } else {
+        int32_t *Y = NULL;
+        Y = (int32_t *) LAGraph_malloc((nvals + 1), sizeof(int32_t));
+        OK(GrB_Vector_extractTuples_INT32(I, Y, &nvals, result));
+        for (int i = 0; i < nvals; i++) {
+            X[i] = Y[i];
+        }
+    }
+
+    GrB_Index curr_nz = 0;
+    for (GrB_Index matrix_index = 0; matrix_index < n; matrix_index++) {
+        GrB_Index original_index = mapping[matrix_index];
+
+        if (I[curr_nz] == matrix_index) {
+            int64_t value = X[curr_nz];
             file << original_index << " " << (value + offset) << std::endl;
+            curr_nz++;
         } else {
             file << original_index << " " << "9223372036854775807" << std::endl;
         }
     }
+
+    LAGraph_free(I);
+    LAGraph_free(X);
 }
 
 GrB_Vector LA_BFS(GrB_Matrix A, GrB_Index sourceVertex, bool directed) {
