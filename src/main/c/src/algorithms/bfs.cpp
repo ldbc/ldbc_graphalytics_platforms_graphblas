@@ -55,8 +55,7 @@ void SerializeBFSResult(
         GrB_Index original_index = mapping[matrix_index];
 
         if (I[curr_nz] == matrix_index) {
-            int64_t value = X[curr_nz];
-            file << original_index << " " << (value + offset) << std::endl;
+            file << original_index << " " << (X[curr_nz] + offset) << std::endl;
             curr_nz++;
         } else {
             file << original_index << " " << "9223372036854775807" << std::endl;

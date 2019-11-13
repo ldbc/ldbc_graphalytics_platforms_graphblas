@@ -24,14 +24,20 @@ void SerializeWCCResult(
         exit(-1);
     }
 
-    uint64_t component;
-    for (GrB_Index res_index = 0; res_index < mapping.size(); res_index++) {
-        GrB_Index original_index = mapping[res_index];
-        GrB_Index matrix_index = res_index;
+    GrB_Info info;
+    GrB_Index n = mapping.size();
+    GrB_Index nvals;
 
-        GrB_Info info = GrB_Vector_extractElement_UINT64(&component, result, matrix_index) ;
-        file << original_index << " " << component << std::endl;
+    uint64_t *X = NULL;
+    X = (uint64_t *) LAGraph_malloc(n, sizeof(uint64_t));
+    OK(GrB_Vector_extractTuples_UINT64(GrB_NULL, X, &nvals, result));
+
+    for (GrB_Index matrix_index = 0; matrix_index < n; matrix_index++) {
+        GrB_Index original_index = mapping[matrix_index];
+        file << original_index << " " << X[matrix_index] << std::endl;
     }
+
+    LAGraph_free(X);
 }
 
 GrB_Vector WeaklyConnectedComponents(GrB_Matrix A, bool directed) {

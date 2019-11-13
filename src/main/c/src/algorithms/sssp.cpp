@@ -26,19 +26,47 @@ void SerializeSSSPResult(
     file.precision(16);
     file << std::scientific;
 
-    double value;
-    for (GrB_Index res_index = 0; res_index < mapping.size(); res_index++) {
-        GrB_Index original_index = mapping[res_index];
-        GrB_Index matrix_index = res_index;
+    GrB_Info info;
+    GrB_Index n = mapping.size();
 
-        GrB_Info info = GrB_Vector_extractElement_FP64(&value, result, matrix_index);
-        if (info == GrB_SUCCESS) {
-            file << original_index << " " << value << std::endl;
+    GrB_Index nvals;
+    OK(GrB_Vector_nvals(&nvals, result));
+
+    GrB_Index *I = NULL;
+    I = (GrB_Index*) LAGraph_malloc ((nvals + 1), sizeof (GrB_Index));
+
+    double *X = NULL;
+    X = (double *) LAGraph_malloc((nvals + 1), sizeof(double));
+    OK(GrB_Vector_extractTuples_FP64(I, X, &nvals, result));
+
+    GrB_Index curr_nz = 0;
+    for (GrB_Index matrix_index = 0; matrix_index < n; matrix_index++) {
+        GrB_Index original_index = mapping[matrix_index];
+
+        if (I[curr_nz] == matrix_index) {
+            file << original_index << " " << X[curr_nz] << std::endl;
+            curr_nz++;
         } else {
             file << original_index << " infinity" << std::endl;
         }
     }
+
+    LAGraph_free(I);
+    LAGraph_free(X);
 }
+//    double value;
+//    for (GrB_Index res_index = 0; res_index < mapping.size(); res_index++) {
+//        GrB_Index original_index = mapping[res_index];
+//        GrB_Index matrix_index = res_index;
+//
+//        GrB_Info info = GrB_Vector_extractElement_FP64(&value, result, matrix_index);
+//        if (info == GrB_SUCCESS) {
+//            file << original_index << " " << value << std::endl;
+//        } else {
+//            file << original_index << " infinity" << std::endl;
+//        }
+//    }
+//}
 
 GrB_Vector LA_SSSP(GrB_Matrix A, GrB_Index sourceVertex, bool directed) {
     GrB_Info info;

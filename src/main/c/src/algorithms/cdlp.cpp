@@ -28,15 +28,20 @@ void SerializeCDLPResult(
     file.precision(16);
     file << std::scientific;
 
-    for (GrB_Index res_index = 0; res_index < mapping.size(); res_index++) {
-        GrB_Index original_vertex_index = mapping[res_index];
+    GrB_Info info;
+    GrB_Index n = mapping.size();
+    GrB_Index nvals;
 
-        uint64_t res_label;
-        GrB_Vector_extractElement_UINT64(&res_label, result, res_index);
-        GrB_Index original_label = mapping[res_label];
+    uint64_t *X = NULL;
+    X = (uint64_t *) LAGraph_malloc(n, sizeof(uint64_t));
+    OK(GrB_Vector_extractTuples_UINT64(GrB_NULL, X, &nvals, result));
 
-        file << original_vertex_index << " " << original_label << std::endl;
+    for (GrB_Index matrix_index = 0; matrix_index < n; matrix_index++) {
+        GrB_Index original_index = mapping[matrix_index];
+        file << original_index << " " << X[matrix_index] << std::endl;
     }
+
+    LAGraph_free(X);
 }
 
 GrB_Vector LA_CDLP(GrB_Matrix A, bool symmetric, int itermax) {

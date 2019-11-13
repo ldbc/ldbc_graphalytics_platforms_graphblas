@@ -28,18 +28,20 @@ void SerializePageRankResult(
     file.precision(16);
     file << std::scientific;
 
-    double value;
-    for (GrB_Index res_index = 0; res_index < mapping.size(); res_index++) {
-        GrB_Index original_index = mapping[res_index];
-        GrB_Index matrix_index = res_index;
+    GrB_Info info;
+    GrB_Index n = mapping.size();
+    GrB_Index nvals;
 
-        GrB_Info info = GrB_Vector_extractElement_FP64(&value, result, matrix_index);
-        if (info == GrB_SUCCESS) {
-            file << original_index << " " << value << std::endl;
-        } else {
-            file << original_index << " " << 0.0 << std::endl;
-        }
+    double *X = NULL;
+    X = (double *) LAGraph_malloc((n + 1), sizeof(double));
+    OK(GrB_Vector_extractTuples_FP64(GrB_NULL, X, &nvals, result));
+
+    for (GrB_Index matrix_index = 0; matrix_index < n; matrix_index++) {
+        GrB_Index original_index = mapping[matrix_index];
+        file << original_index << " " << X[matrix_index] << std::endl;
     }
+
+    LAGraph_free(X);
 }
 
 GrB_Vector LAGraph_PageRank2(GrB_Matrix A, double damping_factor, unsigned long iteration_num) {
