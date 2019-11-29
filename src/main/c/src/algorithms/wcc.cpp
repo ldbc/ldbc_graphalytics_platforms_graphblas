@@ -27,7 +27,7 @@ void SerializeWCCResult(
     GrB_Info info;
     GrB_Index n = mapping.size();
     GrB_Index nvals;
-    GrB_Vector_nvals(&nvals, result);
+    OK(GrB_Vector_nvals(&nvals, result))
 
     uint64_t *X = NULL;
     X = (uint64_t *) LAGraph_malloc(n, sizeof(uint64_t));

@@ -31,6 +31,7 @@ void SerializePageRankResult(
     GrB_Info info;
     GrB_Index n = mapping.size();
     GrB_Index nvals;
+    OK(GrB_Vector_nvals(&nvals, result));
 
     double *X = NULL;
     X = (double *) LAGraph_malloc((n + 1), sizeof(double));

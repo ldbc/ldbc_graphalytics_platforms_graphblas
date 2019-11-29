@@ -32,10 +32,11 @@ void SerializeLCCResult(
     GrB_Index n = mapping.size();
 
     GrB_Index nvals;
+    OK(GrB_Vector_nvals(&nvals, result))
+
     GrB_Index *I = NULL;
     double *X = NULL;
 
-    OK(GrB_Vector_nvals(&nvals, result))
     I = (GrB_Index*) LAGraph_malloc ((nvals + 1), sizeof (GrB_Index));
     X = (double *) LAGraph_malloc((nvals + 1), sizeof(double));
 
