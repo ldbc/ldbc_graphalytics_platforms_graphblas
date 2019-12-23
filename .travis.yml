@@ -2,9 +2,22 @@ language: java
 jdk:
 - openjdk8
 install:
+# LDBC Graphalytics
 - git clone https://github.com/ldbc/ldbc_graphalytics/
 - cd ldbc_graphalytics
 - mvn install -DskipTests
 - cd ..
+# GraphBLAS
+- curl -L 'http://faculty.cse.tamu.edu/davis/GraphBLAS/GraphBLAS-3.1.1.tar.gz' | tar -xz
+- mv GraphBLAS-* GraphBLAS
+- JOBS=$(nproc) make
+- make install
+- ldconfig
+# LAGraph
+- git clone https://github.com/GraphBLAS/LAGraph
+- JOBS=$(nproc) make
+- make install
 script:
-- mvn test -B
+- ./init.sh
+- cd graphalytics-2.0.0-SNAPSHOT-graphblas-0.1-SNAPSHOT/
+- bin/sh/run-benchmark.sh
