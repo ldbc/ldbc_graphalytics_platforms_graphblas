@@ -10,14 +10,21 @@ install:
 # GraphBLAS
 - curl -L 'http://faculty.cse.tamu.edu/davis/GraphBLAS/GraphBLAS-3.1.1.tar.gz' | tar -xz
 - mv GraphBLAS-* GraphBLAS
+- cd GraphBLAS
 - JOBS=$(nproc) make
 - make install
 - ldconfig
+- cd ..
 # LAGraph
 - git clone https://github.com/GraphBLAS/LAGraph
+- cd LAGraph
 - JOBS=$(nproc) make
 - make install
+- ldconfig
+- cd ..
 script:
 - ./init.sh
 - cd graphalytics-2.0.0-SNAPSHOT-graphblas-0.1-SNAPSHOT/
 - bin/sh/run-benchmark.sh
+notifications:
+  slack: ingraph:87VximaW94zOaj9KHcfxlgZz
