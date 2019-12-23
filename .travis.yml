@@ -12,15 +12,15 @@ install:
 - mv GraphBLAS-* GraphBLAS
 - cd GraphBLAS
 - JOBS=$(nproc) make
-- make install
-- ldconfig
+- sudo make install
+- sudo ldconfig
 - cd ..
 # LAGraph
 - git clone https://github.com/GraphBLAS/LAGraph
 - cd LAGraph
 - JOBS=$(nproc) make
-- make install
-- ldconfig
+- sudo make install
+- sudo ldconfig
 - cd ..
 script:
 - ./init.sh
