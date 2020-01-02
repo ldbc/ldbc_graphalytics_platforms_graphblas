@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# avoid going into loops without matches on the wildcard
+# (by default, bash simply expands e.g. `i in *.mtx` to `i=*.mtx` if there are no such files)
+shopt -s nullglob
+
 if [[ $# -eq 0 ]] ; then
     echo 'Usage: bin/sh/link-matrix-market-graphs.sh <directory-of-matrix-market-files>'
     exit 0
