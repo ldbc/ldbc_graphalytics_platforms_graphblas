@@ -1,6 +1,7 @@
 dist: bionic
 language: java
 install:
+- mv example-data-sets/* ~/
 # LDBC Graphalytics
 - git clone https://github.com/ldbc/ldbc_graphalytics/
 - cd ldbc_graphalytics
