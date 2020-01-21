@@ -16,8 +16,7 @@ install:
 - sudo ldconfig
 - cd ..
 # LAGraph
-#- git clone https://github.com/GraphBLAS/LAGraph
-- git clone --depth 1 --branch cpp-compat https://github.com/szarnyasg/LAGraph
+- git clone --depth 1 https://github.com/GraphBLAS/LAGraph
 - cd LAGraph
 - JOBS=$(nproc) make
 - sudo make install
