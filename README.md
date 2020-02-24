@@ -27,12 +27,11 @@ export CC=icc
 export CXX=icc
 ```
 
-Get [SuiteSparse:GraphBLAS v3.1.0+](http://faculty.cse.tamu.edu/davis/GraphBLAS.html), decompress it and install:
+Get [SuiteSparse:GraphBLAS v3.2.0+](http://faculty.cse.tamu.edu/davis/GraphBLAS.html), decompress it and install:
 
 ```bash
-wget http://faculty.cse.tamu.edu/davis/GraphBLAS/GraphBLAS-3.1.1.tar.gz
-tar xf GraphBLAS-3.1.1.tar.gz
-cd GraphBLAS-3.1.1
+git clone --depth 1 --branch v3.2.0 --single-branch https://github.com/DrTimothyAldenDavis/GraphBLAS
+cd GraphBLAS-3.2.0
 make && sudo make install && sudo ldconfig
 cd ..
 ```
