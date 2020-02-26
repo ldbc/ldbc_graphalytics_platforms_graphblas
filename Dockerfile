@@ -7,12 +7,10 @@ RUN apt-get install -y bash curl maven cmake m4 g++
 
 # Download GraphBLAS
 WORKDIR /opt
-RUN curl -L 'http://faculty.cse.tamu.edu/davis/GraphBLAS/GraphBLAS-3.1.1.tar.gz' | tar -xz
-# drop version number from the GraphBLAS directory
-RUN mv GraphBLAS-* GraphBLAS
+RUN git clone --depth 1 --branch v3.2.0 --single-branch https://github.com/DrTimothyAldenDavis/GraphBLAS
 
 # Download LAGraph
-RUN git clone https://github.com/GraphBLAS/LAGraph
+RUN git clone --depth 1 --single-branch https://github.com/GraphBLAS/LAGraph
 
 # Download Graphalytics
 RUN git clone https://github.com/ldbc/ldbc_graphalytics
