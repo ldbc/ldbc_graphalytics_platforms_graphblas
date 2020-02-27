@@ -79,6 +79,9 @@ int main(int argc, char **argv) {
             OK(GrB_Matrix_setElement_BOOL(A, 1, src_mapped, trg_mapped))
         }
     }
+    if (!parameters.directed) {
+        OK(GrB_transpose(A, GrB_NULL, parameters.weighted ? GrB_PLUS_FP64 : GrB_PLUS_BOOL, A, GrB_NULL))
+    }
 
     char *matrix_file_c = strdup(parameters.matrix_file.c_str());
     char *mapping_file_c = strdup(parameters.mapping_file.c_str());
