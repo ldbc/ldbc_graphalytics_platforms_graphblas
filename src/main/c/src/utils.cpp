@@ -46,6 +46,10 @@ BenchmarkParameters ParseBenchmarkParameters(int argc, char **argv) {
         if (strcmp(key, "--threadnum") == 0) {
             benchmark_parameters.thread_num = std::stoul(value);
         }
+
+        if (strcmp(key, "--binary") == 0) {
+            benchmark_parameters.binary = (strcmp(value, "true") == 0);
+        }
     }
 
     return benchmark_parameters;
@@ -67,7 +71,7 @@ ConverterParameters ParseConverterParameters(int argc, char **argv) {
         if (strcmp(key, "--output-matrix") == 0) {
             converter_parameters.matrix_file = value;
         }
-        if (strcmp(key, "--output-vtx") == 0) {
+        if (strcmp(key, "--output-mapping") == 0) {
             converter_parameters.mapping_file = value;
         }
         if (strcmp(key, "--weighted") == 0) {
