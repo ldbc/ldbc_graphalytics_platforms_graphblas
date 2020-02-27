@@ -16,8 +16,7 @@ extern "C" {
 void SerializeBFSResult(
     GrB_Vector result,
     const std::vector<GrB_Index> &mapping,
-    const BenchmarkParameters &parameters,
-    int offset = 0
+    const BenchmarkParameters &parameters
 ) {
     std::ofstream file{parameters.output_file};
     if (!file.is_open()) {
@@ -54,12 +53,12 @@ void SerializeBFSResult(
     for (GrB_Index matrix_index = 0; matrix_index < n; matrix_index++) {
         GrB_Index original_index = mapping[matrix_index];
 
-        if (I[curr_nz] == matrix_index) {
-            file << original_index << " " << (X[curr_nz] + offset) << std::endl;
-            curr_nz++;
-        } else {
-            file << original_index << " " << "9223372036854775807" << std::endl;
-        }
+        // LAGraph returns:
+        // * 0 when a vertex is unreachable -> this should be represented as infinity in Graphalytics
+        // * 1 for the vertex itself (traversal level = 1)
+        // * 2+ for vertices that are reachable (traversal level)
+        file << original_index << " " << (X[curr_nz] == 0 ? 9223372036854775807 : X[curr_nz]-1) << std::endl;
+        curr_nz++;
     }
 
     LAGraph_free(I);
@@ -108,7 +107,7 @@ int main(int argc, char **argv) {
     GrB_Vector result = LA_BFS(A, sourceVertex, parameters.directed);
     std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
 
-    SerializeBFSResult(result, mapping, parameters, -1);
+    SerializeBFSResult(result, mapping, parameters);
 
     GrB_Matrix_free(&A);
     GrB_Vector_free(&result);
