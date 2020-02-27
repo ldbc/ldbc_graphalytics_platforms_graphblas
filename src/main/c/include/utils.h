@@ -25,10 +25,11 @@ BenchmarkParameters ParseBenchmarkParameters(int argc, char **argv);
 typedef struct {
   std::string vertex_file;
   std::string edge_file;
-  std::string market_file;
+  std::string matrix_file;
   std::string mapping_file;
   bool weighted = false;
   bool directed = false;
+  bool binary = false;
 } ConverterParameters;
 
 ConverterParameters ParseConverterParameters(int argc, char **argv);

@@ -64,8 +64,8 @@ ConverterParameters ParseConverterParameters(int argc, char **argv) {
         if (strcmp(key, "--input-edge") == 0) {
             converter_parameters.edge_file = value;
         }
-        if (strcmp(key, "--output-mm") == 0) {
-            converter_parameters.market_file = value;
+        if (strcmp(key, "--output-matrix") == 0) {
+            converter_parameters.matrix_file = value;
         }
         if (strcmp(key, "--output-vtx") == 0) {
             converter_parameters.mapping_file = value;
@@ -75,6 +75,10 @@ ConverterParameters ParseConverterParameters(int argc, char **argv) {
         }
         if (strcmp(key, "--directed") == 0) {
             converter_parameters.directed = (strcmp(value, "true") == 0);
+        }
+
+        if (strcmp(key, "--binary") == 0) {
+            converter_parameters.binary = (strcmp(value, "true") == 0);
         }
     }
 

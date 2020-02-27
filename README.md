@@ -57,7 +57,7 @@ To initialize the benchmark package, run:
 
 where
 * `MY_GRAPH_DIR` is the directory of the graphs and the validation data. The default value is `~/graphs`.
-* `MY_MATRICES_DIR` (optional) is the directory of the pre-generated Matrix Market files. The default value is `~/matrices`.
+* `MY_MATRICES_DIR` (optional) is the directory of the pre-generated matrix files (in Matrix Market or binary format). The default value is `~/matrices`.
 
 Edit the rest of the configurations (e.g. graphs to be included in the benchmark) in the `config` directory. Also, inspect `config/platform.properties` and check the value of `platform.graphblas.num-threads`.
 
