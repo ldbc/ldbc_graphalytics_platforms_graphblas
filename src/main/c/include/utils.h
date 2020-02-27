@@ -55,7 +55,8 @@ void SerializeDebugMatrix(const char *title, GrB_Matrix result);
     if (info != GrB_SUCCESS)                               \
     {                                                      \
         throw std::runtime_error{                          \
-            std::string{"GraphBLAS error: "} + GrB_error() \
+            std::string{"GraphBLAS error [" +              \
+              std::to_string(info) + "]: "} + GrB_error()  \
         };                                                 \
     }                                                      \
 }
