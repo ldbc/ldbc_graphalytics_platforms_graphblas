@@ -131,10 +131,10 @@ public abstract class GraphblasJob {
 	 */
 	private void appendDatasetParameters(String inputPath, String outputPath) {
 		commandLine.addArgument("--input-path");
-		commandLine.addArgument(Paths.get(inputPath).toString());
+		commandLine.addArgument(Paths.get(inputPath).toAbsolutePath().toString());
 
 		commandLine.addArgument("--output-path");
-		commandLine.addArgument(Paths.get(outputPath).toString());
+		commandLine.addArgument(Paths.get(outputPath).toAbsolutePath().toString());
 	}
 
 
