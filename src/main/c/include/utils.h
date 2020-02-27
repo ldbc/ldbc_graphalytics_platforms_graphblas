@@ -18,6 +18,7 @@ typedef struct {
   double damping_factor = 0.0;
   unsigned long max_iteration = 0;
   unsigned long thread_num = 1;
+  bool binary = false;
 } BenchmarkParameters;
 
 BenchmarkParameters ParseBenchmarkParameters(int argc, char **argv);
