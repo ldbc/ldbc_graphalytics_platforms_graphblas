@@ -28,7 +28,7 @@ while [[ $# -gt 1 ]] # Parse two arguments: [--key value] or [-k value]
   case ${key} in
 
     --graph-name)
-      GRAPH_NAME="$value"
+      # not used
       shift;;
 
     --input-vertex-path)
@@ -63,6 +63,7 @@ mkdir -p ${OUTPUT_PATH}
 
 if [[ ! -f ${OUTPUT_PATH}/graph.mtx && ! -f ${OUTPUT_PATH}/graph.vtx ]]; then
     bin/exe/converter \
+        --binary true \
         --input-vertex ${INPUT_VERTEX_PATH} \
         --input-edge ${INPUT_EDGE_PATH} \
         --output-mm  ${OUTPUT_PATH}/graph.mtx \
