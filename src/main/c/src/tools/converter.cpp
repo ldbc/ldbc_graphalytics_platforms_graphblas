@@ -57,14 +57,17 @@ int main(int argc, char **argv) {
 
     Vertex n = mappedIndex - 1;
 
-    std::cout << "Creating matrix" << std::endl;
+    std::cout << "Creating adjacency matrix from edges" << std::endl;
     GrB_Matrix A;
     OK(GrB_Matrix_new(&A, parameters.weighted ? GrB_FP64 : GrB_BOOL, n, n))
 
     Vertex src, trg;
     std::string line;
     std::string weight_string;
+
+    uint64_t i;
     while (std::getline(edge_file, line)) {
+        i++;
         std::istringstream line_stream{line};
         line_stream >> src;
         line_stream >> trg;
@@ -78,8 +81,12 @@ int main(int argc, char **argv) {
         } else {
             OK(GrB_Matrix_setElement_BOOL(A, 1, src_mapped, trg_mapped))
         }
+        if (i % 100000000 == 0) {
+            std::cout << "- Edge no." << i << " processed" << std::endl;
+        }
     }
     if (!parameters.directed) {
+        std::cout << "Converting matrix into symmetric" << std::endl;
         OK(GrB_transpose(A, GrB_NULL, parameters.weighted ? GrB_PLUS_FP64 : GrB_PLUS_BOOL, A, GrB_NULL))
     }
 
