@@ -38,11 +38,7 @@ COPY . /opt/graphalytics-graphblas
 WORKDIR /opt/graphalytics-graphblas/
 
 # Build the project
-RUN mvn package
-RUN tar xf *.tar.gz
-RUN mv graphalytics-*/ graphalytics
-WORKDIR /opt/graphalytics-graphblas/graphalytics
+./init.sh
 
 # Run benchmark
-RUN cp -r config-template config
 RUN bin/sh/run-benchmark.sh
