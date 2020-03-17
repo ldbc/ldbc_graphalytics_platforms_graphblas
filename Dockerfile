@@ -32,10 +32,6 @@ RUN JOBS=$(nproc) make
 RUN make install
 RUN ldconfig
 
-# Build Graphalytics
-WORKDIR /opt/ldbc_graphalytics
-RUN mvn install
-
 # Copy the project
 WORKDIR /opt/
 COPY . /opt/graphalytics-graphblas
