@@ -10,7 +10,7 @@ install:
 - mvn install -DskipTests
 - cd ..
 # GraphBLAS
-- git clone --depth 1 --branch master https://github.com/DrTimothyAldenDavis/GraphBLAS
+- git clone --depth 1 --branch stable https://github.com/DrTimothyAldenDavis/GraphBLAS
 - cd GraphBLAS
 - JOBS=$(nproc) CMAKE_OPTIONS="-DGBCOMPACT=1" make
 - sudo make install
