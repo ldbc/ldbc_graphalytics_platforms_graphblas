@@ -31,7 +31,7 @@ Get [SuiteSparse:GraphBLAS v3.2.0+](http://faculty.cse.tamu.edu/davis/GraphBLAS.
 
 ```bash
 git clone --depth 1 --branch v3.2.0 --single-branch https://github.com/DrTimothyAldenDavis/GraphBLAS
-cd GraphBLAS-3.2.0
+cd GraphBLAS
 make && sudo make install && sudo ldconfig
 cd ..
 ```
