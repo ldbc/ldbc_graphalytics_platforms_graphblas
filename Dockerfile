@@ -1,16 +1,22 @@
-# Using OpenJDK 8 to run the LDBC Graphalytics benchmark harness
-FROM openjdk:8-jdk-stretch
+FROM ubuntu:20.04
 
-# Prerequisites
-RUN apt-get update
-RUN apt-get install -y bash curl maven cmake m4 g++
+# to prevent tzdata from requiring user input
+# https://askubuntu.com/a/1013396/415610
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt update
+RUN apt install -y git gcc g++ cmake curl unzip
+RUN apt install -y openjdk-8-jdk maven
+RUN apt install -y libgraphblas3
+RUN ln -s /usr/lib/x86_64-linux-gnu/libgraphblas.so.3 /usr/lib/x86_64-linux-gnu/libgraphblas.so
+
+WORKDIR /opt
 
 # Download GraphBLAS
-WORKDIR /opt
 RUN git clone --depth 1 --branch v3.2.0 https://github.com/DrTimothyAldenDavis/GraphBLAS
 
 # Download LAGraph
-RUN git clone --depth 1 https://github.com/GraphBLAS/LAGraph
+RUN git clone https://github.com/GraphBLAS/LAGraph
 
 # Download Graphalytics
 RUN git clone https://github.com/ldbc/ldbc_graphalytics
@@ -20,17 +26,9 @@ WORKDIR /opt/graphs
 RUN curl 'https://atlarge.ewi.tudelft.nl/graphalytics/zip/example-directed.zip'   > example-directed.zip   && unzip example-directed.zip
 RUN curl 'https://atlarge.ewi.tudelft.nl/graphalytics/zip/example-undirected.zip' > example-undirected.zip && unzip example-undirected.zip
 
-# Build GraphBLAS
-WORKDIR /opt/GraphBLAS
-RUN JOBS=$(nproc) make
-RUN make install
-RUN ldconfig
-
-# Build LAGraph
 WORKDIR /opt/LAGraph
-RUN JOBS=$(nproc) make
-RUN make install
-RUN ldconfig
+RUN cmake .
+RUN JOBS=$(nproc) make install
 
 # Copy the project
 WORKDIR /opt/
@@ -38,7 +36,8 @@ COPY . /opt/graphalytics-graphblas
 WORKDIR /opt/graphalytics-graphblas/
 
 # Build the project
-./init.sh
+RUN export CPATH=/opt/GraphBLAS/Include/ && ./init.sh
 
 # Run benchmark
+WORKDIR /opt/graphalytics-graphblas/graphalytics-1.3.0-graphblas-0.1-SNAPSHOT
 RUN bin/sh/run-benchmark.sh
