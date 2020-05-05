@@ -7,13 +7,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update
 RUN apt install -y git gcc g++ cmake curl unzip
 RUN apt install -y openjdk-8-jdk maven
-RUN apt install -y libgraphblas3
-RUN ln -s /usr/lib/x86_64-linux-gnu/libgraphblas.so.3 /usr/lib/x86_64-linux-gnu/libgraphblas.so
+RUN apt install -y libsuitesparse-dev
 
 WORKDIR /opt
-
-# Download GraphBLAS
-RUN git clone --depth 1 --branch v3.2.0 https://github.com/DrTimothyAldenDavis/GraphBLAS
 
 # Download LAGraph
 RUN git clone https://github.com/GraphBLAS/LAGraph
