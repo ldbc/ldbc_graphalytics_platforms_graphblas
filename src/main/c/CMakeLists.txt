@@ -9,7 +9,6 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   endif()
 endif()
 
-link_directories(/usr/local/lib64)
 include_directories(include)
 
 link_libraries(graphblas lagraph)
