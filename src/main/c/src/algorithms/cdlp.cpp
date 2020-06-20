@@ -39,7 +39,7 @@ void SerializeCDLPResult(
 
     for (GrB_Index matrix_index = 0; matrix_index < n; matrix_index++) {
         GrB_Index original_index = mapping[matrix_index];
-        file << original_index << " " << X[matrix_index] << std::endl;
+        file << original_index << " " << mapping[X[matrix_index]] << std::endl;
     }
 
     LAGraph_free(X);
@@ -52,7 +52,7 @@ GrB_Vector LA_CDLP(GrB_Matrix A, bool symmetric, int itermax) {
     {
         ComputationTimer timer{"CDLP"};
         double timing[2];
-        OK(LAGraph_cdlp(&l, A, symmetric, false, itermax, timing))
+        OK(LAGraph_cdlp(&l, A, symmetric, true, itermax, timing))
     }
 
     return l;
