@@ -10,14 +10,14 @@ install:
 - mvn install -DskipTests
 - cd ..
 # GraphBLAS
-- git clone --depth 1 --branch master https://github.com/DrTimothyAldenDavis/GraphBLAS
+- git clone --depth 1 --branch master https://github.com/szarnyasg/GraphBLAS
 - cd GraphBLAS
 - JOBS=$(nproc) CMAKE_OPTIONS="-DGBCOMPACT=1" make
 - sudo make install
 - sudo ldconfig
 - cd ..
 # LAGraph
-- git clone --depth 1 https://github.com/GraphBLAS/LAGraph
+- git clone --depth 1 https://github.com/szarnyasg/LAGraph
 - cd LAGraph
 - JOBS=$(nproc) make
 - sudo make install
