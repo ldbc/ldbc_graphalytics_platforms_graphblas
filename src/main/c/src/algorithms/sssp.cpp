@@ -4,11 +4,6 @@
 
 #include <algorithm>
 
-extern "C" {
-#include <GraphBLAS.h>
-#include <LAGraph.h>
-}
-
 #include "utils.h"
 #include "graphio.h"
 #include "computation_timer.hpp"

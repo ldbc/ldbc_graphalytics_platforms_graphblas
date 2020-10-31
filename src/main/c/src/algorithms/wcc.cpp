@@ -4,12 +4,6 @@
 
 #include <algorithm>
 
-extern "C" {
-#include <GraphBLAS.h>
-#define LAGRAPH_EXPERIMENTAL_ASK_BEFORE_BENCHMARKING
-#include <LAGraph.h>
-}
-
 #include "utils.h"
 #include "graphio.h"
 #include "computation_timer.hpp"

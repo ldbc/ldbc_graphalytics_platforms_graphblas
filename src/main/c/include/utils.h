@@ -59,7 +59,7 @@ void SerializeDebugMatrix(const char *title, GrB_Matrix result);
     {                                                      \
         throw std::runtime_error{                          \
             std::string{"GraphBLAS error [" +              \
-              std::to_string(info) + "]: "} + GrB_error()  \
+              std::to_string(info) + "]  "}                \
         };                                                 \
     }                                                      \
 }

@@ -111,7 +111,7 @@ void SerializeDebugMatrix(const char *title, GrB_Matrix result) {
 //                printf(" [no value] ");
                 printf("- ");
             } else {
-                printf("Error! %s\n", GrB_error());
+                printf("Error!\n");
             }
 
         }
@@ -143,7 +143,7 @@ void SerializeDebugVector(const char *title, GrB_Vector result) {
             printf(" [no value] ");
 //            printf("%u ", 0);
         } else {
-            printf("Error! %s\n", GrB_error());
+            printf("Error!\n");
         }
 
     }

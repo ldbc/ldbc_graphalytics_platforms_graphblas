@@ -23,7 +23,7 @@ GrB_Matrix ReadMatrixMarket(const BenchmarkParameters& parameters) {
 
     {
         ComputationTimer timer{"Matrix finalization", total_timer};
-        GrB_wait();
+        GrB_Matrix_wait(&A);
     }
 
     return A;
