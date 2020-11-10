@@ -5,19 +5,19 @@ jdk:
 install:
 - cp -r example-data-sets/* ~/
 # LDBC Graphalytics
-- git clone https://github.com/ldbc/ldbc_graphalytics/
+- git clone --depth 1 --branch v1.4.0 https://github.com/ldbc/ldbc_graphalytics/
 - cd ldbc_graphalytics
 - mvn install -DskipTests
 - cd ..
 # GraphBLAS
-- git clone --depth 1 --branch v1.4.0 https://github.com/szarnyasg/GraphBLAS
+- git clone --depth 1 --branch master https://github.com/szarnyasg/GraphBLAS
 - cd GraphBLAS
 - JOBS=$(nproc) CMAKE_OPTIONS="-DGBCOMPACT=1" make
 - sudo make install
 - sudo ldconfig
 - cd ..
 # LAGraph
-- git clone --depth 1 https://github.com/szarnyasg/LAGraph
+- git clone --depth 1 https://github.com/GraphBLAS/LAGraph
 - cd LAGraph
 - JOBS=$(nproc) make
 - sudo make install
@@ -25,7 +25,7 @@ install:
 - cd ..
 script:
 - ./init.sh
-- cd graphalytics-1.4.0-SNAPSHOT-graphblas-0.1-SNAPSHOT/
+- cd graphalytics-1.4.0-graphblas-0.1-SNAPSHOT/
 - bin/sh/run-benchmark.sh
 notifications:
   slack: ingraph:87VximaW94zOaj9KHcfxlgZz
