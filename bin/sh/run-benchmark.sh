@@ -20,7 +20,11 @@
 
 set -e
 
-rootdir=$(dirname $(readlink -f ${BASH_SOURCE[0]}))/../../
+if [ "$(uname)" == "Darwin" ]; then
+  rootdir=$(dirname $(greadlink -f ${BASH_SOURCE[0]}))/../..
+else
+  rootdir=$(dirname $(readlink -f ${BASH_SOURCE[0]}))/../..
+fi
 config="${rootdir}/config/"
 
 function print-usage() {
@@ -32,7 +36,11 @@ while :
 do
 	case "$1" in
 		--config)                      # Use a different config directory
-			config="$(readlink -f "$2")"
+			if [ "$(uname)" == "Darwin" ]; then
+				config="$(greadlink -f "$2")"
+			else
+				config="$(readlink -f "$2")"
+			fi
 			echo "Using config: $config"
 			shift 2
 			;;
