@@ -9,6 +9,9 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   endif()
 endif()
 
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  link_directories(/usr/local/lib)
+endif()
 include_directories(include)
 
 link_libraries(graphblas lagraph)
