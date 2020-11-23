@@ -1,4 +1,4 @@
-dist: bionic
+dist: focal
 language: java
 jdk:
 - openjdk8
@@ -10,7 +10,7 @@ install:
 - mvn install -DskipTests
 - cd ..
 # GraphBLAS
-- git clone --depth 1 --branch master https://github.com/szarnyasg/GraphBLAS
+- git clone --depth 1 --branch v3.3.3 https://github.com/DrTimothyAldenDavis/GraphBLAS
 - cd GraphBLAS
 - JOBS=$(nproc) CMAKE_OPTIONS="-DGBCOMPACT=1" make
 - sudo make install
@@ -23,8 +23,9 @@ install:
 - sudo make install
 - sudo ldconfig
 - cd ..
-script:
+# init
 - ./init.sh
+script:
 - cd graphalytics-1.4.0-graphblas-0.1-SNAPSHOT/
 - bin/sh/run-benchmark.sh
 notifications:
