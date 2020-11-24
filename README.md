@@ -1,6 +1,6 @@
 # SuiteSparse:GraphBLAS driver for LDBC Graphalytics
 
-[![Build Status](https://travis-ci.com/ftsrg/ldbc-graphalytics-platforms-graphblas.svg?branch=master)](https://travis-ci.com/ftsrg/ldbc-graphalytics-platforms-graphblas)
+[![Build Status](https://circleci.com/gh/ldbc/ldbc-graphalytics-platforms-graphblas.svg?style=svg)](https://circleci.com/gh/ldbc/ldbc-graphalytics-platforms-graphblas)
 
 Platform driver for the [LDBC Graphalytics benchmark](https://graphalytics.org) using the building blocks of the [GraphBLAS standard](http://graphblas.org/) and its [SuiteSparse:GraphBLAS reference implementation](http://faculty.cse.tamu.edu/davis/GraphBLAS.html).
 
