@@ -4,11 +4,6 @@ jdk:
 - openjdk8
 install:
 - cp -r example-data-sets/* ~/
-# LDBC Graphalytics
-- git clone --depth 1 --branch v1.4.0 https://github.com/ldbc/ldbc_graphalytics/
-- cd ldbc_graphalytics
-- mvn install -DskipTests
-- cd ..
 # GraphBLAS
 - git clone --depth 1 --branch v3.3.3 https://github.com/DrTimothyAldenDavis/GraphBLAS
 - cd GraphBLAS
