@@ -45,7 +45,7 @@ void SerializePageRankResult(
     LAGraph_free(X);
 }
 
-GrB_Vector LAGraph_PageRank2(GrB_Matrix A, double damping_factor, unsigned long iteration_num) {
+GrB_Vector LA_PR(GrB_Matrix A, double damping_factor, unsigned long iteration_num) {
     GrB_Info info;
     GrB_Vector result = NULL;
 
@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
     std::vector<GrB_Index> mapping = ReadMapping(parameters);
 
     std::cout << "Processing starts at: " << GetCurrentMilliseconds() << std::endl;
-    GrB_Vector result = LAGraph_PageRank2(A, parameters.damping_factor, parameters.max_iteration);
+    GrB_Vector result = LA_PR(A, parameters.damping_factor, parameters.max_iteration);
     std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
 
     SerializePageRankResult(result, mapping, parameters);
