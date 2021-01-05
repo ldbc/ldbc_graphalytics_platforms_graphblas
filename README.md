@@ -10,7 +10,7 @@ To execute the Graphalytics benchmark on GraphBLAS, follow the steps in the Grap
 
 * Bálint Hegyi (Budapest University of Technology and Economics)
 * Márton Elekes (Budapest University of Technology and Economics)
-* Gábor Szárnyas (Budapest University of Technology and Economics)
+* Gábor Szárnyas (Budapest University of Technology and Economics, CWI Amsterdam)
 
 ### Prerequisites
 
