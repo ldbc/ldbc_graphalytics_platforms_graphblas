@@ -36,7 +36,7 @@ export CXX=icc
 Get [SuiteSparse:GraphBLAS v3.2.0+](http://faculty.cse.tamu.edu/davis/GraphBLAS.html), decompress it and install:
 
 ```bash
-git clone --depth 1 --branch v3.2.0 --single-branch https://github.com/DrTimothyAldenDavis/GraphBLAS
+git clone --depth 1 --branch v3.3.3 --single-branch https://github.com/DrTimothyAldenDavis/GraphBLAS
 cd GraphBLAS
 make && sudo make install && sudo ldconfig
 cd ..
@@ -45,7 +45,7 @@ cd ..
 Get [LAGraph](https://github.com/GraphBLAS/LAGraph), and install it:
 
 ```bash
-git clone https://github.com/GraphBLAS/LAGraph
+git clone --depth 1 --branch 8Aug2020 --single-branch https://github.com/GraphBLAS/LAGraph
 cd LAGraph
 make && sudo make install && sudo ldconfig
 cd ..
