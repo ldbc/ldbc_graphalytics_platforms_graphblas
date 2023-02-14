@@ -14,7 +14,7 @@ To execute the Graphalytics benchmark on GraphBLAS, follow the steps in the Grap
 
 ### Prerequisites
 
-Install CMake (the package in Ubuntu 18.04 satisfies the minimum version requirements):
+Install CMake:
 
 ```bash
 sudo apt install cmake
