@@ -154,7 +154,7 @@
 						</configuration>
 					</execution>
 				</executions>
-            </plugin>
+			</plugin>
 
 			<plugin><!-- Plugin for maven release management -->
 				<groupId>org.apache.maven.plugins</groupId>
