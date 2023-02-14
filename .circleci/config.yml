@@ -36,5 +36,5 @@ jobs:
           ./init.sh
       - run: |
           # run
-          cd graphalytics-1.4.0-graphblas-0.1-SNAPSHOT/
+          cd graphalytics-1.5.0-graphblas-0.1-SNAPSHOT/
           bin/sh/run-benchmark.sh
