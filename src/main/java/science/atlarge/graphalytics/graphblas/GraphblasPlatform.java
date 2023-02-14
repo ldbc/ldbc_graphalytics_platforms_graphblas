@@ -12,7 +12,7 @@ import science.atlarge.graphalytics.graphblas.algorithms.bfs.BreadthFirstSearchJ
 import science.atlarge.graphalytics.graphblas.algorithms.cdlp.CommunityDetectionLPJob;
 import science.atlarge.graphalytics.graphblas.algorithms.lcc.LocalClusteringCoefficientJob;
 import science.atlarge.graphalytics.graphblas.algorithms.pr.PageRankJob;
-import science.atlarge.graphalytics.graphblas.algorithms.sssp.SingleSourceShortestPathJob;
+import science.atlarge.graphalytics.graphblas.algorithms.sssp.SingleSourceShortestPathsJob;
 import science.atlarge.graphalytics.graphblas.algorithms.wcc.WeaklyConnectedComponents;
 import science.atlarge.graphalytics.report.result.BenchmarkMetrics;
 
@@ -111,7 +111,7 @@ public class GraphblasPlatform implements Platform {
 				job = new PageRankJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
 				break;
 			case SSSP:
-				job = new SingleSourceShortestPathJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
+				job = new SingleSourceShortestPathsJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
 				break;
 			case WCC:
 				job = new WeaklyConnectedComponents(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);

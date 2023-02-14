@@ -7,20 +7,20 @@ import science.atlarge.graphalytics.graphblas.GraphblasConfiguration;
 import science.atlarge.graphalytics.graphblas.GraphblasJob;
 
 /**
- * Single Source Shortest Path job implementation for GraphBLAS. This class is responsible for formatting SSSP-specific
+ * Single Source Shortest Paths job implementation for GraphBLAS. This class is responsible for formatting SSSP-specific
  * arguments to be passed to the platform executable, and does not include the implementation of the algorithm.
  *
  * @author Bálint Hegyi
  */
-public final class SingleSourceShortestPathJob extends GraphblasJob {
+public final class SingleSourceShortestPathsJob extends GraphblasJob {
 
 	/**
-	 * Creates a new SingleSourceShortestPathJob object with all mandatory parameters specified.
+	 * Creates a new SingleSourceShortestPathsJob object with all mandatory parameters specified.
 	 *  @param platformConfig the platform configuration.
 	 * @param inputPath the path to the input graph.
 	 */
-	public SingleSourceShortestPathJob(RunSpecification runSpecification, GraphblasConfiguration platformConfig,
-									   String inputPath, String outputPath, Graph benchmarkGraph) {
+	public SingleSourceShortestPathsJob(RunSpecification runSpecification, GraphblasConfiguration platformConfig,
+										String inputPath, String outputPath, Graph benchmarkGraph) {
 		super(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
 	}
 
