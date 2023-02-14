@@ -39,5 +39,5 @@ WORKDIR /opt/graphalytics-graphblas/
 RUN export CPATH=/opt/GraphBLAS/Include/ && ./init.sh
 
 # Run benchmark
-WORKDIR /opt/graphalytics-graphblas/graphalytics-1.5.0-graphblas-0.1-SNAPSHOT
+WORKDIR /opt/graphalytics-graphblas/graphalytics-1.6.0-SNAPSHOT-graphblas-0.1-SNAPSHOT
 RUN bin/sh/run-benchmark.sh
