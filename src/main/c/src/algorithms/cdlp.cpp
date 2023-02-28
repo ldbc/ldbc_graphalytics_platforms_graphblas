@@ -34,7 +34,7 @@ void SerializeCDLPResult(
     OK(GrB_Vector_nvals(&nvals, result))
 
     uint64_t *X = NULL;
-    X = (uint64_t *) LAGraph_malloc(n, sizeof(uint64_t));
+    X = (uint64_t *) malloc(n * sizeof(uint64_t));
     OK(GrB_Vector_extractTuples_UINT64(GrB_NULL, X, &nvals, result));
 
     for (GrB_Index matrix_index = 0; matrix_index < n; matrix_index++) {
@@ -42,7 +42,7 @@ void SerializeCDLPResult(
         file << original_index << " " << mapping[X[matrix_index]] << std::endl;
     }
 
-    LAGraph_free(X);
+    free(X);
 }
 
 GrB_Vector LA_CDLP(GrB_Matrix A, bool symmetric, int itermax) {
@@ -52,7 +52,7 @@ GrB_Vector LA_CDLP(GrB_Matrix A, bool symmetric, int itermax) {
     {
         ComputationTimer timer{"CDLP"};
         double timing[2];
-        OK(LAGraph_cdlp(&l, A, symmetric, true, itermax, timing))
+        LAGraph_cdlp(&l, A, symmetric, true, itermax, timing, NULL);
     }
 
     return l;
@@ -61,7 +61,7 @@ GrB_Vector LA_CDLP(GrB_Matrix A, bool symmetric, int itermax) {
 int main(int argc, char **argv) {
     BenchmarkParameters parameters = ParseBenchmarkParameters(argc, argv);
 
-    LAGraph_init();
+    LAGraph_Init(NULL);
     GxB_Global_Option_set(GxB_GLOBAL_NTHREADS, parameters.thread_num);
 
     GrB_Matrix A = ReadMatrixMarket(parameters);

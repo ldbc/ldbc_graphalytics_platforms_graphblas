@@ -2,10 +2,12 @@
 
 #include <stdexcept>
 
+// This hack is needed because this is a C++ program.
+// Without this, the polymorphic GxB_set, GrB_wait, etc. functions would not load
+#define __STDC_VERSION__ 201112L
+
 extern "C" {
-#include <GraphBLAS.h>
-#define LAGRAPH_EXPERIMENTAL_ASK_BEFORE_BENCHMARKING
-#include <LAGraph.h>
+#include <LAGraphX.h>
 }
 
 /*

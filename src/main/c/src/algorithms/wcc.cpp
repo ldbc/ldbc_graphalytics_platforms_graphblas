@@ -25,7 +25,7 @@ void SerializeWCCResult(
     OK(GrB_Vector_nvals(&nvals, result))
 
     uint64_t *X = NULL;
-    X = (uint64_t *) LAGraph_malloc(n, sizeof(uint64_t));
+    X = (uint64_t *) malloc(n * sizeof(uint64_t));
     OK(GrB_Vector_extractTuples_UINT64(GrB_NULL, X, &nvals, result));
 
     for (GrB_Index matrix_index = 0; matrix_index < n; matrix_index++) {
@@ -33,7 +33,7 @@ void SerializeWCCResult(
         file << original_index << " " << X[matrix_index] << std::endl;
     }
 
-    LAGraph_free(X);
+    free(X);
 }
 
 GrB_Vector WeaklyConnectedComponents(GrB_Matrix A, bool directed) {
@@ -45,9 +45,10 @@ GrB_Vector WeaklyConnectedComponents(GrB_Matrix A, bool directed) {
 
     GrB_Vector components = NULL;
 
-    // directed graph are symmetric and need to be sanitized
-    bool sanitize = directed;
-    LAGraph_cc_boruvka(&components, A, sanitize);
+    LAGraph_Kind kind = directed ? LAGraph_ADJACENCY_DIRECTED : LAGraph_ADJACENCY_UNDIRECTED;
+    LAGraph_Graph G;
+    LAGraph_New(&G, &A, kind, NULL);
+    LG_CC_FastSV5(&components, G, NULL);
 
     return components;
 }
@@ -55,7 +56,7 @@ GrB_Vector WeaklyConnectedComponents(GrB_Matrix A, bool directed) {
 int main(int argc, char **argv) {
     BenchmarkParameters parameters = ParseBenchmarkParameters(argc, argv);
 
-    LAGraph_init();
+    LAGraph_Init(NULL);
     GxB_Global_Option_set(GxB_GLOBAL_NTHREADS, parameters.thread_num);
 
     GrB_Matrix A = ReadMatrixMarket(parameters);

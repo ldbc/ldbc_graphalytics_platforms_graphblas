@@ -9,13 +9,14 @@
 #include <map>
 
 #include "utils.h"
+#include "graphio.h"
 
 typedef uint64_t Vertex;
 typedef std::map<Vertex, Vertex> VertexMapping;
 
 int main(int argc, char **argv) {
     GrB_Info info;
-    LAGraph_init();
+    LAGraph_Init(NULL);
 
     ConverterParameters parameters = ParseConverterParameters(argc, argv);
 
@@ -90,22 +91,24 @@ int main(int argc, char **argv) {
         OK(GrB_transpose(A, GrB_NULL, parameters.weighted ? GrB_PLUS_FP64 : GrB_PLUS_BOOL, A, GrB_NULL))
     }
 
-    char *matrix_file_c = strdup(parameters.matrix_file.c_str());
-    char *mapping_file_c = strdup(parameters.mapping_file.c_str());
+    char *matrix_file_path_c = strdup(parameters.matrix_file.c_str());
+    char *mapping_file_path_c = strdup(parameters.mapping_file.c_str());
     if (parameters.binary) {
         std::cout << "Serializing binary matrix file (grb)" << std::endl;
-        OK(LAGraph_binwrite(&A, matrix_file_c, NULL))
+        FILE *matrix_file_c = fopen(matrix_file_path_c, "w");
+        binwrite(&A, matrix_file_c, NULL);
+        fclose(matrix_file_c);
 
         std::cout << "Serializing binary mapping file (vtb)" << std::endl;
-        FILE *f_mapping = fopen(mapping_file_c, "w");
+        FILE *f_mapping = fopen(mapping_file_path_c, "w");
         for (auto pair : mapping) {
             fwrite (&pair.first, sizeof(uint64_t), 1, f_mapping);
         }
         fclose(f_mapping);
     } else {
         std::cout << "Serializing ASCII matrix file (mtx)" << std::endl;
-        FILE *f_matrix = fopen(matrix_file_c, "w");
-        OK(LAGraph_mmwrite(A, f_matrix))
+        FILE *f_matrix = fopen(matrix_file_path_c, "w");
+        LAGraph_MMWrite(A, f_matrix, NULL, NULL);
         fclose(f_matrix);
 
         std::cout << "Serializing ASCII mapping file (vtx)" << std::endl;
