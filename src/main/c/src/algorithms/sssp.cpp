@@ -28,10 +28,10 @@ void SerializeSSSPResult(
     OK(GrB_Vector_nvals(&nvals, result));
 
     GrB_Index *I = NULL;
-    I = (GrB_Index*) LAGraph_malloc ((nvals + 1), sizeof (GrB_Index));
+    I = (GrB_Index*) malloc ((nvals + 1) * sizeof (GrB_Index));
 
     double *X = NULL;
-    X = (double *) LAGraph_malloc((nvals + 1), sizeof(double));
+    X = (double *) malloc((nvals + 1) * sizeof(double));
     OK(GrB_Vector_extractTuples_FP64(I, X, &nvals, result));
 
     GrB_Index curr_nz = 0;
@@ -46,8 +46,8 @@ void SerializeSSSPResult(
         }
     }
 
-    LAGraph_free(I);
-    LAGraph_free(X);
+    free(I);
+    free(X);
 }
 //    double value;
 //    for (GrB_Index res_index = 0; res_index < mapping.size(); res_index++) {
@@ -79,13 +79,16 @@ GrB_Vector LA_SSSP(GrB_Matrix A, GrB_Index sourceVertex, bool directed) {
     }
     {
         ComputationTimer timer{"SSSP"};
-        GrB_Matrix AT = NULL;
-        if (directed) {
-            GrB_transpose(AT, NULL, NULL, A, NULL);
-        } else {
-            AT = A;
-        }
-        OK(LAGraph_BF_basic_pushpull(&d, A, AT, sourceVertex))
+
+        GrB_Vector v;
+        LAGraph_Kind kind = directed ? LAGraph_ADJACENCY_DIRECTED : LAGraph_ADJACENCY_UNDIRECTED;
+        LAGraph_Graph G;
+
+        int32_t delta = 1;
+        GrB_Scalar Delta = NULL ;
+        GrB_Scalar_setElement_UINT32(Delta, delta);
+        GrB_Scalar_new(&Delta, GrB_INT32);
+        LAGr_SingleSourceShortestPath(&d, G, sourceVertex, Delta, NULL);
     }
 
     return d;
@@ -94,7 +97,7 @@ GrB_Vector LA_SSSP(GrB_Matrix A, GrB_Index sourceVertex, bool directed) {
 int main(int argc, char **argv) {
     BenchmarkParameters parameters = ParseBenchmarkParameters(argc, argv);
 
-    LAGraph_init();
+    LAGraph_Init(NULL);
     GxB_Global_Option_set(GxB_GLOBAL_NTHREADS, parameters.thread_num);
 
     GrB_Matrix A = ReadMatrixMarket(parameters);

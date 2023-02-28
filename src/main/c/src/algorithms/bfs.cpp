@@ -26,10 +26,10 @@ void SerializeBFSResult(
     OK(GrB_Vector_nvals(&nvals, result));
 
     GrB_Index *I = NULL;
-    I = (GrB_Index*) LAGraph_malloc ((nvals + 1), sizeof (GrB_Index));
+    I = (GrB_Index*) malloc ((nvals + 1) * sizeof (GrB_Index));
 
     int64_t *X = NULL;
-    X = (int64_t *) LAGraph_malloc((nvals + 1), sizeof(int64_t));
+    X = (int64_t *) malloc((nvals + 1) * sizeof(int64_t));
 
     // LAGraph returns uses int32 values if the number of vertices is sufficiently
     // small and int64s otherwise
@@ -37,7 +37,7 @@ void SerializeBFSResult(
         OK(GrB_Vector_extractTuples_INT64(I, X, &nvals, result));
     } else {
         int32_t *Y = NULL;
-        Y = (int32_t *) LAGraph_malloc((nvals + 1), sizeof(int32_t));
+        Y = (int32_t *) malloc((nvals + 1) * sizeof(int32_t));
         OK(GrB_Vector_extractTuples_INT32(I, Y, &nvals, result));
         for (int i = 0; i < nvals; i++) {
             X[i] = Y[i];
@@ -56,8 +56,8 @@ void SerializeBFSResult(
         curr_nz++;
     }
 
-    LAGraph_free(I);
-    LAGraph_free(X);
+    free(I);
+    free(X);
 }
 
 GrB_Vector LA_BFS(GrB_Matrix A, GrB_Index sourceVertex, bool directed) {
@@ -65,15 +65,11 @@ GrB_Vector LA_BFS(GrB_Matrix A, GrB_Index sourceVertex, bool directed) {
 
     GrB_Info info;
 
-    GrB_Matrix AT = NULL;
-    if (directed) {
-        GrB_transpose(AT, NULL, NULL, A, NULL);
-    } else {
-        AT = A;
-    }
-
     GrB_Vector v;
-    OK(LAGraph_bfs_pushpull(&v, NULL, A, AT, sourceVertex, 0, false))
+    LAGraph_Kind kind = directed ? LAGraph_ADJACENCY_DIRECTED : LAGraph_ADJACENCY_UNDIRECTED;
+    LAGraph_Graph G;
+    LAGraph_New(&G, &A, kind, NULL);
+    LAGr_BreadthFirstSearch(&v, NULL, G, sourceVertex, NULL);
 
     return v;
 }
@@ -81,7 +77,7 @@ GrB_Vector LA_BFS(GrB_Matrix A, GrB_Index sourceVertex, bool directed) {
 int main(int argc, char **argv) {
     BenchmarkParameters parameters = ParseBenchmarkParameters(argc, argv);
 
-    LAGraph_init();
+    LAGraph_Init(NULL);
     GxB_Global_Option_set(GxB_GLOBAL_NTHREADS, parameters.thread_num);
 
     GrB_Matrix A = ReadMatrixMarket(parameters);

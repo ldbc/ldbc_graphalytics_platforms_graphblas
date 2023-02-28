@@ -37,8 +37,8 @@ void SerializeLCCResult(
     GrB_Index *I = NULL;
     double *X = NULL;
 
-    I = (GrB_Index*) LAGraph_malloc ((nvals + 1), sizeof (GrB_Index));
-    X = (double *) LAGraph_malloc((nvals + 1), sizeof(double));
+    I = (GrB_Index*) malloc ((nvals + 1) * sizeof (GrB_Index));
+    X = (double *) malloc((nvals + 1) * sizeof(double));
 
     OK(GrB_Vector_extractTuples_FP64(I, X, &nvals, result));
 
@@ -54,8 +54,8 @@ void SerializeLCCResult(
         }
     }
 
-    LAGraph_free(I);
-    LAGraph_free(X);
+    free(I);
+    free(X);
 }
 
 GrB_Vector LA_LCC(GrB_Matrix A, bool symmetric) {
@@ -65,7 +65,7 @@ GrB_Vector LA_LCC(GrB_Matrix A, bool symmetric) {
     {
         ComputationTimer timer{"LCC"};
         double timing[2];
-        OK(LAGraph_lcc(&d, A, symmetric, false, timing))
+        LAGraph_lcc(&d, A, symmetric, false, timing, NULL);
     }
 
     return d;
@@ -74,7 +74,7 @@ GrB_Vector LA_LCC(GrB_Matrix A, bool symmetric) {
 int main(int argc, char **argv) {
     BenchmarkParameters parameters = ParseBenchmarkParameters(argc, argv);
 
-    LAGraph_init();
+    LAGraph_Init(NULL);
     GxB_Global_Option_set(GxB_GLOBAL_NTHREADS, parameters.thread_num);
 
     GrB_Matrix A = ReadMatrixMarket(parameters);

@@ -10,20 +10,18 @@ GrB_Matrix ReadMatrixMarket(const BenchmarkParameters& parameters) {
     if (parameters.binary) {
         auto grb_file_path = parameters.input_dir + "/graph.grb";
         char* grb_file_path_c = strdup(grb_file_path.c_str());
-        OK(LAGraph_binread(&A, grb_file_path_c))
+        
+        FILE* grb_file = fopen(grb_file_path_c, "r");
+        binread(&A, grb_file);
+        fclose(grb_file);
     } else {
         auto market_file_path = parameters.input_dir + "/graph.mtx";
         FILE *mmfile = fopen(market_file_path.c_str(), "r");
         if (mmfile == nullptr) {
             throw std::runtime_error{"Cannot open Matrix market file"};
         }
-        OK(LAGraph_mmread(&A, mmfile))
+        LAGraph_MMRead(&A, mmfile, NULL);
         fclose(mmfile);
-    }
-
-    {
-        ComputationTimer timer{"Matrix finalization", total_timer};
-        GrB_Matrix_wait(&A);
     }
 
     return A;
