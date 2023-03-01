@@ -19,10 +19,13 @@ jobs:
           # GraphBLAS
           git clone --depth 1 --branch v7.4.3 --single-branch https://github.com/DrTimothyAldenDavis/GraphBLAS
           cd GraphBLAS
-          JOBS=$(nproc) CMAKE_OPTIONS="-DGBCOMPACT=1" make
+          cd build
+          # make build quicker by disabling the generation of functions for each individual type
+          cmake .. -DCMAKE_C_FLAGS="-DGBCUDA_DEV=1"
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
-          cd ..
+          cd ../..
       - run: |
           # LAGraph
           git clone --depth 1 --branch stable --single-branch https://github.com/GraphBLAS/LAGraph
