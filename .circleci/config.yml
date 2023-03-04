@@ -38,3 +38,4 @@ jobs:
           # run
           cd graphalytics-1.6.0-SNAPSHOT-graphblas-0.1-SNAPSHOT/
           bin/sh/run-benchmark.sh
+      - slack/status
