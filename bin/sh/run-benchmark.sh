@@ -47,7 +47,7 @@ export config=$config
 
 # Verify that the library jar is set
 if [ "$LIBRARY_JAR" = "" ]; then
-	echo "The prepare-benchmark.sh script must set variable \$LIBRARY_JAR" >&2
+	echo "The prepare-benchmark.sh script must set variable \${LIBRARY_JAR}" >&2
 	exit 1
 fi
 

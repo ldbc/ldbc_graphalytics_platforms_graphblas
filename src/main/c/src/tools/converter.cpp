@@ -49,74 +49,29 @@ int main(int argc, char **argv) {
     edge_file.clear();
     edge_file.seekg(0, std::ios::beg);
 
-    // Open the market file
-    std::ofstream matrix_file{parameters.matrix_file};
-    if (matrix_file.fail()) {
-        throw std::runtime_error{"Failed to open file " + parameters.matrix_file};
-    }
-
-    Vertex n = mappedIndex - 1;
-
-    std::cout << "Creating adjacency matrix from edges" << std::endl;
     GrB_Matrix A;
-    OK(GrB_Matrix_new(&A, parameters.weighted ? GrB_FP64 : GrB_BOOL, n, n))
 
-    Vertex src, trg;
-    std::string line;
-    std::string weight_string;
-
-    uint64_t i;
-    while (std::getline(edge_file, line)) {
-        i++;
-        std::istringstream line_stream{line};
-        line_stream >> src;
-        line_stream >> trg;
-        // use 0-based indexing
-        Vertex src_mapped = mapping[src] - 1;
-        Vertex trg_mapped = mapping[trg] - 1;
-
-        if (parameters.weighted) {
-            line_stream >> weight_string;
-            OK(GrB_Matrix_setElement_FP64(A, std::stod(weight_string), src_mapped, trg_mapped))
-        } else {
-            OK(GrB_Matrix_setElement_BOOL(A, 1, src_mapped, trg_mapped))
-        }
-        if (i % 100000000 == 0) {
-            std::cout << "- Edge no." << i << " processed" << std::endl;
-        }
+    // Open the Matrix Market file
+    FILE *mmfile = fopen(parameters.matrix_file.c_str(), "r");
+    if (mmfile == nullptr) {
+        throw std::runtime_error{"Cannot open Matrix market file: " + parameters.matrix_file};
     }
-    if (!parameters.directed) {
-        std::cout << "Converting matrix into symmetric" << std::endl;
-        OK(GrB_transpose(A, GrB_NULL, parameters.weighted ? GrB_PLUS_FP64 : GrB_PLUS_BOOL, A, GrB_NULL))
-    }
+    OK(LAGraph_mmread(&A, mmfile))
+    fclose(mmfile);
+
 
     char *matrix_file_c = strdup(parameters.matrix_file.c_str());
-    char *mapping_file_c = strdup(parameters.mapping_file.c_str());
-    if (parameters.binary) {
-        std::cout << "Serializing binary matrix file (grb)" << std::endl;
-        OK(LAGraph_binwrite(&A, matrix_file_c, NULL))
+    //char *mapping_file_c = strdup(parameters.mapping_file.c_str());
+    std::cout << "Serializing binary matrix file (grb)" << std::endl;
+    OK(LAGraph_binwrite(&A, matrix_file_c, NULL))
 
-        std::cout << "Serializing binary mapping file (vtb)" << std::endl;
-        FILE *f_mapping = fopen(mapping_file_c, "w");
-        for (auto pair : mapping) {
-            fwrite (&pair.first, sizeof(uint64_t), 1, f_mapping);
-        }
-        fclose(f_mapping);
-    } else {
-        std::cout << "Serializing ASCII matrix file (mtx)" << std::endl;
-        FILE *f_matrix = fopen(matrix_file_c, "w");
-        OK(LAGraph_mmwrite(A, f_matrix))
-        fclose(f_matrix);
-
-        std::cout << "Serializing ASCII mapping file (vtx)" << std::endl;
-        std::ofstream mapping_file{parameters.mapping_file};
-        if (mapping_file.fail()) {
-            throw std::runtime_error{"Failed to open file " + parameters.mapping_file};
-        }
-        for (auto pair : mapping) {
-            mapping_file << pair.first << std::endl;
-        }
-    }
+    // TODO: serialize binary mapping file
+    // std::cout << "Serializing binary mapping file (vtb)" << std::endl;
+    // FILE *f_mapping = fopen(mapping_file_c, "w");
+    // for (auto pair : mapping) {
+    //     fwrite (&pair.first, sizeof(uint64_t), 1, f_mapping);
+    // }
+    // fclose(f_mapping);
     OK(GrB_Matrix_free(&A))
 
     OK(GrB_finalize())
