@@ -15,6 +15,7 @@ jobs:
       - checkout
       - run: sudo apt update && sudo apt install cmake g++ maven
       - run: cp -r example-data-sets/* ~/
+      - run: bin/sh/install-dependencies.sh
       - run: |
           # GraphBLAS
           git clone --depth 1 --branch v3.3.3 --single-branch https://github.com/DrTimothyAldenDavis/GraphBLAS
