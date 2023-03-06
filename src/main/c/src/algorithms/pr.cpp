@@ -54,7 +54,7 @@ GrB_Vector LA_PR(GrB_Matrix A, bool directed, double damping_factor, unsigned lo
         LAGraph_Kind kind = directed ? LAGraph_ADJACENCY_DIRECTED : LAGraph_ADJACENCY_UNDIRECTED;
         LAGraph_Graph G;
         LAGraph_New(&G, &A, kind, NULL);
-        LAGr_PageRank(&result, NULL, G, damping_factor, 0.00001, iteration_num, NULL);
+        LAGr_PageRankGX(&result, NULL, G, damping_factor, 0.00001, iteration_num, NULL);
     }
 
     return result;

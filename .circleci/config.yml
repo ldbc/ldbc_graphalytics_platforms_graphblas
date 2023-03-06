@@ -28,7 +28,7 @@ jobs:
           cd ../..
       - run: |
           # LAGraph
-          git clone --depth 1 --branch stable --single-branch https://github.com/GraphBLAS/LAGraph
+          git clone --depth 1 --branch pagerank-graphalytics-variant --single-branch https://github.com/GraphBLAS/LAGraph
           cd LAGraph
           JOBS=$(nproc) make
           sudo make install
