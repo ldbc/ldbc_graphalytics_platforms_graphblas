@@ -84,7 +84,7 @@ def main():
     parser.add_argument('--output-path', type=str, required=True)
     parser.add_argument('--weighted', type=lambda x: (str(x).lower() in ['true','1', 'yes']), required=True)
     parser.add_argument('--directed', type=lambda x: (str(x).lower() in ['true','1', 'yes']), required=True)
-    parser.add_argument('--use_disk', action='store_true',  required=False)
+    parser.add_argument('--use-disk', action='store_true',  required=False)
     args = parser.parse_args()
 
     if args.use_disk:

@@ -54,6 +54,7 @@ mkdir -p ${OUTPUT_PATH}
 
 if [[ ! -f ${OUTPUT_PATH}/graph.mtx && ! -f ${OUTPUT_PATH}/graph.vtx ]]; then
     bin/sh/relabel.py \
+        --use-disk \
         --graph-name ${GRAPH_NAME} \
         --input-vertex ${INPUT_VERTEX_PATH} \
         --input-edge ${INPUT_EDGE_PATH} \
