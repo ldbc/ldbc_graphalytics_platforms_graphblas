@@ -13,7 +13,7 @@ time_t GetCurrentMilliseconds() {
 }
 
 /*
- * ARGUMENT PARSING FUNCTIONS
+ * Argument parsing functions
  */
 
 BenchmarkParameters ParseBenchmarkParameters(int argc, char **argv) {
@@ -29,7 +29,6 @@ BenchmarkParameters ParseBenchmarkParameters(int argc, char **argv) {
         if (strcmp(key, "--directed") == 0) {
             benchmark_parameters.directed = (strcmp(value, "true") == 0);
         }
-
         if (strcmp(key, "--source-vertex") == 0) {
             benchmark_parameters.source_vertex = std::stoul(value);
         }
@@ -37,18 +36,13 @@ BenchmarkParameters ParseBenchmarkParameters(int argc, char **argv) {
             benchmark_parameters.damping_factor = std::stod(value);
         }
         if (strcmp(key, "--max-iteration") == 0) {
-            benchmark_parameters.max_iteration = std::stoul(value);
+            benchmark_parameters.max_iteration = std::stoi(value);
         }
-
         if (strcmp(key, "--output") == 0) {
             benchmark_parameters.output_file = value;
         }
         if (strcmp(key, "--threadnum") == 0) {
             benchmark_parameters.thread_num = std::stoul(value);
-        }
-
-        if (strcmp(key, "--binary") == 0) {
-            benchmark_parameters.binary = (strcmp(value, "true") == 0);
         }
     }
 
@@ -79,10 +73,6 @@ ConverterParameters ParseConverterParameters(int argc, char **argv) {
         }
         if (strcmp(key, "--directed") == 0) {
             converter_parameters.directed = (strcmp(value, "true") == 0);
-        }
-
-        if (strcmp(key, "--binary") == 0) {
-            converter_parameters.binary = (strcmp(value, "true") == 0);
         }
     }
 
@@ -136,12 +126,10 @@ void SerializeDebugVector(const char *title, GrB_Vector result) {
                 printf("%g ", element);
             }
 
-//            printf("%u ", element);
         } else if (info == GrB_NO_VALUE) {
             // It is up to the user to determine what 'no value'
             // means.  It depends on the semiring used.
             printf(" [no value] ");
-//            printf("%u ", 0);
         } else {
             printf("Error!\n");
         }

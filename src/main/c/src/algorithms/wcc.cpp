@@ -46,9 +46,21 @@ GrB_Vector WeaklyConnectedComponents(GrB_Matrix A, bool directed) {
     GrB_Vector components = NULL;
 
     LAGraph_Kind kind = directed ? LAGraph_ADJACENCY_DIRECTED : LAGraph_ADJACENCY_UNDIRECTED;
+
+    char msg[LAGRAPH_MSG_LEN];
+
+    // symmetrize *directed* graphs -- WCC does not care about edge directions
+    if (directed) {
+        GrB_Matrix_eWiseAdd_BinaryOp(A, NULL, NULL, GrB_LOR, A, A, GrB_DESC_T1);
+    }
+
     LAGraph_Graph G;
-    LAGraph_New(&G, &A, kind, NULL);
-    LG_CC_FastSV5(&components, G, NULL);
+    LAGraph_New(&G, &A, kind, msg);
+    G->is_symmetric_structure = LAGraph_TRUE;
+
+    if (LAGr_ConnectedComponents(&components, G, msg) != GrB_SUCCESS) {
+        printf("msg: %s\n", msg);
+    }
 
     return components;
 }

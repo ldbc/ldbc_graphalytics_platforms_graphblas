@@ -15,6 +15,7 @@ jobs:
       - checkout
       - run: sudo apt update && sudo apt install cmake g++ maven
       - run: cp -r example-data-sets/* ~/
+      - run: bin/sh/install-dependencies.sh
       - run: |
           # GraphBLAS
           git clone --depth 1 --branch v7.4.3 --single-branch https://github.com/DrTimothyAldenDavis/GraphBLAS
@@ -28,7 +29,7 @@ jobs:
           cd ../..
       - run: |
           # LAGraph
-          git clone --depth 1 --branch pagerank-graphalytics-variant --single-branch https://github.com/GraphBLAS/LAGraph
+          git clone --depth 1 --branch dev --single-branch https://github.com/GraphBLAS/LAGraph
           cd LAGraph
           JOBS=$(nproc) make
           sudo make install
@@ -39,5 +40,6 @@ jobs:
           ./init.sh
       - run: |
           # run
-          cd graphalytics-1.6.0-SNAPSHOT-graphblas-0.1-SNAPSHOT/
+          cd graphalytics-1.7.0-SNAPSHOT-graphblas-0.1-SNAPSHOT/
           bin/sh/run-benchmark.sh
+      - slack/status

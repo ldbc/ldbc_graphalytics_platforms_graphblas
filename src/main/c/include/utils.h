@@ -2,16 +2,12 @@
 
 #include <stdexcept>
 
-// This hack is needed because this is a C++ program.
-// Without this, the polymorphic GxB_set, GrB_wait, etc. functions would not load
-#define __STDC_VERSION__ 201112L
-
 extern "C" {
 #include <LAGraphX.h>
 }
 
 /*
- * ARGUMENT PARSING FUNCTIONS
+ * Argument parsing functions
  */
 typedef struct {
   std::string input_dir;
@@ -19,9 +15,8 @@ typedef struct {
   bool directed = false;
   unsigned long source_vertex = 0;
   double damping_factor = 0.0;
-  unsigned long max_iteration = 0;
+  int max_iteration = 0;
   unsigned long thread_num = 1;
-  bool binary = false;
 } BenchmarkParameters;
 
 BenchmarkParameters ParseBenchmarkParameters(int argc, char **argv);
@@ -33,7 +28,6 @@ typedef struct {
   std::string mapping_file;
   bool weighted = false;
   bool directed = false;
-  bool binary = false;
 } ConverterParameters;
 
 ConverterParameters ParseConverterParameters(int argc, char **argv);
@@ -43,7 +37,7 @@ time_t GetCurrentMilliseconds();
 void SerializeDebugMatrix(const char *title, GrB_Matrix result);
 
 /*
- * GRAPHBLAS HELPER MACROS
+ * GraphBLAS helper macros
  */
 
 //------------------------------------------------------------------------------

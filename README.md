@@ -72,15 +72,3 @@ Run the benchmark with:
 ```bash
 bin/sh/run-benchmark.sh
 ```
-
-### Docker
-
-There's a `Dockerfile` included which shows how to compile GraphBLAS, LAGraph and how to use this driver.
-
-To build it, run:
-
-```bash
-docker build . --tag ldbc/graphalytics-graphblas
-```
-
-Depending on the number of CPU cores and the speed of your internet connection, building the image takes approx. 3-30 minutes.

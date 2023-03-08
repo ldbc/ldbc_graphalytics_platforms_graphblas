@@ -44,16 +44,23 @@ void SerializeBFSResult(
         }
     }
 
+    // LAGraph returns:
+    // * no element when a vertex is unreachable -> this should be represented as infinity in Graphalytics
+    // * 0 for the vertex itself
+    // * 1+ for vertices that are reachable (traversal level)
     GrB_Index curr_nz = 0;
-    for (GrB_Index matrix_index = 0; matrix_index < n; matrix_index++) {
-        GrB_Index original_index = mapping[matrix_index];
+    for (GrB_Index v_id = 0; v_id < n; v_id++) {
+        GrB_Index original_index = mapping[v_id];
+        int64_t level;
 
-        // LAGraph returns:
-        // * 0 when a vertex is unreachable -> this should be represented as infinity in Graphalytics
-        // * 1 for the vertex itself (traversal level = 1)
-        // * 2+ for vertices that are reachable (traversal level)
-        file << original_index << " " << (X[curr_nz] == 0 ? 9223372036854775807 : X[curr_nz]-1) << std::endl;
-        curr_nz++;
+        if (I[curr_nz] == v_id) {
+            level = X[curr_nz];
+            curr_nz++;
+        } else {
+            level = 9223372036854775807;
+        }
+
+        file << original_index << " " << level << std::endl;
     }
 
     free(I);
@@ -65,11 +72,12 @@ GrB_Vector LA_BFS(GrB_Matrix A, GrB_Index sourceVertex, bool directed) {
 
     GrB_Info info;
 
-    GrB_Vector v;
+    GrB_Vector v = NULL;
     LAGraph_Kind kind = directed ? LAGraph_ADJACENCY_DIRECTED : LAGraph_ADJACENCY_UNDIRECTED;
     LAGraph_Graph G;
-    LAGraph_New(&G, &A, kind, NULL);
-    LAGr_BreadthFirstSearch(&v, NULL, G, sourceVertex, NULL);
+    char msg[LAGRAPH_MSG_LEN];
+    LAGraph_New(&G, &A, kind, msg);
+    LAGr_BreadthFirstSearch(&v, NULL, G, sourceVertex, msg);
 
     return v;
 }

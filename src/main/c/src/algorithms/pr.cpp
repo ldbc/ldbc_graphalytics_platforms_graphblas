@@ -19,7 +19,6 @@ void SerializePageRankResult(
     const std::vector<GrB_Index> &mapping,
     const BenchmarkParameters &parameters
 ) {
-
     std::ofstream file{parameters.output_file};
     if (!file.is_open()) {
         std::cerr << "File " << parameters.output_file << " does not exists" << std::endl;
@@ -45,16 +44,22 @@ void SerializePageRankResult(
     free(X);
 }
 
-GrB_Vector LA_PR(GrB_Matrix A, bool directed, double damping_factor, unsigned long iteration_num) {
+GrB_Vector LA_PR(GrB_Matrix A, bool directed, double damping_factor, int iteration_num) {
+    ComputationTimer timer{"PageRank"};
+
     GrB_Info info;
     GrB_Vector result = NULL;
 
-    {
-        ComputationTimer timer{"PageRank"};
-        LAGraph_Kind kind = directed ? LAGraph_ADJACENCY_DIRECTED : LAGraph_ADJACENCY_UNDIRECTED;
-        LAGraph_Graph G;
-        LAGraph_New(&G, &A, kind, NULL);
-        LAGr_PageRankGX(&result, NULL, G, damping_factor, 0.00001, iteration_num, NULL);
+    LAGraph_Kind kind = directed ? LAGraph_ADJACENCY_DIRECTED : LAGraph_ADJACENCY_UNDIRECTED;
+    LAGraph_Graph G;
+
+    int niters;
+    char msg[LAGRAPH_MSG_LEN];
+    LAGraph_New(&G, &A, kind, msg);
+    LAGraph_Cached_OutDegree(G, msg);
+    LAGraph_Cached_AT(G, msg);
+    if (LAGr_PageRankGX(&result, &niters, G, damping_factor, 0.00001, iteration_num, msg) != GrB_SUCCESS) {
+        printf("msg: %s\n", msg);
     }
 
     return result;
