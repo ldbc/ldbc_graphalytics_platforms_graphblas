@@ -288,9 +288,10 @@ static inline int binread   // returns 0 if successful, -1 if failure
 // binwrite: write a matrix to a binary file
 //------------------------------------------------------------------------------
 
+#undef LG_FREE_ALL
 #define LG_FREE_ALL                         \
 {                                           \
-    GrB_free (A) ;                          \
+    GrB_Matrix_free (A) ;                   \
     LAGraph_Free ((void **) &Ap, NULL) ;    \
     LAGraph_Free ((void **) &Ab, NULL) ;    \
     LAGraph_Free ((void **) &Ah, NULL) ;    \
@@ -334,25 +335,25 @@ static inline int binwrite  // returns 0 if successful, < 0 on error
     int8_t *Ab = NULL ;
     if (A == NULL || *A == NULL || f == NULL) CATCH (GrB_NULL_POINTER) ;
 
-    GRB_TRY (GrB_wait (*A, GrB_MATERIALIZE)) ;
+    GRB_TRY (GrB_Matrix_wait (*A, GrB_MATERIALIZE)) ;
 
     //--------------------------------------------------------------------------
     // determine the basic matrix properties
     //--------------------------------------------------------------------------
 
     GxB_Format_Value fmt ;
-    GRB_TRY (GxB_get (*A, GxB_FORMAT, &fmt)) ;
+    GRB_TRY (GxB_Matrix_Option_get (*A, GxB_FORMAT, &fmt)) ;
 
     bool is_hyper = false ;
     bool is_sparse = false ;
     bool is_bitmap = false ;
     bool is_full  = false ;
-    GRB_TRY (GxB_get (*A, GxB_IS_HYPER, &is_hyper)) ;
+    GRB_TRY (GxB_Matrix_Option_get (*A, GxB_IS_HYPER, &is_hyper)) ;
     int32_t kind ;
     double hyper;
 
-    GRB_TRY (GxB_get (*A, GxB_HYPER_SWITCH, &hyper)) ;
-    GRB_TRY (GxB_get (*A, GxB_SPARSITY_STATUS, &kind)) ;
+    GRB_TRY (GxB_Matrix_Option_get (*A, GxB_HYPER_SWITCH, &hyper)) ;
+    GRB_TRY (GxB_Matrix_Option_get (*A, GxB_SPARSITY_STATUS, &kind)) ;
 
     switch (kind)
     {
@@ -373,7 +374,7 @@ static inline int binwrite  // returns 0 if successful, < 0 on error
     GRB_TRY (GrB_Matrix_nvals (&nvals, *A)) ;
     size_t typesize ;
     int64_t nonempty = -1 ;
-    char *fmt_string ;
+    const char *fmt_string ;
     bool jumbled, iso ;
     GrB_Index Ap_size, Ah_size, Ab_size, Ai_size, Ax_size ;
 
@@ -678,7 +679,7 @@ static inline int binwrite  // returns 0 if successful, < 0 on error
         CATCH (DEAD_CODE) ;    // this "cannot" happen
     }
 
-    GRB_TRY (GxB_set (*A, GxB_HYPER_SWITCH, hyper)) ;
+    GRB_TRY (GxB_Matrix_Option_set (*A, GxB_HYPER_SWITCH, hyper)) ;
     return (GrB_SUCCESS) ;
 #endif
 }
