@@ -46,9 +46,16 @@ GrB_Vector WeaklyConnectedComponents(GrB_Matrix A, bool directed) {
     GrB_Vector components = NULL;
 
     LAGraph_Kind kind = directed ? LAGraph_ADJACENCY_DIRECTED : LAGraph_ADJACENCY_UNDIRECTED;
-    LAGraph_Graph G;
-    LAGraph_New(&G, &A, kind, NULL);
-    LG_CC_FastSV5(&components, G, NULL);
+
+    char msg[LAGRAPH_MSG_LEN];
+
+    // LAGraph_Graph G;
+    // LAGraph_New(&G, &A, kind, msg);
+    // printf("msg: %s\n", msg);
+
+    // directed graph are symmetric and need to be sanitized
+    bool sanitize = directed;
+    LAGraph_cc_lacc(&components, A, sanitize, msg);
 
     return components;
 }
