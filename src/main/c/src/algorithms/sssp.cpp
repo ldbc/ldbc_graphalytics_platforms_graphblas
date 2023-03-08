@@ -67,7 +67,7 @@ GrB_Vector LA_SSSP(GrB_Matrix A, GrB_Index sourceVertex, bool directed) {
     LAGraph_Graph G;
 
     GrB_Vector d = NULL;
-    double delta = 0.1;
+    double delta = 2.5;
 
     GrB_Scalar Delta = NULL ;
     GrB_Scalar_new(&Delta, GrB_FP64);
