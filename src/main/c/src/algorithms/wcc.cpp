@@ -51,7 +51,7 @@ GrB_Vector WeaklyConnectedComponents(GrB_Matrix A, bool directed) {
 
     // symmetrize *directed* graphs -- WCC does not care about edge directions
     if (directed) {
-        GrB_Matrix_eWiseAdd_BinaryOp(A, NULL, NULL, GrB_FIRST_INT64, A, A, GrB_DESC_T1);
+        GrB_Matrix_eWiseAdd_BinaryOp(A, NULL, NULL, GrB_LOR, A, A, GrB_DESC_T1);
     }
 
     LAGraph_Graph G;
