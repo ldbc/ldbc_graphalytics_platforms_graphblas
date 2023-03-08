@@ -17,7 +17,7 @@ while [[ $# -gt 1 ]] # Parse two arguments: [--key value] or [-k value]
   case ${key} in
 
     --graph-name)
-      # not used
+      GRAPH_NAME="$value"
       shift;;
 
     --input-vertex-path)
@@ -50,15 +50,30 @@ done
 
 mkdir -p ${OUTPUT_PATH}
 
-if [[ ! -f ${OUTPUT_PATH}/graph.grb && ! -f ${OUTPUT_PATH}/graph.vtb ]]; then
-    bin/exe/converter \
-        --binary true \
+# convert .v/.e files to matrix market format (.mtx) with the vertex ID mapping (.vtx)
+
+if [[ ! -f ${OUTPUT_PATH}/graph.mtx && ! -f ${OUTPUT_PATH}/graph.vtx ]]; then
+    bin/sh/relabel.py \
+        --use-disk \
+        --graph-name ${GRAPH_NAME} \
         --input-vertex ${INPUT_VERTEX_PATH} \
         --input-edge ${INPUT_EDGE_PATH} \
-        --output-matrix  ${OUTPUT_PATH}/graph.grb \
-        --output-mapping ${OUTPUT_PATH}/graph.vtb \
+        --output-path ${OUTPUT_PATH} \
         --weighted ${WEIGHTED} \
         --directed ${DIRECTED}
 else
-    echo "Transformed file already existing, no load required"
+    echo "Transformed mtx/vtx files already exist, no conversion required"
 fi
+
+# convert .mtx/.vtx files to binary formats
+# if [[ ! -f ${OUTPUT_PATH}/graph.grb && ! -f ${OUTPUT_PATH}/graph.vtb ]]; then
+#     bin/exe/converter \
+#         --binary true \
+#         --input-vertex ${INPUT_VERTEX_PATH} \
+#         --input-edge ${INPUT_EDGE_PATH} \
+#         --output-path ${OUTPUT_PATH} \
+#         --weighted ${WEIGHTED} \
+#         --directed ${DIRECTED}
+# else
+#     echo "Transformed grb/vtb files already exist, no conversion required"
+# fi
