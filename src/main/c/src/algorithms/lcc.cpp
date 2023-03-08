@@ -62,11 +62,10 @@ GrB_Vector LA_LCC(GrB_Matrix A, bool symmetric) {
     GrB_Info info;
     GrB_Vector d;
 
-    {
-        ComputationTimer timer{"LCC"};
-        double timing[2];
-        LAGraph_lcc(&d, A, symmetric, false, timing, NULL);
-    }
+    ComputationTimer timer{"LCC"};
+    double timing[2];
+    char msg[LAGRAPH_MSG_LEN];
+    LAGraph_lcc(&d, A, symmetric, false, timing, msg);
 
     return d;
 }

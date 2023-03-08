@@ -72,7 +72,7 @@ GrB_Vector LA_SSSP(GrB_Matrix A, GrB_Index sourceVertex, bool directed) {
     GrB_Scalar Delta = NULL ;
     GrB_Scalar_new(&Delta, GrB_FP64);
     GrB_Scalar_setElement_FP64(Delta, delta);
-    char msg [LAGRAPH_MSG_LEN];
+    char msg[LAGRAPH_MSG_LEN];
     LAGraph_New(&G, &A, kind, msg);
     LAGr_SingleSourceShortestPath(&d, G, sourceVertex, Delta, msg);
 

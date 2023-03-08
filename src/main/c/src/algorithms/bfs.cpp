@@ -75,7 +75,7 @@ GrB_Vector LA_BFS(GrB_Matrix A, GrB_Index sourceVertex, bool directed) {
     GrB_Vector v = NULL;
     LAGraph_Kind kind = directed ? LAGraph_ADJACENCY_DIRECTED : LAGraph_ADJACENCY_UNDIRECTED;
     LAGraph_Graph G;
-    char msg [LAGRAPH_MSG_LEN];
+    char msg[LAGRAPH_MSG_LEN];
     LAGraph_New(&G, &A, kind, msg);
     LAGr_BreadthFirstSearch(&v, NULL, G, sourceVertex, msg);
 
