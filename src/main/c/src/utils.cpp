@@ -36,7 +36,7 @@ BenchmarkParameters ParseBenchmarkParameters(int argc, char **argv) {
             benchmark_parameters.damping_factor = std::stod(value);
         }
         if (strcmp(key, "--max-iteration") == 0) {
-            benchmark_parameters.max_iteration = std::stoul(value);
+            benchmark_parameters.max_iteration = std::stoi(value);
         }
         if (strcmp(key, "--output") == 0) {
             benchmark_parameters.output_file = value;

@@ -15,7 +15,7 @@ typedef struct {
   bool directed = false;
   unsigned long source_vertex = 0;
   double damping_factor = 0.0;
-  unsigned long max_iteration = 0;
+  int max_iteration = 0;
   unsigned long thread_num = 1;
 } BenchmarkParameters;
 
