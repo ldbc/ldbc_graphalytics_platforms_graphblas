@@ -49,47 +49,32 @@ void SerializeSSSPResult(
     free(I);
     free(X);
 }
-//    double value;
-//    for (GrB_Index res_index = 0; res_index < mapping.size(); res_index++) {
-//        GrB_Index original_index = mapping[res_index];
-//        GrB_Index matrix_index = res_index;
-//
-//        GrB_Info info = GrB_Vector_extractElement_FP64(&value, result, matrix_index);
-//        if (info == GrB_SUCCESS) {
-//            file << original_index << " " << value << std::endl;
-//        } else {
-//            file << original_index << " infinity" << std::endl;
-//        }
-//    }
-//}
 
 GrB_Vector LA_SSSP(GrB_Matrix A, GrB_Index sourceVertex, bool directed) {
     GrB_Info info;
-    GrB_Vector d;
 
     // The size of Adj
     GrB_Index n;
     OK(GrB_Matrix_nrows(&n, A))
 
-    {
-        ComputationTimer timer{"Zero diagonalize"};
-        for (GrB_Index i = 0; i < n; i++) {
-            OK(GrB_Matrix_setElement_FP64(A, 0.0, i, i))
-        }
+    for (GrB_Index i = 0; i < n; i++) {
+        OK(GrB_Matrix_setElement_FP64(A, 0.0, i, i))
     }
-    {
-        ComputationTimer timer{"SSSP"};
 
-        GrB_Vector v;
-        LAGraph_Kind kind = directed ? LAGraph_ADJACENCY_DIRECTED : LAGraph_ADJACENCY_UNDIRECTED;
-        LAGraph_Graph G;
+    ComputationTimer timer{"SSSP"};
 
-        int32_t delta = 1;
-        GrB_Scalar Delta = NULL ;
-        GrB_Scalar_setElement_UINT32(Delta, delta);
-        GrB_Scalar_new(&Delta, GrB_INT32);
-        LAGr_SingleSourceShortestPath(&d, G, sourceVertex, Delta, NULL);
-    }
+    LAGraph_Kind kind = directed ? LAGraph_ADJACENCY_DIRECTED : LAGraph_ADJACENCY_UNDIRECTED;
+    LAGraph_Graph G;
+
+    GrB_Vector d = NULL;
+    double delta = 0.1;
+
+    GrB_Scalar Delta = NULL ;
+    GrB_Scalar_new(&Delta, GrB_FP64);
+    GrB_Scalar_setElement_FP64(Delta, delta);
+    char msg [LAGRAPH_MSG_LEN];
+    LAGraph_New(&G, &A, kind, msg);
+    LAGr_SingleSourceShortestPath(&d, G, sourceVertex, Delta, msg);
 
     return d;
 }
