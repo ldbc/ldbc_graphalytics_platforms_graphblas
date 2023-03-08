@@ -49,13 +49,18 @@ GrB_Vector WeaklyConnectedComponents(GrB_Matrix A, bool directed) {
 
     char msg[LAGRAPH_MSG_LEN];
 
-    // LAGraph_Graph G;
-    // LAGraph_New(&G, &A, kind, msg);
-    // printf("msg: %s\n", msg);
+    // symmetrize *directed* graphs -- WCC does not care about edge directions
+    if (directed) {
+        GrB_Matrix_eWiseAdd_BinaryOp(A, NULL, NULL, GrB_FIRST_INT64, A, A, GrB_DESC_T1);
+    }
 
-    // directed graph are symmetric and need to be sanitized
-    bool sanitize = directed;
-    LAGraph_cc_lacc(&components, A, sanitize, msg);
+    LAGraph_Graph G;
+    LAGraph_New(&G, &A, kind, msg);
+    G->is_symmetric_structure = LAGraph_TRUE;
+
+    if (LAGr_ConnectedComponents(&components, G, msg) != GrB_SUCCESS) {
+        printf("msg: %s\n", msg);
+    }
 
     return components;
 }
