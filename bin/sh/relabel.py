@@ -13,12 +13,14 @@ def relabel(con, graph, input_vertex_path, input_edge_path, output_path, directe
         weight_attribute_with_type = ", weight DOUBLE"
         element_type = "real"
         serialize_edge_weight = "|| ' ' || weight"
+        grb_type = "GrB_FP64"
     else:
         weight_attribute_without_type = ""
         weight_attribute_with_type = ""
         # bool GraphBLAS matrices use integer type and a uniform value of 1 for their entities
         element_type = "integer"
         serialize_edge_weight = "|| ' ' || 1"
+        grb_type = "GrB_BOOL"
 
     ## configuration
     con.execute(f"SET experimental_parallel_csv=true")
@@ -62,6 +64,8 @@ def relabel(con, graph, input_vertex_path, input_edge_path, output_path, directe
     con.execute(f"""
         COPY (
                 SELECT '%%MatrixMarket matrix coordinate {element_type} {matrix_type}' AS s
+            UNION ALL
+                SELECT '%%GraphBLAS {grb_type}'
             UNION ALL
                 SELECT (SELECT count(*) FROM v) || ' ' || (SELECT count(*) FROM v) || ' ' || (SELECT count(*) FROM e_relabelled)
             UNION ALL
