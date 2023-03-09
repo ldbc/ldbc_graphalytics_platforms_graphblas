@@ -76,7 +76,7 @@ def relabel(con, graph, input_vertex_path, input_edge_path, output_path, directe
             )
         )
         TO '{output_path}/graph.mtx'
-        WITH (HEADER false)
+        WITH (HEADER false, FORMAT csv)
         """)
 
 
