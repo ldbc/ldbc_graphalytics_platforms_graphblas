@@ -35,13 +35,14 @@ def relabel(con, graph, input_vertex_path, input_edge_path, output_path, directe
 
     print("Relabelling...")
     con.execute(f"""
-        CREATE VIEW e_relabelled AS
+        CREATE OR REPLACE TABLE e_relabelled AS
         -- Note: rowid's indexing starts from 0,
         -- while the Matrix Market format indexes from 1, hence the '+ 1'
         SELECT source_vertex.rowid + 1 AS source, target_vertex.rowid + 1 AS target{weight_attribute_without_type}
         FROM e
         JOIN v source_vertex ON source_vertex.id = e.source
         JOIN v target_vertex ON target_vertex.id = e.target
+        ORDER BY source, target
         """)
 
     if directed:
@@ -72,7 +73,6 @@ def relabel(con, graph, input_vertex_path, input_edge_path, output_path, directe
             (
                 SELECT source || ' ' || target {serialize_edge_weight}
                 FROM e_relabelled
-                ORDER BY source, target
             )
         )
         TO '{output_path}/graph.mtx'
