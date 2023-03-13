@@ -42,7 +42,6 @@ def relabel(con, graph, input_vertex_path, input_edge_path, output_path, directe
         FROM e
         JOIN v source_vertex ON source_vertex.id = e.source
         JOIN v target_vertex ON target_vertex.id = e.target
-        ORDER BY source, target
         """)
 
     if directed:
