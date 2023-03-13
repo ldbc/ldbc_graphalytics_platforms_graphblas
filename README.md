@@ -14,7 +14,7 @@ This project implements the GraphBLAS platform driver for the LDBC Graphalytics 
 * The algorithms (BFS, PR, etc.) are implemented in C in the [LAGraph library](https://github.com/GraphBLAS/LAGraph) (currently on the `dev` branch).
 * The C++ wrapper for LAGraph is defined in the [`src/main/c` directory](https://github.com/ldbc/ldbc_graphalytics_platforms_graphblas/tree/main/src/main/c).
 * The Java driver uses shell scripts to run the benchmark, see e.g. the [`execute-job.sh`](https://github.com/ldbc/ldbc_graphalytics_platforms_graphblas/blob/main/bin/sh/execute-job.sh) script that invokes the binary program for a given algorithm.
-* The graphs (stored in `.v` and `.e` files) are converted to a vertex relabelling file (`.vtx`) and a matrix stored in the Matrix Market format (`.mtx`). The vertex relabelling is a bijective mapping that maps between the sparse UINT64 IDs in the original data to a dense contiguous set of IDs between 1 and |V|. The mapping is implemented in the [`relabel.py` Python script](https://github.com/ldbc/ldbc_graphalytics_platforms_graphblas/blob/main/bin/py/relabel.py) that internally uses [DuckDB](https://duckdb.org/).
+* The graphs (stored in `.v` and `.e` files) are converted to a vertex relabelling file (`.vtx`) and a matrix stored in Matrix Market format (`.mtx`). The vertex relabelling is a bijective mapping that maps between the sparse UINT64 IDs in the original data to a dense contiguous set of IDs between 1 and |V|. The mapping is implemented in the [`relabel.py` Python script](https://github.com/ldbc/ldbc_graphalytics_platforms_graphblas/blob/main/bin/py/relabel.py) that internally uses [DuckDB](https://duckdb.org/).
 
 ### Prerequisites
 
@@ -29,24 +29,20 @@ Make sure you have the following software packages installed:
 On Debian/Fedora-based Linux distributions, you may use the following script to install these dependencies:
 
 ```bash
-bin/sh/install-dependencies.sh
+bin/sh/install-prerequisites.sh
 ```
 
 ### Dependencies
 
-1. Configure Make to use all available threads:
+The implementation depends on two C libraries:
 
-    ```bash
-    export JOBS=$(nproc)
-    ```
-
-1. Get [SuiteSparse:GraphBLAS v7.4.0+](https://github.com/DrTimothyAldenDavis/GraphBLAS), decompress it and install:
+1. To install [SuiteSparse:GraphBLAS v7.4.0+](https://github.com/DrTimothyAldenDavis/GraphBLAS), run:
 
     ```bash
     bin/sh/install-graphblas.sh
     ```
 
-2. Get [LAGraph](https://github.com/GraphBLAS/LAGraph) and install it (currently the `dev` branch is required):
+1. To install [LAGraph](https://github.com/GraphBLAS/LAGraph) (`dev` branch), run:
 
     ```bash
     bin/sh/install-lagraph.sh
