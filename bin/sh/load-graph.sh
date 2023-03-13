@@ -64,16 +64,3 @@ if [[ ! -f ${OUTPUT_PATH}/graph.mtx && ! -f ${OUTPUT_PATH}/graph.vtx ]]; then
 else
     echo "Transformed mtx/vtx files already exist, no conversion required"
 fi
-
-# convert .mtx/.vtx files to binary formats
-# if [[ ! -f ${OUTPUT_PATH}/graph.grb && ! -f ${OUTPUT_PATH}/graph.vtb ]]; then
-#     bin/exe/converter \
-#         --binary true \
-#         --input-vertex ${INPUT_VERTEX_PATH} \
-#         --input-edge ${INPUT_EDGE_PATH} \
-#         --output-path ${OUTPUT_PATH} \
-#         --weighted ${WEIGHTED} \
-#         --directed ${DIRECTED}
-# else
-#     echo "Transformed grb/vtb files already exist, no conversion required"
-# fi
