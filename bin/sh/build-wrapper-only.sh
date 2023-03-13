@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -eo pipefail
 
 # Ensure the configuration file exists
 if [ "$(uname)" == "Darwin" ]; then
@@ -13,3 +13,4 @@ mkdir -p $rootdir/bin/exe
 cd $rootdir/bin/exe
 cmake -DCMAKE_BUILD_TYPE=Release ../../src/main/c
 JOBS=$(nproc) make all VERBOSE=1
+

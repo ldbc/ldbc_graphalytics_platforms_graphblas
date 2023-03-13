@@ -147,3 +147,7 @@ buildNumber.properties
 
 # Graphalytics
 config/
+
+# dependencies
+/GraphBLAS/
+/LAGraph/

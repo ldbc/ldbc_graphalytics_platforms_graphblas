@@ -13,32 +13,24 @@ jobs:
     resource_class: xlarge
     steps:
       - checkout
-      - run: cp -r example-data-sets/* ~/
-      - run: bin/sh/install-dependencies.sh
-      - run: |
-          # GraphBLAS
-          git clone --depth 1 --branch v7.4.3 --single-branch https://github.com/DrTimothyAldenDavis/GraphBLAS
-          cd GraphBLAS
-          cd build
-          # make build quicker by disabling the generation of functions for each individual type
-          cmake .. -DCMAKE_C_FLAGS="-DGBCUDA_DEV=1"
-          make -j$(nproc)
-          sudo make install
-          sudo ldconfig
-          cd ../..
-      - run: |
-          # LAGraph
-          git clone --depth 1 --branch dev --single-branch https://github.com/GraphBLAS/LAGraph
-          cd LAGraph
-          JOBS=$(nproc) make
-          sudo make install
-          sudo ldconfig
-          cd ..
-      - run: |
-          # init
-          ./init.sh
-      - run: |
-          # run
-          cd graphalytics-1.7.0-SNAPSHOT-graphblas-0.1-SNAPSHOT/
-          bin/sh/run-benchmark.sh
+      - run:
+          name: Place example data sets in the home directory
+          command: cp -r example-data-sets/* ~/
+      - run:
+          name: Install prerequisites
+          command: bin/sh/install-prerequisites.sh
+      - run:
+          name: Install GraphBLAS
+          command: bin/sh/install-graphblas.sh --compact
+      - run:
+          name: Install LAGraph
+          command: bin/sh/install-lagraph.sh
+      - run:
+          name: Initialize benchmark package
+          command: ./init.sh
+      - run:
+          name: Perform benchmark test run
+          command: |
+            cd graphalytics-1.7.0-SNAPSHOT-graphblas-0.1-SNAPSHOT/
+            bin/sh/run-benchmark.sh
       - slack/status

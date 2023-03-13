@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -eo pipefail
 
 # Ensure the configuration file exists
 if [ "$(uname)" == "Darwin" ]; then

@@ -1,6 +1,6 @@
 #/bin/sh
 
-set -e
+set -eo pipefail
 
 GRAPHS_DIR=${1:-~/graphs}
 MATRICES_DIR=${2:-~/matrices}

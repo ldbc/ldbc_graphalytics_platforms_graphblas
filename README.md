@@ -6,38 +6,59 @@ Platform driver for the [LDBC Graphalytics benchmark](https://graphalytics.org) 
 
 To execute the Graphalytics benchmark on GraphBLAS, follow the steps in the Graphalytics tutorial on [Running Benchmark](https://github.com/ldbc/ldbc_graphalytics/wiki/Manual%3A-Running-Benchmark) with the GraphBLAS-specific instructions listed below.
 
+### Project structure
+
+This project implements the GraphBLAS platform driver for the LDBC Graphalytics benchmark. It consists of the following components:
+
+* The platform driver is written in Java and implements the classes required by the [`ldbc_graphalytics` framework](https://github.com/ldbc/ldbc_graphalytics).
+* The algorithms (BFS, PR, etc.) are implemented in C in the [LAGraph library](https://github.com/GraphBLAS/LAGraph) (currently on the `dev` branch).
+* The C++ wrapper for LAGraph is defined in the [`src/main/c` directory](https://github.com/ldbc/ldbc_graphalytics_platforms_graphblas/tree/main/src/main/c).
+* The Java driver uses shell scripts to run the benchmark, see e.g. the [`execute-job.sh`](https://github.com/ldbc/ldbc_graphalytics_platforms_graphblas/blob/main/bin/sh/execute-job.sh) script that invokes the binary program for a given algorithm.
+* The graphs (stored in `.v` and `.e` files) are converted to a vertex relabelling file (`.vtx`) and a matrix stored in the Matrix Market format (`.mtx`). The vertex relabelling is a bijective mapping that maps between the sparse UINT64 IDs in the original data to a dense contiguous set of IDs between 1 and |V|. The mapping is implemented in the [`relabel.py` Python script](https://github.com/ldbc/ldbc_graphalytics_platforms_graphblas/blob/main/bin/py/relabel.py) that internally uses [DuckDB](https://duckdb.org/).
+
 ### Prerequisites
 
 Make sure you have the following software packages installed:
 
-* CMake
-* GCC, Clang, or ICC
+* Apache Maven 3+
+* CMake 3.10+
+* C++ compiler: GCC, Clang, or ICC
+* Python 3.8+
+* DuckDB Python package (`duckdb`)
+
+On Debian/Fedora-based Linux distributions, you may use the following script to install these dependencies:
+
+```bash
+bin/sh/install-dependencies.sh
+```
 
 ### Dependencies
 
-1. Configure Make to run in parallel:
+1. Configure Make to use all available threads:
 
     ```bash
     export JOBS=$(nproc)
     ```
 
-1. Get [SuiteSparse:GraphBLAS v7.4.2+](https://github.com/DrTimothyAldenDavis/GraphBLAS), decompress it and install:
+1. Get [SuiteSparse:GraphBLAS v7.4.0+](https://github.com/DrTimothyAldenDavis/GraphBLAS), decompress it and install:
 
     ```bash
-    git clone --depth 1 --branch v7.4.2 --single-branch https://github.com/DrTimothyAldenDavis/GraphBLAS
-    cd GraphBLAS
-    make && sudo make install && sudo ldconfig
-    cd ..
+    bin/sh/install-graphblas.sh
     ```
 
-1. Get [LAGraph v1.0.1+](https://github.com/GraphBLAS/LAGraph), and install it:
+2. Get [LAGraph](https://github.com/GraphBLAS/LAGraph) and install it (currently the `dev` branch is required):
 
     ```bash
-    git clone --depth 1 --branch v1.0.1 --single-branch https://github.com/GraphBLAS/LAGraph
-    cd LAGraph
-    make && sudo make install && sudo ldconfig
-    cd ..
+    bin/sh/install-lagraph.sh
     ```
+
+### Building only the C++ wrapper
+
+To only build the C++ wrapper (for quick test builds), run the following script:
+
+```bash
+bin/sh/build-wrapper-only.sh
+```
 
 ### Running the benchmark
 
@@ -48,18 +69,21 @@ Make sure you have the following software packages installed:
     ```
 
     where
+
     * `GRAPHS_DIR` is the directory of the graphs and the validation data. The argument is optional and its default value is `~/graphs`.
     * `MATRICES_DIR` is the directory of the pre-generated matrix files (in Matrix Market format). The argument is optional and its default value is `~/matrices`.
 
-    Edit the rest of the configurations (e.g. graphs to be included in the benchmark) in the `config` directory. Also, inspect `config/platform.properties` and check whether the value of `platform.graphblas.num-threads` was set correctly.
+    This script creates a Maven package (`graphalytics-${GRAPHALYTICS_VERSION}-graphblas-${PROJECT_VERSION}.tar.gz`). Then, it decopresses the package, initializes a configuration directory `config` (based on the content of the `config-template` directory) and sets default values of the directories (see above) and the number of threads.
 
-1. Navigate to the directory created by the `init.sh` script:
+2. Navigate to the directory created by the `init.sh` script:
 
     ```bash
     cd graphalytics-*-graphblas-*/
     ```
 
-1. Run the benchmark with the following command:
+3. Edit the configuration files (e.g. graphs to be included in the benchmark) in the `config` directory. Also, inspect `config/platform.properties` and check whether the value of `platform.graphblas.num-threads` was set correctly.
+
+4. Run the benchmark with the following command:
 
     ```bash
     bin/sh/run-benchmark.sh
@@ -73,3 +97,9 @@ To use the Intel C++ Compiler, get a license, install it, [configure it](https:/
 export CC=icc
 export CXX=icc
 ```
+
+### Contributors
+
+* Bálint Hegyi (Budapest University of Technology and Economics)
+* Márton Elekes (Budapest University of Technology and Economics)
+* Gábor Szárnyas (Budapest University of Technology and Economics, CWI Amsterdam)

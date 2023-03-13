@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -eo pipefail
 
 if [ "$(uname)" == "Darwin" ]; then
   rootdir=$(dirname $(greadlink -f ${BASH_SOURCE[0]}))/../..
