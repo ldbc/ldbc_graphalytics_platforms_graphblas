@@ -8,6 +8,9 @@ GRAPHALYTICS_VERSION=1.7.0-SNAPSHOT
 PROJECT_VERSION=0.1-SNAPSHOT
 PROJECT=graphalytics-$GRAPHALYTICS_VERSION-graphblas-$PROJECT_VERSION
 
+# cleanup previously compiled wrapper artifacts
+rm -rf bin/exe
+
 rm -rf $PROJECT
 mvn package
 tar xf $PROJECT-bin.tar.gz
