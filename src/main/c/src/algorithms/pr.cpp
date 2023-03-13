@@ -58,7 +58,7 @@ GrB_Vector LA_PR(GrB_Matrix A, bool directed, double damping_factor, int iterati
     LAGraph_New(&G, &A, kind, msg);
     LAGraph_Cached_OutDegree(G, msg);
     LAGraph_Cached_AT(G, msg);
-    if (LAGr_PageRankGX(&result, &niters, G, damping_factor, 0.00001, iteration_num, msg) != GrB_SUCCESS) {
+    if (LAGr_PageRankGX(&result, &niters, G, damping_factor, iteration_num, msg) != GrB_SUCCESS) {
         printf("msg: %s\n", msg);
     }
 
