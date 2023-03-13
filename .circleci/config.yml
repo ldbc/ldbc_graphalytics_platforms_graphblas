@@ -13,7 +13,6 @@ jobs:
     resource_class: xlarge
     steps:
       - checkout
-      - run: sudo apt update && sudo apt install cmake g++ maven
       - run: cp -r example-data-sets/* ~/
       - run: bin/sh/install-dependencies.sh
       - run: |

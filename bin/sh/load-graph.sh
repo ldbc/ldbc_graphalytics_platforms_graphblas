@@ -53,7 +53,7 @@ mkdir -p ${OUTPUT_PATH}
 # convert .v/.e files to matrix market format (.mtx) with the vertex ID mapping (.vtx)
 
 if [[ ! -f ${OUTPUT_PATH}/graph.mtx && ! -f ${OUTPUT_PATH}/graph.vtx ]]; then
-    bin/sh/relabel.py \
+    bin/py/relabel.py \
         --use-disk \
         --graph-name ${GRAPH_NAME} \
         --input-vertex ${INPUT_VERTEX_PATH} \
