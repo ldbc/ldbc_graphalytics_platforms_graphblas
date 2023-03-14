@@ -16,7 +16,15 @@ This project implements the GraphBLAS platform driver for the LDBC Graphalytics 
 * The Java driver uses shell scripts to run the benchmark, see e.g. the [`execute-job.sh`](https://github.com/ldbc/ldbc_graphalytics_platforms_graphblas/blob/main/bin/sh/execute-job.sh) script that invokes the binary program for a given algorithm.
 * The graphs (stored in `.v` and `.e` files) are converted to a vertex relabelling file (`.vtx`) and a matrix stored in Matrix Market format (`.mtx`). The vertex relabelling is a bijective mapping that maps between the sparse UINT64 IDs in the original data to a dense contiguous set of IDs between 1 and |V|. The mapping is implemented in the [`relabel.py` Python script](https://github.com/ldbc/ldbc_graphalytics_platforms_graphblas/blob/main/bin/py/relabel.py) that internally uses [DuckDB](https://duckdb.org/).
 
-### Prerequisites
+### Dependencies
+
+On Debian/Fedora-based Linux distributions, you may install the prerequisite packages and dependencies listed below using a singe comman:
+
+```
+bin/sh/install-dependencies.sh
+```
+
+#### Prerequisite packages
 
 Make sure you have the following software packages installed:
 
@@ -26,15 +34,15 @@ Make sure you have the following software packages installed:
 * Python 3.8+
 * DuckDB Python package (`duckdb`)
 
-On Debian/Fedora-based Linux distributions, you may use the following script to install these dependencies:
+On Linux, you may use the following script to install these dependencies:
 
 ```bash
 bin/sh/install-prerequisites.sh
 ```
 
-### Dependencies
+### SuiteSparse:GraphBLAS and LAGraph libraries
 
-The implementation depends on two C libraries:
+The implementation depends on two C libraries, SuiteSparse:GraphBLAS and LAGraph. We require very recent versions of these libraries, so it is best to compile them from their source code.
 
 1. To install [SuiteSparse:GraphBLAS v7.4.0+](https://github.com/DrTimothyAldenDavis/GraphBLAS), run:
 

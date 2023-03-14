@@ -20,7 +20,7 @@ jobs:
           name: Install prerequisites
           command: bin/sh/install-prerequisites.sh
       - run:
-          name: Install GraphBLAS
+          name: Install GraphBLAS (using compact mode to reduce build times)
           command: bin/sh/install-graphblas.sh --compact
       - run:
           name: Install LAGraph
