@@ -2,11 +2,7 @@
 
 set -eo pipefail
 
-if [ "$(uname)" == "Darwin" ]; then
-  rootdir=$(dirname $(greadlink -f ${BASH_SOURCE[0]}))/../..
-else
-  rootdir=$(dirname $(readlink -f ${BASH_SOURCE[0]}))/../..
-fi
+rootdir="$( cd "$( dirname "${BASH_SOURCE[0]:-${(%):-%x}}" )" >/dev/null 2>&1 && pwd )/../.."
 
 rm -rf LAGraph
 git clone --depth 1 --branch dev --single-branch https://github.com/GraphBLAS/LAGraph
