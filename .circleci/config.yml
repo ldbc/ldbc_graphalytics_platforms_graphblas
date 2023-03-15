@@ -31,6 +31,6 @@ jobs:
       - run:
           name: Perform benchmark test run
           command: |
-            cd graphalytics-1.7.0-SNAPSHOT-graphblas-0.1-SNAPSHOT/
+            cd graphalytics-1.7.0-graphblas-0.1-SNAPSHOT/
             bin/sh/run-benchmark.sh
       - slack/status
