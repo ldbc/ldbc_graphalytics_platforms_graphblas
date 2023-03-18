@@ -93,14 +93,11 @@ bin/sh/build-wrapper-only.sh
     bin/sh/run-benchmark.sh
     ```
 
-### Intel C++ Compiler
+### Workflow
 
-To use the Intel C++ Compiler, get a license, install it, [configure it](https://github.com/FTSRG/cheat-sheets/wiki/GraphBLAS), and issue the following commands:
+The workflow of the GraphBLAS implementation is illustrated in the following figure:
 
-```bash
-export CC=icc
-export CXX=icc
-```
+![Workflow of the GraphBLAS implementation](workflow.png)
 
 ### Contributors
 
