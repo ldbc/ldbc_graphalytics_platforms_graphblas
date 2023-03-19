@@ -46,11 +46,9 @@ done
 
 mkdir -p ${OUTPUT_PATH}
 
-# convert .v/.e files to matrix market format (.mtx) with the vertex ID mapping (.vtx)
-
-if [[ ! -f ${OUTPUT_PATH}/graph.mtx && ! -f ${OUTPUT_PATH}/graph.vtx ]]; then
+# convert .v/.e files to .vtx/.mtx Matrix Market files
+if [[ ! -f ${OUTPUT_PATH}/graph.vtx && ! -f ${OUTPUT_PATH}/graph.mtx ]]; then
     bin/py/relabel.py \
-        --use-disk \
         --graph-name ${GRAPH_NAME} \
         --input-vertex ${INPUT_VERTEX_PATH} \
         --input-edge ${INPUT_EDGE_PATH} \
@@ -58,18 +56,12 @@ if [[ ! -f ${OUTPUT_PATH}/graph.mtx && ! -f ${OUTPUT_PATH}/graph.vtx ]]; then
         --weighted ${WEIGHTED} \
         --directed ${DIRECTED}
 else
-    echo "Transformed mtx/vtx files already exist, no conversion required"
+    echo "Transformed Matrix Market (mtx/vtx) files already exist, no relabelling required"
 fi
 
-# convert .mtx/.vtx files to binary formats
-# if [[ ! -f ${OUTPUT_PATH}/graph.grb && ! -f ${OUTPUT_PATH}/graph.vtb ]]; then
-#     bin/exe/converter \
-#         --binary true \
-#         --input-vertex ${INPUT_VERTEX_PATH} \
-#         --input-edge ${INPUT_EDGE_PATH} \
-#         --output-path ${OUTPUT_PATH} \
-#         --weighted ${WEIGHTED} \
-#         --directed ${DIRECTED}
-# else
-#     echo "Transformed grb/vtb files already exist, no conversion required"
-# fi
+# convert .mtx/.vtx files to binary .vtb/.grb files
+if [[ ! -f ${OUTPUT_PATH}/graph.vtb && ! -f ${OUTPUT_PATH}/graph.grb ]]; then
+    bin/exe/converter --data-dir ${OUTPUT_PATH}
+else
+    echo "Transformed binary files (grb/vtb) already exist, no conversion required"
+fi

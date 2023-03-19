@@ -49,7 +49,7 @@ def relabel(con, graph, input_vertex_path, input_edge_path, output_path, directe
     else:
         matrix_type = 'symmetric'
 
-    print("Serializing vertex mapping...")
+    print("Serializing textual mapping file (vtx)")
     con.execute(f"""
         COPY (
             SELECT v.id
@@ -60,7 +60,7 @@ def relabel(con, graph, input_vertex_path, input_edge_path, output_path, directe
         WITH (HEADER false)
         """)
 
-    print("Serializing edge mapping...")
+    print("Serializing textual matrix file (mtx)")
     con.execute(f"""
         COPY (
                 SELECT '%%MatrixMarket matrix coordinate {element_type} {matrix_type}' AS s

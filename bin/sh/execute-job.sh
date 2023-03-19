@@ -36,16 +36,12 @@ while [[ $# -gt 1 ]] # Parse two arguments: [--key value] or [-k value]
       DAMPING_FACTOR="$value"
       shift;;
 
-    --input-path)
-      INPUT_PATH="$value"
+    --input-dir)
+      INPUT_DIR="$value"
       shift;;
 
-    --output-path)
-      OUTPUT_PATH="$value"
-      shift;;
-
-    --num-machines)
-      NUM_MACHINES="$value"
+    --output-file)
+      OUTPUT_FILE="$value"
       shift;;
 
     --num-threads)
@@ -56,9 +52,7 @@ while [[ $# -gt 1 ]] # Parse two arguments: [--key value] or [-k value]
       DIRECTED="$value"
       shift;;
 
-    --num-vertices)
-      NUM_VERTICES="$value"
-      shift;;
+      
 
     *)
       echo "Error: invalid option: " "$key"
@@ -74,8 +68,8 @@ case $ALGORITHM in
        COMMAND="$rootdir/bin/exe/$ALGORITHM \
          --binary true \
          --jobid $JOB_ID \
-         --dataset $INPUT_PATH \
-         --output $OUTPUT_PATH \
+         --input-dir $INPUT_DIR \
+         --output-file $OUTPUT_FILE \
          --directed $DIRECTED \
          --source-vertex $SOURCE_VERTEX \
          --log-path $LOG_PATH \
@@ -86,8 +80,8 @@ case $ALGORITHM in
        COMMAND="$rootdir/bin/exe/$ALGORITHM \
          --binary true \
          --jobid $JOB_ID \
-         --dataset $INPUT_PATH \
-         --output $OUTPUT_PATH \
+         --input-dir $INPUT_DIR \
+         --output-file $OUTPUT_FILE \
          --directed $DIRECTED \
          --log-path $LOG_PATH \
          --threadnum $NUM_THREADS"
@@ -97,8 +91,8 @@ case $ALGORITHM in
        COMMAND="$rootdir/bin/exe/$ALGORITHM \
          --binary true \
          --jobid $JOB_ID \
-         --dataset $INPUT_PATH \
-         --output $OUTPUT_PATH \
+         --input-dir $INPUT_DIR \
+         --output-file $OUTPUT_FILE \
          --directed $DIRECTED \
          --damping-factor $DAMPING_FACTOR \
          --max-iteration $MAX_ITERATION \
@@ -110,8 +104,8 @@ case $ALGORITHM in
        COMMAND="$rootdir/bin/exe/$ALGORITHM \
          --binary true \
          --jobid $JOB_ID \
-         --dataset $INPUT_PATH \
-         --output $OUTPUT_PATH \
+         --input-dir $INPUT_DIR \
+         --output-file $OUTPUT_FILE \
          --directed $DIRECTED \
          --max-iteration $MAX_ITERATION \
          --log-path $LOG_PATH \
@@ -122,8 +116,8 @@ case $ALGORITHM in
        COMMAND="$rootdir/bin/exe/$ALGORITHM \
          --binary true \
          --jobid $JOB_ID \
-         --dataset $INPUT_PATH \
-         --output $OUTPUT_PATH \
+         --input-dir $INPUT_DIR \
+         --output-file $OUTPUT_FILE \
          --directed $DIRECTED \
          --log-path $LOG_PATH \
          --threadnum $NUM_THREADS"
@@ -133,8 +127,8 @@ case $ALGORITHM in
        COMMAND="$rootdir/bin/exe/$ALGORITHM
          --binary true \
          --jobid $JOB_ID \
-         --dataset $INPUT_PATH \
-         --output $OUTPUT_PATH \
+         --input-dir $INPUT_DIR \
+         --output-file $OUTPUT_FILE \
          --directed $DIRECTED
          --source-vertex $SOURCE_VERTEX \
          --log-path $LOG_PATH \

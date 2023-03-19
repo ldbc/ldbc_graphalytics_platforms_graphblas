@@ -21,7 +21,7 @@ void SerializePageRankResult(
 ) {
     std::ofstream file{parameters.output_file};
     if (!file.is_open()) {
-        std::cerr << "File " << parameters.output_file << " does not exists" << std::endl;
+        std::cerr << "Output file " << parameters.output_file << " does not exists" << std::endl;
         exit(-1);
     }
     file.precision(16);
