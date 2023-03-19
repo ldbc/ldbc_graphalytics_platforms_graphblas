@@ -29,8 +29,8 @@ public abstract class GraphblasJob {
 	protected CommandLine commandLine;
     private final String jobId;
 	private final String logPath;
-	private final String inputPath;
-	private final String outputPath;
+	private final String inputDir;
+	private final String outputFile;
 
 	protected final RunSpecification runSpecification;
 	protected final Graph benchmarkGraph;
@@ -41,19 +41,19 @@ public abstract class GraphblasJob {
      * Initializes the platform job with its parameters.
 	 * @param runSpecification the benchmark run specification.
 	 * @param platformConfig the platform configuration.
-	 * @param inputPath the file path of the input graph dataset.
-	 * @param outputPath the file path of the output graph dataset.
+	 * @param inputDir the file path of the input graph dataset.
+	 * @param outputFile the file path of the output graph dataset.
 	 */
 	public GraphblasJob(RunSpecification runSpecification, GraphblasConfiguration platformConfig,
-						String inputPath, String outputPath, Graph benchmarkGraph) {
+						String inputDir, String outputFile, Graph benchmarkGraph) {
 		BenchmarkRun benchmarkRun = runSpecification.getBenchmarkRun();
 		BenchmarkRunSetup benchmarkRunSetup = runSpecification.getBenchmarkRunSetup();
 
 		this.jobId = benchmarkRun.getId();
 		this.logPath = benchmarkRunSetup.getLogDir().resolve("platform").toString();
 
-		this.inputPath = inputPath;
-		this.outputPath = outputPath;
+		this.inputDir = inputDir;
+		this.outputFile = outputFile;
 
 		this.platformConfig = platformConfig;
 		this.runSpecification = runSpecification;
@@ -76,15 +76,15 @@ public abstract class GraphblasJob {
 		String logDir = getLogPath();
 
 		// List of dataset parameters.
-		String inputPath = getInputPath();
-		String outputPath = getOutputPath();
+		String inputDir = getInputDir();
+		String outputFile = getOutputFile();
 
 		// List of platform parameters.
 		int numThreads = platformConfig.getNumThreads();
 
 		appendBenchmarkParameters(jobId, logDir);
 		appendAlgorithmParameters();
-		appendDatasetParameters(inputPath, outputPath);
+		appendDatasetParameters(inputDir, outputFile);
 		appendPlatformConfigurations(numThreads);
 
 		String commandString = StringUtils.toString(commandLine.toStrings(), " ");
@@ -114,12 +114,12 @@ public abstract class GraphblasJob {
 	/**
 	 * Appends the dataset-specific parameters for the executable to a CommandLine object.
 	 */
-	private void appendDatasetParameters(String inputPath, String outputPath) {
-		commandLine.addArgument("--input-path");
-		commandLine.addArgument(Paths.get(inputPath).toAbsolutePath().toString());
+	private void appendDatasetParameters(String inputDir, String outputFile) {
+		commandLine.addArgument("--input-dir");
+		commandLine.addArgument(Paths.get(inputDir).toAbsolutePath().toString());
 
-		commandLine.addArgument("--output-path");
-		commandLine.addArgument(Paths.get(outputPath).toAbsolutePath().toString());
+		commandLine.addArgument("--output-file");
+		commandLine.addArgument(Paths.get(outputFile).toAbsolutePath().toString());
 	}
 
 
@@ -145,12 +145,12 @@ public abstract class GraphblasJob {
 		return logPath;
 	}
 
-	private String getInputPath() {
-		return inputPath;
+	private String getInputDir() {
+		return inputDir;
 	}
 
-	private String getOutputPath() {
-		return outputPath;
+	private String getOutputFile() {
+		return outputFile;
 	}
 
 }

@@ -10,6 +10,7 @@ extern "C" {
  * Argument parsing functions
  */
 typedef struct {
+  bool binary;
   std::string input_dir;
   std::string output_file;
   bool directed = false;
@@ -22,19 +23,12 @@ typedef struct {
 BenchmarkParameters ParseBenchmarkParameters(int argc, char **argv);
 
 typedef struct {
-  std::string vertex_file;
-  std::string edge_file;
-  std::string matrix_file;
-  std::string mapping_file;
-  bool weighted = false;
-  bool directed = false;
+  std::string data_dir;
 } ConverterParameters;
 
 ConverterParameters ParseConverterParameters(int argc, char **argv);
 
 time_t GetCurrentMilliseconds();
-
-void SerializeDebugMatrix(const char *title, GrB_Matrix result);
 
 /*
  * GraphBLAS helper macros

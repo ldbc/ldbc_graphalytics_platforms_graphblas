@@ -19,11 +19,11 @@ public final class PageRankJob extends GraphblasJob {
      * Creates a new PageRankJob object with all mandatory parameters specified.
      *
      * @param platformConfig the platform configuration.
-     * @param inputPath      the path to the input graph.
+     * @param inputDir      the path to the input graph.
      */
     public PageRankJob(RunSpecification runSpecification, GraphblasConfiguration platformConfig,
-                       String inputPath, String outputPath, Graph benchmarkGraph) {
-        super(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
+                       String inputDir, String outputPath, Graph benchmarkGraph) {
+        super(runSpecification, platformConfig, inputDir, outputPath, benchmarkGraph);
     }
 
     @Override

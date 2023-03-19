@@ -92,29 +92,29 @@ public class GraphblasPlatform implements Platform {
 
 		Algorithm algorithm = benchmarkRun.getAlgorithm();
 		GraphblasConfiguration platformConfig = GraphblasConfiguration.parsePropertiesFile();
-		String inputPath = runtimeSetup.getLoadedGraph().getLoadedPath();
-		String outputPath = benchmarkRunSetup.getOutputDir().resolve(benchmarkRun.getName()).toAbsolutePath().toString();
+		String inputDir = runtimeSetup.getLoadedGraph().getLoadedPath();
+		String outputFile = benchmarkRunSetup.getOutputDir().resolve(benchmarkRun.getName()).toAbsolutePath().toString();
 		Graph benchmarkGraph = benchmarkRun.getGraph();
 
 		GraphblasJob job;
 		switch (algorithm) {
 			case BFS:
-				job = new BreadthFirstSearchJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
+				job = new BreadthFirstSearchJob(runSpecification, platformConfig, inputDir, outputFile, benchmarkGraph);
 				break;
 			case CDLP:
-				job = new CommunityDetectionLPJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
+				job = new CommunityDetectionLPJob(runSpecification, platformConfig, inputDir, outputFile, benchmarkGraph);
 				break;
 			case LCC:
-				job = new LocalClusteringCoefficientJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
+				job = new LocalClusteringCoefficientJob(runSpecification, platformConfig, inputDir, outputFile, benchmarkGraph);
 				break;
 			case PR:
-				job = new PageRankJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
+				job = new PageRankJob(runSpecification, platformConfig, inputDir, outputFile, benchmarkGraph);
 				break;
 			case SSSP:
-				job = new SingleSourceShortestPathsJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
+				job = new SingleSourceShortestPathsJob(runSpecification, platformConfig, inputDir, outputFile, benchmarkGraph);
 				break;
 			case WCC:
-				job = new WeaklyConnectedComponents(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
+				job = new WeaklyConnectedComponents(runSpecification, platformConfig, inputDir, outputFile, benchmarkGraph);
 				break;
 			default:
 				throw new PlatformExecutionException("Failed to load algorithm implementation.");
