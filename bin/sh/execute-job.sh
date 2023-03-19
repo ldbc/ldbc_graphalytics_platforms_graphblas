@@ -72,6 +72,7 @@ case $ALGORITHM in
 
      bfs)
        COMMAND="$rootdir/bin/exe/$ALGORITHM \
+         --binary true \
          --jobid $JOB_ID \
          --dataset $INPUT_PATH \
          --output $OUTPUT_PATH \
@@ -83,6 +84,7 @@ case $ALGORITHM in
 
      wcc)
        COMMAND="$rootdir/bin/exe/$ALGORITHM \
+         --binary true \
          --jobid $JOB_ID \
          --dataset $INPUT_PATH \
          --output $OUTPUT_PATH \
@@ -93,6 +95,7 @@ case $ALGORITHM in
 
      pr)
        COMMAND="$rootdir/bin/exe/$ALGORITHM \
+         --binary true \
          --jobid $JOB_ID \
          --dataset $INPUT_PATH \
          --output $OUTPUT_PATH \
@@ -105,6 +108,7 @@ case $ALGORITHM in
 
      cdlp)
        COMMAND="$rootdir/bin/exe/$ALGORITHM \
+         --binary true \
          --jobid $JOB_ID \
          --dataset $INPUT_PATH \
          --output $OUTPUT_PATH \
@@ -116,6 +120,7 @@ case $ALGORITHM in
 
      lcc)
        COMMAND="$rootdir/bin/exe/$ALGORITHM \
+         --binary true \
          --jobid $JOB_ID \
          --dataset $INPUT_PATH \
          --output $OUTPUT_PATH \
@@ -126,6 +131,7 @@ case $ALGORITHM in
 
      sssp)
        COMMAND="$rootdir/bin/exe/$ALGORITHM
+         --binary true \
          --jobid $JOB_ID \
          --dataset $INPUT_PATH \
          --output $OUTPUT_PATH \
