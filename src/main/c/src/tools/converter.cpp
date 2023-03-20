@@ -32,7 +32,6 @@ int main(int argc, char **argv) {
     }
 
     FILE *mmfile = fopen(textual_matrix_file_path.c_str(), "r");
-    std::cout << "mmread: " << textual_matrix_file_path << std::endl;
     if (mmfile == nullptr) {
         throw std::runtime_error{"Cannot open Matrix Market file: " + textual_matrix_file_path};
     }
