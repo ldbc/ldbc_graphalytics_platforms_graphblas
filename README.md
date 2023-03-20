@@ -98,9 +98,3 @@ bin/sh/build-wrapper-only.sh
 The workflow of the GraphBLAS implementation is illustrated in the following figure. Note that the "raw graph files" and the "configuration" are provided by the user, while the rest of the data artifacts (intermediate data sets, outputs, etc.) are created automatically by the framework.
 
 ![Workflow of the GraphBLAS implementation](workflow.png)
-
-### Contributors
-
-* Bálint Hegyi (Budapest University of Technology and Economics)
-* Márton Elekes (Budapest University of Technology and Economics)
-* Gábor Szárnyas (Budapest University of Technology and Economics, CWI Amsterdam)
