@@ -133,8 +133,8 @@ graph files</y:NodeLabel>
               <y:Geometry height="111.265625" width="125.36592294920058" x="969.6080527144358" y="389.734375"/>
               <y:Fill hasColor="false" transparent="false"/>
               <y:BorderStyle color="#999999" type="line" width="1.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="32.265625" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="125.36592294920058" x="0.0" xml:space="preserve" y="0.0">text matrix 
-files</y:NodeLabel>
+              <y:NodeLabel alignment="center" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="32.265625" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="125.36592294920058" x="0.0" xml:space="preserve" y="0.0">text
+matrix files</y:NodeLabel>
               <y:Shape type="rectangle"/>
               <y:State closed="false" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"/>
               <y:NodeBounds considerNodeLabelSize="true"/>
@@ -503,8 +503,8 @@ LAGraph and SuiteSparse:GraphBLAS<y:LabelModel><y:SmartNodeLabelModel distance="
               <y:Geometry height="111.265625" width="125.65036440784661" x="1205.3045636310999" y="389.734375"/>
               <y:Fill hasColor="false" transparent="false"/>
               <y:BorderStyle color="#999999" type="line" width="1.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="32.265625" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="125.65036440784661" x="0.0" xml:space="preserve" y="0.0">binary matrix
-files</y:NodeLabel>
+              <y:NodeLabel alignment="center" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="32.265625" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="125.65036440784661" x="0.0" xml:space="preserve" y="0.0">binary
+matrix files</y:NodeLabel>
               <y:Shape type="rectangle"/>
               <y:State closed="false" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"/>
               <y:NodeBounds considerNodeLabelSize="true"/>
