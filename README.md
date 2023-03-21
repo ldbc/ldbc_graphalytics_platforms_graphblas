@@ -85,7 +85,10 @@ bin/sh/build-wrapper-only.sh
     cd graphalytics-*-graphblas-*/
     ```
 
-3. Edit the configuration files (e.g. graphs to be included in the benchmark) in the `config` directory. Also, inspect `config/platform.properties` and check whether the value of `platform.graphblas.num-threads` was set correctly.
+3. Edit the configuration files (e.g. graphs to be included in the benchmark) in the `config` directory.
+
+    * To conduct benchmark runs, edit the `config/benchmark.properties` file and replace the `include = benchmarks/custom.properties` to select the dataset size you wish to use, e.g. `include = benchmarks/xl.properties`
+    * Inspect `config/platform.properties` and check whether the value of `platform.graphblas.num-threads` was set correctly.
 
 4. Run the benchmark with the following command:
 
