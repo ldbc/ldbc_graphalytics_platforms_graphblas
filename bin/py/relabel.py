@@ -91,7 +91,7 @@ def main():
     args = parser.parse_args()
 
     if args.use_disk:
-        dbfile = "test.duckdb"
+        dbfile = "graph.duckdb"
         if os.path.exists(dbfile):
             os.remove(dbfile)
         con = duckdb.connect(database=dbfile)
