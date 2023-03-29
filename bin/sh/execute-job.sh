@@ -4,6 +4,9 @@ set -eo pipefail
 
 rootdir="$( cd "$( dirname "${BASH_SOURCE[0]:-${(%):-%x}}" )" >/dev/null 2>&1 && pwd )/../.."
 
+# cleanup DuckDB temp files
+rm -f /tmp/libduckdb_java*.so
+
 # Parse commandline instructions (provided by Graphalytics).
 while [[ $# -gt 1 ]] # Parse two arguments: [--key value] or [-k value]
   do
