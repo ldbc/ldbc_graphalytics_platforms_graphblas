@@ -16,7 +16,7 @@ public final class WeaklyConnectedComponents extends GraphblasJob {
 
 	/**
 	 * Creates a new BreadthFirstSearchJob object with all mandatory parameters specified.
-	 *  @param platformConfig the platform configuration.
+	 * @param platformConfig the platform configuration.
 	 * @param inputDir the path to the input graph.
 	 */
 	public WeaklyConnectedComponents(RunSpecification runSpecification, GraphblasConfiguration platformConfig,

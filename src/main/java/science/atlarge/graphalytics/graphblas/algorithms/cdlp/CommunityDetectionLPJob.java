@@ -18,7 +18,7 @@ public final class CommunityDetectionLPJob extends GraphblasJob {
 
 	/**
 	 * Creates a new LocalClusteringCoefficientJob object with all mandatory parameters specified.
-	 *  @param platformConfig the platform configuration.
+	 * @param platformConfig the platform configuration.
 	 * @param inputDir the path to the input graph.
 	 */
 	public CommunityDetectionLPJob(RunSpecification runSpecification, GraphblasConfiguration platformConfig,

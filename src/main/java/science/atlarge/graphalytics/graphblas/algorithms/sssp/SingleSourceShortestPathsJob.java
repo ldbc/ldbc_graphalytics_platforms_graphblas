@@ -16,7 +16,7 @@ public final class SingleSourceShortestPathsJob extends GraphblasJob {
 
 	/**
 	 * Creates a new SingleSourceShortestPathsJob object with all mandatory parameters specified.
-	 *  @param platformConfig the platform configuration.
+	 * @param platformConfig the platform configuration.
 	 * @param inputDir the path to the input graph.
 	 */
 	public SingleSourceShortestPathsJob(RunSpecification runSpecification, GraphblasConfiguration platformConfig,
