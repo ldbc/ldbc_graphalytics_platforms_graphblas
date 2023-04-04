@@ -64,12 +64,12 @@ To only build the C++ wrapper (for quick test builds), run the following script:
 bin/sh/build-wrapper-only.sh
 ```
 
-### Running the benchmark
+### Building the project and running the benchmark
 
 1. To initialize the benchmark package, run:
 
     ```bash
-    ./init.sh ${GRAPHS_DIR} ${MATRICES_DIR}
+    scripts/init.sh ${GRAPHS_DIR} ${MATRICES_DIR}
     ```
 
     where
@@ -77,7 +77,13 @@ bin/sh/build-wrapper-only.sh
     * `GRAPHS_DIR` is the directory of the graphs and the validation data. The argument is optional and its default value is `~/graphs`.
     * `MATRICES_DIR` is the directory of the pre-generated matrix files (in Matrix Market format). The argument is optional and its default value is `~/matrices`.
 
-    This script creates a Maven package (`graphalytics-${GRAPHALYTICS_VERSION}-graphblas-${PROJECT_VERSION}.tar.gz`). Then, it decopresses the package, initializes a configuration directory `config` (based on the content of the `config-template` directory) and sets default values of the directories (see above) and the number of threads.
+    This script creates a Maven package (`graphalytics-${GRAPHALYTICS_VERSION}-graphblas-${PROJECT_VERSION}.tar.gz`). Then, it decompresses the package, initializes a configuration directory `config` (based on the content of the `config-template` directory) and sets default values of the directories (see above) and the number of threads.
+
+    Note that the project uses the [Build Number Maven plug-in](https://www.mojohaus.org/buildnumber-maven-plugin/) to ensure reproducibility. Hence, builds fail if the local Git repository contains uncommitted changes. To build it regardless (for testing), run it as follows:
+
+    ```bash
+    scripts/init-for-testing.sh ${GRAPHS_DIR} ${MATRICES_DIR}
+    ```
 
 2. Navigate to the directory created by the `init.sh` script:
 

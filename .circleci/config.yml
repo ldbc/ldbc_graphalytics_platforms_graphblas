@@ -27,11 +27,11 @@ jobs:
           command: bin/sh/install-lagraph.sh
       - run:
           name: Initialize benchmark package
-          command: ./init.sh
+          command: scripts/init.sh
       - run:
           name: Perform benchmark test run
           command: |
-            . project-vars.sh
+            . scripts/project-vars.sh
             cd ${PROJECT}
             bin/sh/run-benchmark.sh
       - slack/status

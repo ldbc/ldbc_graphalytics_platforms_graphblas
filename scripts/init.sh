@@ -5,7 +5,9 @@ set -eo pipefail
 GRAPHS_DIR=${1:-~/graphs}
 MATRICES_DIR=${2:-~/matrices}
 
-. project-vars.sh
+rootdir="$( cd "$( dirname "${BASH_SOURCE[0]:-${(%):-%x}}" )" >/dev/null 2>&1 && pwd )/.."
+cd ${rootdir}
+. scripts/project-vars.sh
 
 # cleanup previously compiled wrapper artifacts
 rm -rf bin/exe
