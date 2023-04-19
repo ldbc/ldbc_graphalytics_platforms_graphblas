@@ -15,7 +15,7 @@ cd build
 # be avoided for benchmarking.
 if [ $# -gt 0 ] && [ "$1" == "--compact" ]; then
     echo 'compact build'
-    cmake .. -DCMAKE_C_FLAGS="-DGBCUDA_DEV=1"
+    cmake .. -DCMAKE_C_FLAGS="-DGBCOMPACT=1"
 else
     cmake ..
 fi
