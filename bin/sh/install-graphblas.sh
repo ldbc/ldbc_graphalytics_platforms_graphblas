@@ -5,7 +5,7 @@ set -eo pipefail
 rootdir="$( cd "$( dirname "${BASH_SOURCE[0]:-${(%):-%x}}" )" >/dev/null 2>&1 && pwd )/../.."
 
 rm -rf GraphBLAS
-git clone --depth 1 --branch v7.4.4 --single-branch https://github.com/DrTimothyAldenDavis/GraphBLAS
+git clone --depth 1 --branch v8.0.0.draft7 --single-branch https://github.com/DrTimothyAldenDavis/GraphBLAS
 cd GraphBLAS
 cd build
 
