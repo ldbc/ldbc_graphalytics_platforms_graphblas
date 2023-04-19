@@ -14,8 +14,8 @@ cd build
 # This significantly speeds up the build but make the execution slower, therefore, it should
 # be avoided for benchmarking.
 if [ $# -gt 0 ] && [ "$1" == "--compact" ]; then
-    echo 'compact build'
-    cmake .. -DCMAKE_C_FLAGS="-DGBCOMPACT=1"
+    echo 'Build GraphBLAS using the compact build mode'
+    cmake .. -DCMAKE_C_FLAGS="-DCOMPACT=1"
 else
     cmake ..
 fi
