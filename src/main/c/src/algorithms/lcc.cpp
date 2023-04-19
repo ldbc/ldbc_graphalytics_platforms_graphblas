@@ -65,10 +65,13 @@ GrB_Vector LA_LCC(GrB_Matrix A, bool directed) {
     ComputationTimer timer{"LCC"};
 
     LAGraph_Kind kind = directed ? LAGraph_ADJACENCY_DIRECTED : LAGraph_ADJACENCY_UNDIRECTED;
-    LAGraph_Graph G;
 
     char msg[LAGRAPH_MSG_LEN];
-    LAGraph_lcc(&d, G, msg);
+    LAGraph_Graph G;
+    LAGraph_New(&G, &A, kind, msg);
+    if (LAGraph_lcc(&d, G, msg) != GrB_SUCCESS) {
+        printf("msg: %s\n", msg);
+    }
 
     return d;
 }
