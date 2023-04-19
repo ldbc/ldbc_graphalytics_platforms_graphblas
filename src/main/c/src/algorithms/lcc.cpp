@@ -58,14 +58,17 @@ void SerializeLCCResult(
     free(X);
 }
 
-GrB_Vector LA_LCC(GrB_Matrix A, bool symmetric) {
+GrB_Vector LA_LCC(GrB_Matrix A, bool directed) {
     GrB_Info info;
     GrB_Vector d;
 
     ComputationTimer timer{"LCC"};
-    double timing[2];
+
+    LAGraph_Kind kind = directed ? LAGraph_ADJACENCY_DIRECTED : LAGraph_ADJACENCY_UNDIRECTED;
+    LAGraph_Graph G;
+
     char msg[LAGRAPH_MSG_LEN];
-    LAGraph_lcc(&d, A, symmetric, false, timing, msg);
+    LAGraph_lcc(&d, G, msg);
 
     return d;
 }
@@ -80,7 +83,7 @@ int main(int argc, char **argv) {
     std::vector<GrB_Index> mapping = ReadMapping(parameters);
 
     std::cout << "Processing starts at: " << GetCurrentMilliseconds() << std::endl;
-    GrB_Vector result = LA_LCC(A, !parameters.directed);
+    GrB_Vector result = LA_LCC(A, parameters.directed);
     std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
 
     SerializeLCCResult(result, mapping, parameters);
