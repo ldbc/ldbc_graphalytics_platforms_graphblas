@@ -34,4 +34,5 @@ jobs:
             . scripts/project-vars.sh
             cd ${PROJECT}
             bin/sh/run-benchmark.sh
+            grep -F 'In total, [24 / 24] benchmark(s) succeed.' report/*/log/benchmark-full.log
       - slack/status
