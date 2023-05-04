@@ -45,14 +45,19 @@ void SerializeCDLPResult(
     free(X);
 }
 
-GrB_Vector LA_CDLP(GrB_Matrix A, bool symmetric, int itermax) {
+GrB_Vector LA_CDLP(GrB_Matrix A, bool directed, int itermax) {
     GrB_Info info;
     GrB_Vector l;
 
     ComputationTimer timer{"CDLP"};
-    double timing[2];
+
+    LAGraph_Kind kind = directed ? LAGraph_ADJACENCY_DIRECTED : LAGraph_ADJACENCY_UNDIRECTED;
     char msg[LAGRAPH_MSG_LEN];
-    LAGraph_cdlp(&l, A, symmetric, true, itermax, timing, msg);
+    LAGraph_Graph G;
+    LAGraph_New(&G, &A, kind, msg);
+    if (LAGraph_cdlp(&l, G, itermax, msg) != GrB_SUCCESS) {
+        printf("msg: %s\n", msg);
+    }
 
     return l;
 }
@@ -67,7 +72,7 @@ int main(int argc, char **argv) {
     std::vector<GrB_Index> mapping = ReadMapping(parameters);
 
     std::cout << "Processing starts at: " << GetCurrentMilliseconds() << std::endl;
-    GrB_Vector result = LA_CDLP(A, !parameters.directed, parameters.max_iteration);
+    GrB_Vector result = LA_CDLP(A, parameters.directed, parameters.max_iteration);
     std::cout << "Processing ends at: " << GetCurrentMilliseconds() << std::endl;
 
     SerializeCDLPResult(result, mapping, parameters);
