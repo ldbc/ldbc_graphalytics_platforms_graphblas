@@ -2,10 +2,14 @@
 
 set -eo pipefail
 
-rootdir="$( cd "$( dirname "${BASH_SOURCE[0]:-${(%):-%x}}" )" >/dev/null 2>&1 && pwd )/../.."
+rootdir="$( cd "$( dirname "${BASH_SOURCE[0]:-${(%):-%x}}" )" >/dev/null 2>&1 && pwd )/.."
+
+cd ${rootdir}
+
+. scripts/project-vars.sh
 
 rm -rf GraphBLAS
-git clone --depth 1 --branch v8.0.0.draft9 --single-branch https://github.com/DrTimothyAldenDavis/GraphBLAS
+git clone --depth 1 --single-branch --branch ${SUITESPARSE_GRAPHBLAS_VERSION} https://github.com/DrTimothyAldenDavis/GraphBLAS
 cd GraphBLAS
 
 # The optional "--compact" argument triggers the "compact" build in SuiteSparse:GraphBLAS
