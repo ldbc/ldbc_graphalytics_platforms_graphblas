@@ -5,12 +5,42 @@ workflows:
   version: 2
   build:
     jobs:
-    - build
+    - build_x86
+    - build_m1
 jobs:
-  build:
+  build_x86:
     docker:
       - image: cimg/base:2023.02-22.04
     resource_class: xlarge
+    steps:
+      - checkout
+      - run:
+          name: Place example data sets in the home directory
+          command: cp -r example-data-sets/* ~/
+      - run:
+          name: Install prerequisites
+          command: scripts/install-prerequisites.sh
+      - run:
+          name: Install GraphBLAS (using compact mode to reduce build times)
+          command: scripts/install-graphblas.sh --compact
+      - run:
+          name: Install LAGraph
+          command: scripts/install-lagraph.sh
+      - run:
+          name: Initialize benchmark package
+          command: scripts/init.sh
+      - run:
+          name: Perform benchmark test run
+          command: |
+            . scripts/project-vars.sh
+            cd ${PROJECT}
+            bin/sh/run-benchmark.sh
+            grep -F 'In total, [24 / 24] benchmark(s) succeed.' report/*/log/benchmark-full.log
+      - slack/status
+  build_m1:
+    macos:
+      xcode: 14.2.0
+    resource_class: macos.m1.large.gen1
     steps:
       - checkout
       - run:
