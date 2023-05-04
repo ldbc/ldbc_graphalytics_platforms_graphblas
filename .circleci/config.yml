@@ -18,13 +18,13 @@ jobs:
           command: cp -r example-data-sets/* ~/
       - run:
           name: Install prerequisites
-          command: bin/sh/install-prerequisites.sh
+          command: scripts/install-prerequisites.sh
       - run:
           name: Install GraphBLAS (using compact mode to reduce build times)
-          command: bin/sh/install-graphblas.sh --compact
+          command: scripts/install-graphblas.sh --compact
       - run:
           name: Install LAGraph
-          command: bin/sh/install-lagraph.sh
+          command: scripts/install-lagraph.sh
       - run:
           name: Initialize benchmark package
           command: scripts/init.sh

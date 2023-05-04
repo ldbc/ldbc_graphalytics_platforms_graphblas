@@ -21,7 +21,7 @@ This project implements the GraphBLAS platform driver for the LDBC Graphalytics 
 On Debian/Fedora-based Linux distributions, you may install the prerequisite packages and dependencies listed below using a singe comman:
 
 ```
-bin/sh/install-dependencies.sh
+scripts/install-dependencies.sh
 ```
 
 #### Prerequisite packages
@@ -37,7 +37,7 @@ Make sure you have the following software packages installed:
 On Linux, you may use the following script to install these dependencies:
 
 ```bash
-bin/sh/install-prerequisites.sh
+scripts/install-prerequisites.sh
 ```
 
 ### SuiteSparse:GraphBLAS and LAGraph libraries
@@ -47,13 +47,13 @@ The implementation depends on two C libraries, SuiteSparse:GraphBLAS and LAGraph
 1. To install [SuiteSparse:GraphBLAS v7.4.0+](https://github.com/DrTimothyAldenDavis/GraphBLAS), run:
 
     ```bash
-    bin/sh/install-graphblas.sh
+    scripts/install-graphblas.sh
     ```
 
 1. To install [LAGraph](https://github.com/GraphBLAS/LAGraph) (`dev` branch), run:
 
     ```bash
-    bin/sh/install-lagraph.sh
+    scripts/install-lagraph.sh
     ```
 
 ### Building only the C++ wrapper
@@ -61,7 +61,7 @@ The implementation depends on two C libraries, SuiteSparse:GraphBLAS and LAGraph
 To only build the C++ wrapper (for quick test builds), run the following script:
 
 ```bash
-bin/sh/build-wrapper-only.sh
+scripts/build-wrapper-only.sh
 ```
 
 ### Building the project and running the benchmark
