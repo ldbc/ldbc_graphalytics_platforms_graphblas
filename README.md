@@ -61,7 +61,7 @@ The implementation depends on two C libraries, SuiteSparse:GraphBLAS and LAGraph
 To only build the C++ wrapper (for quick test builds), run the following script:
 
 ```bash
-scripts/build-wrapper-only.sh
+bin/sh/build-wrapper-only.sh
 ```
 
 ### Building the project and running the benchmark
