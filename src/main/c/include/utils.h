@@ -9,7 +9,7 @@ extern "C" {
 /*
  * Argument parsing functions
  */
-typedef struct {
+typedef struct BenchmarkParameters {
   bool binary;
   std::string input_dir;
   std::string output_file;
@@ -22,7 +22,7 @@ typedef struct {
 
 BenchmarkParameters ParseBenchmarkParameters(int argc, char **argv);
 
-typedef struct {
+typedef struct ConverterParameters {
   std::string data_dir;
 } ConverterParameters;
 
