@@ -32,7 +32,7 @@ add_library(
         src/utils.cpp src/graphio.cpp
 )
 link_libraries(graphblas_utils)
-target_link_libraries(graphblas_utils graphblas lagraph lagraphx)
+target_link_libraries(graphblas_utils ${GRAPHBLAS_LIBRARY} ${LAGRAPH_LIBRARIES})
 
 add_executable(bfs src/algorithms/bfs.cpp)
 add_executable(cdlp src/algorithms/cdlp.cpp)
