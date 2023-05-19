@@ -44,7 +44,7 @@ scripts/install-prerequisites.sh
 
 The implementation depends on two C libraries, SuiteSparse:GraphBLAS and LAGraph. We require very recent versions of these libraries, so it is best to compile them from their source code.
 
-1. To install [SuiteSparse:GraphBLAS v7.4.0+](https://github.com/DrTimothyAldenDavis/GraphBLAS), run:
+1. To install [SuiteSparse:GraphBLAS v8.0.0+](https://github.com/DrTimothyAldenDavis/GraphBLAS), run:
 
     ```bash
     scripts/install-graphblas.sh
