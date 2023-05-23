@@ -10,6 +10,10 @@
 
 #include "graphio.h"
 
+extern "C" {
+#include <LAGraphX.h>
+}
+
 typedef uint64_t Vertex;
 typedef std::map<Vertex, Vertex> VertexMapping;
 
@@ -51,9 +55,8 @@ int main(int argc, char **argv) {
     fclose(binary_mapping_file);
 
     std::cout << "Serializing binary matrix file (grb)" << std::endl;
-    FILE *binary_matrix_file = fopen(binary_matrix_file_path.c_str(), "w");
-    binwrite(&A, binary_matrix_file, NULL);
-    fclose(binary_matrix_file);
+    char* binary_matrix_file_path_c = strdup(binary_matrix_file_path.c_str());
+    LAGraph_SSaveSet(binary_matrix_file_path_c, &A, 1, "", NULL);
     OK(GrB_Matrix_free(&A))
 
     OK(GrB_finalize())
