@@ -24,6 +24,10 @@ def relabel(con, graph, input_vertex_path, input_edge_path, output_path, directe
 
     ## configuration
     con.execute(f"SET experimental_parallel_csv=true")
+    # parallel csv faults on systems with high core counts, workaround is to use only half
+    cpu_count = os.cpu_count()
+    if (cpu_count is not None and cpu_count > 100):
+        con.execute(f"SET threads={cpu_count / 2}")
 
     ## graph tables
     con.execute(f"CREATE OR REPLACE TABLE v (id BIGINT)")
