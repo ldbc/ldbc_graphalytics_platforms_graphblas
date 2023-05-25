@@ -59,9 +59,9 @@ else
     echo "Transformed Matrix Market (mtx/vtx) files already exist, no relabelling required"
 fi
 
-# convert .mtx/.vtx files to binary .vtb/.grb files
-if [[ ! -f ${OUTPUT_PATH}/graph.vtb && ! -f ${OUTPUT_PATH}/graph.grb ]]; then
+# convert .mtx/.vtx files to binary .vtb/.lagraph files
+if [[ ! -f ${OUTPUT_PATH}/graph.vtb && ! -f ${OUTPUT_PATH}/graph.lagraph ]]; then
     bin/exe/converter --data-dir ${OUTPUT_PATH}
 else
-    echo "Transformed binary files (grb/vtb) already exist, no conversion required"
+    echo "Transformed binary files (lagraph/vtb) already exist, no conversion required"
 fi

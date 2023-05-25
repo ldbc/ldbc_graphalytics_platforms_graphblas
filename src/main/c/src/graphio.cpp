@@ -12,12 +12,12 @@ GrB_Matrix ReadMatrixMarket(const BenchmarkParameters& parameters) {
     GrB_Matrix A;
 
     if (parameters.binary) {
-        auto grb_file_path = parameters.input_dir + "/graph.grb";
-        char* grb_file_path_c = strdup(grb_file_path.c_str());
+        auto lagraph_file_path = parameters.input_dir + "/graph.lagraph";
+        char* lagraph_file_path_c = strdup(lagraph_file_path.c_str());
         GrB_Matrix* M;
         GrB_Index n;
         char* collection_handle;
-        LAGraph_SLoadSet(grb_file_path_c, &M, &n, &collection_handle, NULL);
+        LAGraph_SLoadSet(lagraph_file_path_c, &M, &n, &collection_handle, NULL);
         A = *M;
     } else {
         auto market_file_path = parameters.input_dir + "/graph.mtx";
