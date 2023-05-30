@@ -69,6 +69,12 @@ GrB_Vector LA_LCC(GrB_Matrix A, bool directed) {
     char msg[LAGRAPH_MSG_LEN];
     LAGraph_Graph G;
     LAGraph_New(&G, &A, kind, msg);
+    if (LAGraph_Cached_IsSymmetricStructure(G, msg) != GrB_SUCCESS) {
+        printf("msg: %s\n", msg);
+    }
+    if (LAGraph_Cached_NSelfEdges(G, msg) != GrB_SUCCESS) {
+        printf("msg: %s\n", msg);
+    }
     if (LAGraph_lcc(&d, G, msg) != GrB_SUCCESS) {
         printf("msg: %s\n", msg);
     }
