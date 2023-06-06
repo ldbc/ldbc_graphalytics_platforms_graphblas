@@ -1,6 +1,10 @@
 #include "graphio.h"
 #include "computation_timer.hpp"
 
+extern "C" {
+#include <LAGraphX.h>
+}
+
 GrB_Matrix ReadMatrixMarket(const BenchmarkParameters& parameters) {
     ComputationTimer total_timer{"Loading the matrix"};
 
@@ -8,11 +12,13 @@ GrB_Matrix ReadMatrixMarket(const BenchmarkParameters& parameters) {
     GrB_Matrix A;
 
     if (parameters.binary) {
-        auto grb_file_path = parameters.input_dir + "/graph.grb";
-        char* grb_file_path_c = strdup(grb_file_path.c_str());
-        FILE *grb_file = fopen(grb_file_path_c, "r");
-        binread(&A, grb_file);
-        fclose(grb_file);
+        auto lagraph_file_path = parameters.input_dir + "/graph.lagraph";
+        char* lagraph_file_path_c = strdup(lagraph_file_path.c_str());
+        GrB_Matrix* M;
+        GrB_Index n;
+        char* collection_handle;
+        LAGraph_SLoadSet(lagraph_file_path_c, &M, &n, &collection_handle, NULL);
+        A = *M;
     } else {
         auto market_file_path = parameters.input_dir + "/graph.mtx";
         FILE *mmfile = fopen(market_file_path.c_str(), "r");
