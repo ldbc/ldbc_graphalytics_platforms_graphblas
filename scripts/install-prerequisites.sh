@@ -14,4 +14,4 @@ elif [ "$(uname)" == "Darwin" ]; then
     brew install cmake maven coreutils
 fi
 
-pip3 install --user duckdb==0.7.1
+pip3 install --user duckdb==1.0.0
