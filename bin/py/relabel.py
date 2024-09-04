@@ -22,8 +22,6 @@ def relabel(con, graph, input_vertex_path, input_edge_path, output_path, directe
         serialize_edge_weight = "|| ' ' || 1"
         grb_type = "GrB_BOOL"
 
-    ## configuration
-    con.execute(f"SET experimental_parallel_csv=true")
     # parallel csv faults on systems with high core counts, workaround is to use only half
     cpu_count = os.cpu_count()
     if (cpu_count is not None and cpu_count > 100):
