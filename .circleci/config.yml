@@ -48,7 +48,10 @@ jobs:
           command: cp -r example-data-sets/* ~/
       - run:
           name: Install prerequisites
-          command: scripts/install-prerequisites.sh
+          command: |
+            scripts/install-prerequisites.sh
+            curl -O https://mac.r-project.org/openmp/openmp-16.0.4-darwin20-Release.tar.gz
+            sudo tar fvxz openmp-16.0.4-darwin20-Release.tar.gz -C /
       - run:
           name: Install GraphBLAS (using compact mode to reduce build times)
           command: scripts/install-graphblas.sh --compact
