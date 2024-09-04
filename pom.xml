@@ -21,8 +21,8 @@
 	<name>Graphalytics Platform GraphBLAS</name>
 
 	<scm>
-		<developerConnection>scm:git:git@github.com:atlarge-research/graphalytics-platforms-graphblas.git</developerConnection>
-		<url>https://github.com/atlarge-research/graphalytics-platforms-graphblas</url>
+		<developerConnection>scm:git:git@github.com:ldbc/ldbc_graphalytics_platforms_graphblas.git</developerConnection>
+		<url>https://github.com/ldbc/ldbc_graphalytics_platforms_graphblas</url>
 	</scm>
 
 
