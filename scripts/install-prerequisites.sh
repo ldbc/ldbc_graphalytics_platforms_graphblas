@@ -11,7 +11,7 @@ elif [[ ! -z $(which apt-get) ]]; then
     sudo apt-get update
     sudo apt-get install -y python3-pip cmake g++ maven
 elif [ "$(uname)" == "Darwin" ]; then
-    brew install cmake maven coreutils
+    brew install cmake maven coreutils libomp
 fi
 
 pip3 install --user duckdb==1.0.0
